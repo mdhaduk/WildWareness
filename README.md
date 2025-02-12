@@ -22,8 +22,6 @@ Users can:
 - Find emergency shelters near affected areas.
 - View and (eventually) submit community reports on wildfire conditions.
 
----
-
 ## **Data Sources** *(RESTful APIs and Web Scraping)*
 - [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery.
 - [CAL FIRE](https://data.ca.gov/dataset/cal-fire) – Reports active and past wildfires with containment details.
@@ -32,8 +30,11 @@ Users can:
 
 ---
 
-## **Models**
-### **1. Wildfire Incidents**
+## **Models:**
+
+---
+
+### 1. Wildfire Incidents
 **Attributes:**
 - Fire Name
 - Location
@@ -42,26 +43,27 @@ Users can:
 - Content Blurb
 
 **Estimated Instances:** ~3,500  
-**Connections:** Linked to **Emergency Shelters** and **Community Reports**
+**Connections:** Linked to Emergency Shelters and Community Reports
 **Media Types:**
 - Satellite images of fires
 - Interactive maps
 
-### **2. Emergency Shelters**
+### 2. Emergency Shelters
 **Attributes:**
 - Name
 - Location
 - Capacity
 - Status (Open/Closed)
 - Contact Info
-**Estimated Instances:** ~1000  
-**Connections:** Linked to **Wildfire Incidents**  
+
+**Estimated Instances:** ~1000
+**Connections:** Linked to Wildfire Incidents
 **Media Types:**
 - Images of shelter locations
 - Interactive shelter maps
 - Live availability updates
 
-### **3. Community Reports**
+### 3. Community Reports
 **Attributes:**
 - Title
 - Location
@@ -69,17 +71,16 @@ Users can:
 - Author
 - Content Blurb
 
-
 **Estimated Instances:** ~5000+  
-**Connections:** Linked to **Wildfire Incidents**
+**Connections:** Linked to Wildfire Incidents
 **Media Types:**
 - User-uploaded images of fire conditions
 - Geo-tagged reports
 
 ---
 
-## **Questions the Site Will Answer**
-
+## Questions the Site Will Answer
 - Where are the current wildfires near me?
 - What emergency shelters are open for wildfire evacuees?
 - Are there any community-reported updates on fire conditions in my area?
+
