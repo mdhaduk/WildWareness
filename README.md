@@ -1,19 +1,15 @@
 # **WildWareness**
 
----
-
 **Canvas/Slack Group Number:** 03
+
+---
 
 ## Team Members:
 - Milan Dhaduk
 - Audrey Tan
 - Zakaria Sisalem
 - Pooja Vasanthan
-
----
-
 **Project Name:** WildWareness
-
 ## **Proposed Project:**
 is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates.
 
@@ -28,8 +24,7 @@ Users can:
 
 ---
 
-### **Data Sources** *(RESTful APIs and Web Scraping)*
-
+## **Data Sources** *(RESTful APIs and Web Scraping)*
 - [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery.
 - [CAL FIRE](https://data.ca.gov/dataset/cal-fire) – Reports active and past wildfires with containment details.
 - [OpenFEMA API](https://www.fema.gov/about/openfema/api) – Lists available emergency shelters.
@@ -37,11 +32,8 @@ Users can:
 
 ---
 
-### **Models**
-
----
-
-## **1. Wildfire Incidents**
+## **Models**
+### **1. Wildfire Incidents**
 **Attributes:**
 - Fire Name
 - Location
@@ -51,12 +43,9 @@ Users can:
 
 **Estimated Instances:** ~3,500  
 **Connections:** Linked to **Emergency Shelters** and **Community Reports**
-
 **Media Types:**
 - Satellite images of fires
 - Interactive maps
-
----
 
 ### **2. Emergency Shelters**
 **Attributes:**
@@ -65,16 +54,12 @@ Users can:
 - Capacity
 - Status (Open/Closed)
 - Contact Info
-
 **Estimated Instances:** ~1000  
 **Connections:** Linked to **Wildfire Incidents**  
-
 **Media Types:**
 - Images of shelter locations
 - Interactive shelter maps
 - Live availability updates
-
----
 
 ### **3. Community Reports**
 **Attributes:**
@@ -87,7 +72,6 @@ Users can:
 
 **Estimated Instances:** ~5000+  
 **Connections:** Linked to **Wildfire Incidents**
-
 **Media Types:**
 - User-uploaded images of fire conditions
 - Geo-tagged reports
