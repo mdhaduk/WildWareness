@@ -53,7 +53,7 @@ Users can:
 - Contact Info
 
 **Estimated Instances:** ~1000  
-**Connections:** Linked to Wildfire Incidents  
+**Connections:** Linked to Wildfire Incidents and Wildfire Incidents  
 **Media Types:**
 - Images of shelter locations
 - Interactive shelter maps
