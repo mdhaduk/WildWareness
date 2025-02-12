@@ -2,7 +2,6 @@
 
 **Canvas/Slack Group Number:** 03
 
----
 
 ## Team Members:
 - Milan Dhaduk
@@ -75,7 +74,6 @@ Users can:
 - User-uploaded images of fire conditions
 - Geo-tagged reports
 
----
 
 ## Questions the Site Will Answer
 - Where are the current wildfires near me?
