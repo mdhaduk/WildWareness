@@ -11,11 +11,12 @@
 - Pooja Vasanthan
 **Project Name:** WildWareness
 ## **Proposed Project:**
-is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates.
+WildWareness is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates.
 
 The platform serves:
 - People in wildfire-affected areas who need information on active fires and emergency shelters.
 - Volunteers and first responders looking for ways to help communities impacted by wildfires.
+
 Users can:
 - Track active wildfires with real-time data.
 - Find emergency shelters near affected areas.
@@ -30,8 +31,6 @@ Users can:
 ---
 
 ## Models:
-
----
 
 ### 1. Wildfire Incidents
 **Attributes:**
