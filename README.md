@@ -16,7 +16,6 @@ is a web application designed to provide real-time wildfire information, emergen
 The platform serves:
 - People in wildfire-affected areas who need information on active fires and emergency shelters.
 - Volunteers and first responders looking for ways to help communities impacted by wildfires.
-
 Users can:
 - Track active wildfires with real-time data.
 - Find emergency shelters near affected areas.
@@ -30,7 +29,7 @@ Users can:
 
 ---
 
-## **Models:**
+## Models:
 
 ---
 
@@ -42,7 +41,7 @@ Users can:
 - Author
 - Content Blurb
 
-**Estimated Instances:** ~3,500  
+**Estimated Instances:** ~3,500
 **Connections:** Linked to Emergency Shelters and Community Reports
 **Media Types:**
 - Satellite images of fires
@@ -71,7 +70,7 @@ Users can:
 - Author
 - Content Blurb
 
-**Estimated Instances:** ~5000+  
+**Estimated Instances:** ~5000+
 **Connections:** Linked to Wildfire Incidents
 **Media Types:**
 - User-uploaded images of fire conditions
