@@ -41,8 +41,8 @@ Users can:
 - Author
 - Content Blurb
 
-**Estimated Instances:** ~3,500
-**Connections:** Linked to Emergency Shelters and Community Reports
+**Estimated Instances:** ~3,500  
+**Connections:** Linked to Emergency Shelters and Community Reports  
 **Media Types:**
 - Satellite images of fires
 - Interactive maps
@@ -55,8 +55,8 @@ Users can:
 - Status (Open/Closed)
 - Contact Info
 
-**Estimated Instances:** ~1000
-**Connections:** Linked to Wildfire Incidents
+**Estimated Instances:** ~1000  
+**Connections:** Linked to Wildfire Incidents  
 **Media Types:**
 - Images of shelter locations
 - Interactive shelter maps
@@ -70,8 +70,8 @@ Users can:
 - Author
 - Content Blurb
 
-**Estimated Instances:** ~5000+
-**Connections:** Linked to Wildfire Incidents
+**Estimated Instances:** ~5000+  
+**Connections:** Linked to Wildfire Incidents  
 **Media Types:**
 - User-uploaded images of fire conditions
 - Geo-tagged reports
