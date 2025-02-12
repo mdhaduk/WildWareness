@@ -27,7 +27,6 @@ Users can:
 - [OpenFEMA API](https://www.fema.gov/about/openfema/api) – Lists available emergency shelters.
 - [Ushahidi API](https://docs.ushahidi.com/ushahidi-documentation)- Allows user-submitted community reports about wildfire conditions.
 
----
 
 ## Models:
 
