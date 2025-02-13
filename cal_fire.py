@@ -6,6 +6,9 @@ import json
 # API URL
 url = "https://gis.data.cnra.ca.gov/api/download/v1/items/994d3dc4569640caadbbc3198d5a3da1/geojson?layers=0"
 
+
+#This script pretty much just keeps trying to fetch data until it works using this method called "exponential backoff"
+
 # Exponential backoff parameters
 max_attempts = 5  # Maximum retry attempts
 base_wait = 1  # Initial wait time in seconds (doubles each retry)
@@ -42,37 +45,3 @@ for attempt in range(max_attempts):
     time.sleep(wait_time)
 else:
     print("❌ Max retry attempts reached. Exiting.")
-
-
-import json
-
-# Load the JSON file
-file_name = "wildfire_data.json"
-
-with open(file_name, "r") as f:
-    geojson_data = json.load(f)
-
-# Extract features
-features = geojson_data.get("features", [])  # Default to an empty list if "features" is missing
-
-# Check how many features exist
-print(f"✅ Total Features: {len(features)}")
-
-# Extract key attributes from each feature
-parsed_data = [
-    {
-        "ID": feature.get("id"),
-        "Damage": feature["properties"].get("DAMAGE", "Unknown"),
-        "Address": f"{feature['properties'].get('STREETNUMBER', '')} {feature['properties'].get('STREETNAME', '')} {feature['properties'].get('STREETTYPE', '')}".strip(),
-        "City": feature["properties"].get("CITY", "Unknown"),
-        "County": feature["properties"].get("COUNTY", "Unknown"),
-        "Incident": feature["properties"].get("INCIDENTNAME", "Unknown"),
-        "Coordinates": feature["geometry"].get("coordinates", "Unknown"),
-    }
-    for feature in features
-]
-
-# Print a small sample (first 5 items)
-for i, item in enumerate(parsed_data[:5], start=1):
-    print(f"\nFeature {i}:")
-    print(json.dumps(item, indent=4))
