@@ -22,10 +22,12 @@ Users can:
 - View and (eventually) submit community reports on wildfire conditions.
 
 ## **Data Sources** *(RESTful APIs and Web Scraping)*
-- [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery.
+- [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery. (Might use)
 - [CAL FIRE](https://data.ca.gov/dataset/cal-fire) – Reports active and past wildfires with containment details.
 - [OpenFEMA API](https://www.fema.gov/about/openfema/api) – Lists available emergency shelters.
-- [Ushahidi API](https://docs.ushahidi.com/ushahidi-documentation)- Allows user-submitted community reports about wildfire conditions.
+- [X API](https://developer.x.com/en/docs/x-api?utm_source=chatgpt.com)- Community/local reports posted from Twitter/X.
+- [Google Places API](https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1)- Google's API used for fetching information about a location on Google Maps.
+
 
 
 ## Models:
