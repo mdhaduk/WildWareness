@@ -35,8 +35,8 @@ Users can:
 - Fire Name
 - Location
 - Date/time
-- Author
-- Content Blurb
+- Severity
+- Cause
 
 **Estimated Instances:** ~3,500  
 **Connections:** Linked to Emergency Shelters and Community Reports  
