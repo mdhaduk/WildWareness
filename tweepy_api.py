@@ -1,18 +1,45 @@
-import tweepy
+import requests
 import json
 
-# Twitter API Credentials (Replace with your keys)
-BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAOLgzAEAAAAAy3slyQQtp2ZIsrJ84zPfBh1634g%3Do4Th8VNBLdiN7IWnbJFFYWvnNNRpgdIj3TbzQWOeuweiot2c3J"
+# Define API key (Replace with your actual API key from NewsData.io)
+API_KEY = "pub_6943866b817c01aa61a6ab1a3737e61fadd27"
 
-# Authenticate with Twitter API
-client = tweepy.Client(bearer_token=BEARER_TOKEN)
+# Define API endpoint
+url = f"https://newsdata.io/api/1/news?apikey=pub_6943866b817c01aa61a6ab1a3737e61fadd27&q=California%20wildfires&country=us&category=environment&language=en"
 
-# Search Query for Wildfires in California
-query = "California wildfire OR #CAwildfires OR #CaliforniaFires -is:retweet"
+# Define query parameters
+params = {
+    "apikey": API_KEY,
+    "q": "California wildfires",  # Search for California wildfires
+    "country": "us",  # Fetch news only from the US
+    "category": "disaster",  # Filter for disaster-related news
+    "language": "en",  # English articles only
+}
 
-# Fetch recent tweets (max 10 tweets)
-tweets = client.search_recent_tweets(query=query, tweet_fields=["created_at", "text", "author_id"], max_results=1)
+# Make the request to NewsData.io
+response = requests.get(url, params=params)
 
-# Display the fetched tweets
-for tweet in tweets.data:
-    print(f"User ID: {tweet.author_id}\nTime: {tweet.created_at}\nTweet: {tweet.text}\n{'-'*50}")
+# Check if the request was successful
+if response.status_code == 200:
+    news_data = response.json()  # Convert response to JSON
+
+    # Extract and display news articles
+    articles = news_data.get("results", [])  # Extract the "results" field (list of articles)
+
+    # Process and print each article in a structured way
+    for article in articles:
+        title = article.get("title", "No title available")
+        source = article.get("source_id", "Unknown Source")
+        publication_date = article.get("pubDate", "Unknown Date")
+        link = article.get("link", "No link available")
+        content = article.get("content", "No content available")
+
+        print(f"🔹 Title: {title}")
+        print(f"📰 Source: {source}")
+        print(f"📅 Date: {publication_date}")
+        print(f"🔗 Link: {link}")
+        print(f"📄 Content Preview: {content[:200]}...")  # Print first 200 characters of the content
+        print("=" * 80)
+
+else:
+    print(f"Error: Unable to fetch news (Status Code: {response.status_code})")
