@@ -25,7 +25,7 @@ Users can:
 - [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery. (Might use)
 - [CAL FIRE](https://data.ca.gov/dataset/cal-fire) – Reports active and past wildfires with containment details.
 - [OpenFEMA API](https://www.fema.gov/about/openfema/api) – Lists available emergency shelters.
-- [X API](https://developer.x.com/en/docs/x-api?utm_source=chatgpt.com)- Community/local reports posted from Twitter/X.
+- [NewsData.io API](https://newsdata.io/)- Community/local reports and headlinges fetched from NewsData.io
 - [Google Places API](https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1)- Google's API used for fetching information about a location on Google Maps.
 
 
@@ -64,9 +64,9 @@ Users can:
 ### 3. Community Reports
 **Attributes:**
 - Title
-- Location
+- Source
 - Date/time
-- Author
+- Link
 - Content Blurb
 
 **Estimated Instances:** ~5000+  
