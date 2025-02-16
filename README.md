@@ -2,13 +2,14 @@
 
 **Canvas/Slack Group Number:** 03
 
+**Project Name:** WildWareness
 
 ## Team Members:
 - Milan Dhaduk
 - Audrey Tan
 - Zakaria Sisalem
 - Pooja Vasanthan
-**Project Name:** WildWareness
+
 ## **Proposed Project:**
 WildWareness is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates in the state of California.
 
