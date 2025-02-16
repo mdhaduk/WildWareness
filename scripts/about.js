@@ -1,8 +1,8 @@
 const members = ["Milan Dhaduk", "Audrey Tan", "Zakaria Sisalem", "Pooja Vasanthan"];
 const usernames = ["mdhaduk", "akt2468", "sisalemz", "PoojaVasanthan10"];
-const idToName = {"mdhaduk" : "Milan Dhaduk", 
-                "akt2468": "Audrey Tan", 
-                "sisalemz":"Zakaria Sisalem", 
+const idToName = {"mdhaduk" : "Milan Dhaduk",
+                "akt2468": "Audrey Tan",
+                "sisalemz":"Zakaria Sisalem",
                 "PoojaVasanthan10":"Pooja Vasanthan"}
 
 

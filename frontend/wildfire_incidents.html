@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags for character encoding and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>WildWareness</title>
+    
+    <!-- Link to Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navigation bar section -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">WildWareness</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="wildfire_incidents.html">Wildfire Incidents</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shelters.html">Emergency Shelters</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">Community Reports</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html"><strong>About</strong></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content section displaying cards for food banks -->
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <div class="row">
+            <!-- First card: Trinity Center food bank -->
+            <div class="col">
+                <div class="card" style="width: 22rem;">
+                    <!-- Image of the food bank -->
+                    <img src="https://media.licdn.com/dms/image/C561BAQG7SgJwFiIEJQ/company-background_10000/0/1651507429160/trinity_center_cover?e=2147483647&v=beta&t=lHinOCevpzydudsYYqD2PqsZG1U66lkzG_-5oqaQdx4" 
+                        style="height: 200px; object-fit: cover;" class="card-img-top" alt="...">
+                    
+                    <!-- List of food bank details -->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Name: </strong>Palisades Fire</li>
+                        <li class="list-group-item"><strong>County: </strong>Los Angeles</li>
+                        <li class="list-group-item"><strong>Location: </strong>Southeast of Palisades Drive, Pacific Palisades</li>
+                        <li class="list-group-item"><strong>Date/Time: </strong>January 7, 2025, 10:30 AM UTC</li>
+                        <li class="list-group-item"><strong>Acres Burned: </strong>23706.6</li>
+                    </ul>
+                    <div class="card-body">
+                        <!-- Link to read more about this food bank -->
+                        <a href="wildfire_incident1.html" class="card-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second card: Caritas of Austin food bank -->
+            <div class="col">
+                <div class="card" style="width: 22rem;">
+                    <!-- Image of the food bank -->
+                    <img src="https://www.supportivehousing.org/gallery/150_holfyefd.png" 
+                        style="height: 200px; object-fit: cover;" class="card-img-top" alt="...">
+                    
+                    <!-- List of food bank details -->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Name: </strong>Eaton Fire</li>
+                        <li class="list-group-item"><strong>County: </strong>Los Angeles</li>
+                        <li class="list-group-item"><strong>Location: </strong>Near Altadena Drive and Midwick Drive, Altadena/Pasadena</li>
+                        <li class="list-group-item"><strong>Date/Time: </strong>January 7, 2025, 6:18 PM UTC</li>
+                        <li class="list-group-item"><strong>Acres Burned: </strong>14021.0</li>
+                    </ul>
+                    <div class="card-body">
+                        <!-- Link to read more about this food bank -->
+                        <a href="wildfire_incident2.html" class="card-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third card: HACA - Lakeside food bank -->
+            <div class="col">
+                <div class="card" style="width: 22rem;">
+                    <!-- Image of the food bank -->
+                    <img src="https://www.hacanet.org/wp-content/uploads/2017/02/LakesideApt-27-1024x683.jpg" 
+                        style="height: 200px; object-fit: cover;" class="card-img-top" alt="...">
+                    
+                    <!-- List of food bank details -->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Name: </strong>Oak Fire</li>
+                        <li class="list-group-item"><strong>County: </strong>Santa Barbara</li>
+                        <li class="list-group-item"><strong>Location: </strong>Sisquoc</li>
+                        <li class="list-group-item"><strong>Date/Time: </strong>January 1, 2025, 8:08 PM UTC</li>
+                        <li class="list-group-item"><strong>AcresBurned: </strong>42.0</li>
+                    </ul>
+                    <div class="card-body">
+                        <!-- Link to read more about this food bank -->
+                        <a href="food_bank_instance3.html" class="card-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer displaying the total number of food banks -->
+    <div class="footer text-center mt-2">
+        <p id="overallStats">Food Banks: 3</p>
+    </div>
+
+</body>
+
+</html>

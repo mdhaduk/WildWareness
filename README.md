@@ -23,12 +23,10 @@ Users can:
 - View and (eventually) submit community reports on wildfire conditions.
 
 ## **Data Sources** *(RESTful APIs and Web Scraping)*
-- [NASA FIRMS API](https://firms.modaps.eosdis.nasa.gov/api/) – Provides near real-time wildfire detection from satellite imagery. (Might use)
-- [CAL FIRE](https://data.ca.gov/dataset/cal-fire) – Reports active and past wildfires with containment details.
-- [OpenFEMA API](https://www.fema.gov/about/openfema/api) – Lists available emergency shelters.
+- [CAL FIRE](https://www.fire.ca.gov/incidents/2025) – Reports active and past wildfires with containment details (2025)
 - [NewsData.io API](https://newsdata.io/)- Community/local reports and headlinges fetched from NewsData.io
 - [Google Places API](https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1)- Google's API used for fetching information about a location on Google Maps.
-
+- [Google Maps Geocoding API](https://console.cloud.google.com/marketplace/product/google/geocoding-backend.googleapis.com?q=search&referrer=search&project=hardy-position-450923-v1) - a service that allows you to convert addresses into geographic coordinates (latitude & longitude) and vice versa (reverse geocoding).
 
 
 ## Models:
