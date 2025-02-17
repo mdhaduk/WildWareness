@@ -5,7 +5,7 @@ import json
 API_KEY = "pub_6943866b817c01aa61a6ab1a3737e61fadd27"
 
 # Define API endpoint
-url = f"https://newsdata.io/api/1/news?apikey=pub_6943866b817c01aa61a6ab1a3737e61fadd27&q=California%20wildfires&country=us&category=environment&language=en"
+url = f"https://newsdata.io/api/1/news?apikey={API_KEY}&q=California%20wildfires&country=us&category=environment&language=en"
 
 # Define query parameters
 params = {
@@ -38,7 +38,6 @@ if response.status_code == 200:
         print(f"📰 Source: {source}")
         print(f"📅 Date: {publication_date}")
         print(f"🔗 Link: {link}")
-        print(f"📄 Content Preview: {content[:200]}...")  # Print first 200 characters of the content
         print("=" * 80)
 
 else:
