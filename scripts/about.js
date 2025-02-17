@@ -1,9 +1,13 @@
 const members = ["Milan Dhaduk", "Audrey Tan", "Zakaria Sisalem", "Pooja Vasanthan"];
 const usernames = ["mdhaduk", "akt2468", "sisalemz", "PoojaVasanthan10"];
-const idToName = {"mdhaduk" : "Milan Dhaduk",
-                "akt2468": "Audrey Tan",
-                "sisalemz":"Zakaria Sisalem",
-                "PoojaVasanthan10":"Pooja Vasanthan"}
+const idToName = {
+    "mdhaduk": "Milan Dhaduk",
+    "akt2468": "Audrey Tan",
+    "sisalemz": "Zakaria Sisalem",
+    "zak S": "Zakaria Sisalem",
+    "PoojaVasanthan10": "Pooja Vasanthan",
+    "PoojaVasanthan": "Pooja Vasanthan"
+}
 
 
 fetch("https://gitlab.com/api/v4/projects/66936503/repository/commits?per_page=100",
@@ -21,9 +25,12 @@ fetch("https://gitlab.com/api/v4/projects/66936503/repository/commits?per_page=1
     let authorCommits = {"Milan Dhaduk" : 0, "Audrey Tan" : 0, "Zakaria Sisalem" : 0, "Pooja Vasanthan" : 0}
     for(let i = 0; i < projectInfo.length; i++){
         let author = idToName[projectInfo[i].author_name];
-        authorCommits[author]++;
+        if (author) {
+            authorCommits[author]++;
+        }
     }
-    for(let i = 0; i < 4; i++){
+    
+    for(let i = 0; i < members.length; i++){
         let stats = document.getElementById(members[i] + " Stats");
         let updated = stats.innerHTML.replace("Commits:", "Commits: " + authorCommits[members[i]]);
         stats.innerHTML = updated;
@@ -31,7 +38,7 @@ fetch("https://gitlab.com/api/v4/projects/66936503/repository/commits?per_page=1
   })
   .catch(error => console.error(error))
 
-for(let i = 0; i < 4; i++){
+for(let i = 0; i < members.length; i++){
   let newFetch = fetch("https://gitlab.com/api/v4/projects/66936503/issues?author_username=" + usernames[i] + "&per_page=100",
     {
       method: 'GET'
