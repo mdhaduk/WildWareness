@@ -32,6 +32,48 @@
             width: 100%;
             z-index: 1000;
         }
+        .image-compare {
+            position: relative;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .image-compare img {
+            width: 100%;
+            display: block;
+        }
+        
+        .image-compare .before-after-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            width: 4px;
+            background: #fff;
+            cursor: ew-resize;
+        }
+        
+        .slider-handle::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid maroon;
+        }
     </style>
 
     <!-- Navigation Bar -->
@@ -77,6 +119,87 @@
 
                         <div class="col-auto mb-4">
                             <img src="https://ichef.bbci.co.uk/news/1024/branded_news/76c1/live/910a6360-cf5d-11ef-87df-d575b9a434a4.jpg" style="height: 300px; width: 500px;" class="img-fluid mb-4" alt="Hughes Fire">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h2>Active Fire Locations</h2>
+                    <div class="row g-4">
+                        <!-- Palisades Fire Map -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="ratio ratio-4x3">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13196.477945574456!2d-118.53730037007444!3d34.05360151772837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2a2e02c4a3c89%3A0x7c0446ca5e0a7c3f!2sPacific%20Palisades%2C%20Los%20Angeles%2C%20CA!5e1!3m2!1sen!2sus!4v1709761234567!5m2!1sen!2sus"
+                                        width="640" 
+                                        height="480"
+                                        style="border:0;" 
+                                        allowfullscreen="">
+                                    </iframe>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Palisades Fire</h5>
+                                    <p class="card-text">Between Santa Monica and Malibu<br>23,713 acres burned</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Eaton Fire Map -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="ratio ratio-4x3">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13184.897659876543!2d-118.13500037007444!3d34.17700151772837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c22c130e5f3f%3A0x6b0a6af68b2326c9!2sEaton%20Canyon%20Natural%20Area!5e1!3m2!1sen!2sus!4v1709761234567!5m2!1sen!2sus"
+                                        width="640" 
+                                        height="480"
+                                        style="border:0;" 
+                                        allowfullscreen="">
+                                    </iframe>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Eaton Fire</h5>
+                                    <p class="card-text">North of Pasadena<br>14,117 acres burned</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hurst Fire Map -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="ratio ratio-4x3">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13190.477945574456!2d-118.2376!3d34.1247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c1fe7fe2b6f9%3A0x5c2c0e3c5c5c5c5c!2sLos%20Angeles%2C%20CA!5e1!3m2!1sen!2sus!4v1709761234567!5m2!1sen!2sus"
+                                        width="640" 
+                                        height="480"
+                                        style="border:0;" 
+                                        allowfullscreen="">
+                                    </iframe>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Hurst Fire</h5>
+                                    <p class="card-text">Northeast of LA<br>799 acres burned (97% contained)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto Fire Map -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="ratio ratio-4x3">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13190.477945574456!2d-119.1376!3d34.2847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e9ad155097394f%3A0x5c2c0e3c5c5c5c5c!2sVentura%2C%20CA!5e1!3m2!1sen!2sus!4v1709761234567!5m2!1sen!2sus"
+                                        width="640" 
+                                        height="480"
+                                        style="border:0;" 
+                                        allowfullscreen="">
+                                    </iframe>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Auto Fire</h5>
+                                    <p class="card-text">Ventura County<br>56 acres burned</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
