@@ -74,6 +74,25 @@
             transform: translate(-50%, -50%);
             border: 2px solid maroon;
         }
+
+        /* Card styling improvements */
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card img {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
     </style>
 
     <!-- Navigation Bar -->
@@ -220,6 +239,51 @@
 
                     <h2>Impact on Buildings</h2>
                     <p>Officials say more than 12,000 structures have been destroyed by the two biggest fires - about 5,000 each in the Palisades and Eaton blazes.</p>
+                </div>
+
+                <!-- Add Related Instances Section -->
+                <div class="container-fluid my-4">
+                    <h2>Related Incidents and Shelters</h2>
+                    <div class="row">
+                        <!-- Related Wildfire Incident -->
+                        <div class="col-md-6 mb-4">
+                            <a href="wildfire_incident2.html" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="https://64.media.tumblr.com/d57fb9480f832b63d476886567f4cf47/d847b58f2d13da92-da/s1280x1920/9fb25c4984d81975d86b99cf658e02bdfe9f2874.jpg" alt="Eaton Fire">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Eaton Fire</h5>
+                                        <p class="card-text">
+                                            <strong>County:</strong> Los Angeles<br>
+                                            <strong>Location:</strong> Near Altadena Drive<br>
+                                            <strong>Date/Time:</strong> January 7, 2025, 6:18 PM UTC<br>
+                                            <strong>Acres Burned:</strong> 14,021.0<br>
+                                            <strong>Mentioned in Article:</strong> Major focus of analysis
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Closest Emergency Shelter -->
+                        <div class="col-md-6 mb-4">
+                            <a href="shelter2.html" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="https://seb.org/wp-content/uploads/2023/01/Main-Hall-Exterior-e1681149533890-400x284.jpg" alt="Sebastopol Community Center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Sebastopol Community Center</h5>
+                                        <p class="card-text">
+                                            <strong>Location:</strong> 390 Morris Street<br>
+                                            <strong>Distance from Eaton Fire:</strong> 2.5 miles<br>
+                                            <strong>Capacity:</strong> 300<br>
+                                            <strong>Status:</strong> Open<br>
+                                            <strong>Type:</strong> Emergency Shelter<br>
+                                            <strong>Contact:</strong> (530) 533-7464
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-4">

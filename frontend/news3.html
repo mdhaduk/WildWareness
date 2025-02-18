@@ -32,6 +32,24 @@
             width: 100%;
             z-index: 1000;
         }
+        /* Card styling improvements */
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card img {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
     </style>
 
     <!-- Navigation Bar -->
@@ -109,6 +127,70 @@
 
                     <h2>Evacuations</h2>
                     <p>Some 153,000 residents are under mandatory evacuation orders and another 166,000 have been warned they may have to flee, too. The conflagration has spread into the Mandeville Canyon neighbourhood, sparking evacuation orders for swathes of Brentwood.</p>
+                </div>
+
+                <!-- Add Related Instances Section -->
+                <div class="container-fluid my-4">
+                    <h2>Related Incidents and Shelters</h2>
+                    <div class="row">
+                        <!-- Related Wildfire Incident -->
+                        <div class="col-md-6 mb-4">
+                            <a href="wildfire_incident1.html" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="https://media.nbclosangeles.com/2025/01/05_swir-image-of-burning-fires-in-altadena_08jan2025_1041am_wv3.jpg" alt="Palisades Fire">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Palisades Fire</h5>
+                                        <p class="card-text">
+                                            <strong>County:</strong> Los Angeles<br>
+                                            <strong>Location:</strong> Southeast of Palisades Drive<br>
+                                            <strong>Date/Time:</strong> January 7, 2025, 10:30 AM UTC<br>
+                                            <strong>Acres Burned:</strong> 23,706.6<br>
+                                            <strong>Mentioned in Article:</strong> 5 casualties reported
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Closest Emergency Shelter -->
+                        <div class="col-md-6 mb-4">
+                            <a href="shelter1.html" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Sonoma Veterans Building">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Sonoma Veterans Building</h5>
+                                        <p class="card-text">
+                                            <strong>Location:</strong> 126 1st Street<br>
+                                            <strong>Distance from Palisades Fire:</strong> 3.2 miles<br>
+                                            <strong>Capacity:</strong> 400<br>
+                                            <strong>Status:</strong> Open<br>
+                                            <strong>Type:</strong> Emergency Shelter<br>
+                                            <strong>Contact:</strong> (707) 938-4105
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Second Fire -->
+                        <div class="col-md-6 mb-4">
+                            <a href="wildfire_incident2.html" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="https://64.media.tumblr.com/d57fb9480f832b63d476886567f4cf47/d847b58f2d13da92-da/s1280x1920/9fb25c4984d81975d86b99cf658e02bdfe9f2874.jpg" alt="Eaton Fire">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Eaton Fire</h5>
+                                        <p class="card-text">
+                                            <strong>County:</strong> Los Angeles<br>
+                                            <strong>Location:</strong> Near Altadena Drive<br>
+                                            <strong>Date/Time:</strong> January 7, 2025, 6:18 PM UTC<br>
+                                            <strong>Acres Burned:</strong> 14,021.0<br>
+                                            <strong>Mentioned in Article:</strong> 11 casualties reported
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-4">
