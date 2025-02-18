@@ -13,10 +13,27 @@
 
 <body>
     <style>
-    .navbar {
-        position: relative;
-    }
-</style>
+        .navbar {
+            position: relative;
+        }
+        .card {
+            width: 400px;
+            height: 550px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .card-img {
+            width: 100%;
+            height: 250px;
+            padding: 20px; 
+        }
+    </style>
 
     <!-- Navigation bar section -->
     <!-- Navbar -->
@@ -87,21 +104,47 @@
         <li class="list-group-item"><strong>Acres Burned:</strong> 42</li>
     </div>
 
-    <div class="container-fluid my-4">
-        <h5><strong>Emergency Shelters Nearby:</strong></h5>
-        <li>
-            <a href="shelter2.html">Sebastopol Community Center</a>
-        </li>
-    </div>
-
-    <div class="container-fluid my-4">
-        <h5><strong>Community Reports:</strong></h5>
-        <li>
-            <a href="news3.html">Shelters at Capacity as Wildfire Spreads</a>
-        </li>
-
-        <div class="mt-4">
-            <a href="wildfire_incidents.html" class="btn btn-secondary">← Back to Incidents</a>
+    <div style="display: flex; justify-content: center; flex-direction: column;">
+        <div style="display: flex; justify-content: center;">
+            <div class="row">
+                <div class="col-auto">
+                    <p class="text-center"><strong>Emergency Shelters Nearby:</strong></p>
+                    <div class="card-container">
+                            <!-- Closest to palisades -->
+                            <a href = "shelter1.html" class="card">
+                                <div class="card-body">
+                                    <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Card image" class="card-img">
+                                    <p><b>Name: </b>Sonoma Veterans Building</p>
+                                    <p><b>Address: </b>126 1st Street</p>
+                                    <p><b>City: </b>West Sonoma</p>
+                                    <p><b>Contact: </b>707-938-4105</p>
+                                    <p><b>Status: </b> <span class="green-text">Open</span></p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto mb-4">
+                    <p class="text-center"><strong>Community Reports:</strong></p>
+                    <div class="card-container">
+                            <!-- Closest to Eaton Fire -->
+                            <a href = "news3.html" class="card">
+                                <div class="card-body">
+                                    <img src="images/fire8.webp" alt="Card image" class="card-img">
+                                    <p><b>Title: </b>Firefighters battle huge blaze near Los Angeles as winds pick up</p>
+                                    <p><b>Source: </b>BBC News</p>
+                                    <p><b>Date: </b>January 23, 2025</p>
+                                    <p><b>Category: </b>Breaking News</p>
+                                    <p><b>Region: </b>Los Angeles County</p>
+                                    <p><b>Reporter: </b>Christal Hayes</p>
+                                </div>
+                            </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 mb-4">
+                <a href="wildfire_incidents.html" class="btn btn-secondary">← Back to Incidents</a>
+            </div>
         </div>
     </div>
 
