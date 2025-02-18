@@ -83,6 +83,31 @@
                 transform: translateX(0);
             }
         }
+
+        .card-container {
+            display: flex; /* Allows cards to adapt to window resizing */
+            flex-wrap: wrap;  /* Allows cards to wrap to a new line */
+            justify-content: center; /* Centers the cards in the container*/
+            gap: 10px;  /* Space between cards */
+            padding: 10px;
+        }
+        .card {
+            width: 400px;
+            height: 500px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .card-img {
+            width: 100%;
+            height: auto;
+            padding: 20px; 
+        }
         
     </style>
 
@@ -134,6 +159,7 @@
                     <p><b>City: </b>West Sonoma</p>
                     <p><b>Contact: </b>707-938-4105</p>
                     <p><b>Status: </b> <span class="green-text">Open</span></p>
+                    <p><b>County: </b>Sonoma</p>
                 </div>
             </div>
         </div>
@@ -151,11 +177,83 @@
                         late hours. Discounts are available for non-peak days, multi-day rentals, 
                         and non-profit organizations. To reserve, contact the building via phone or 
                         email during business hours. </p>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3131.1838054431005!2d-122.45987038899737!3d38.29840898170802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085ac053badca27%3A0xda185cde3d5de4cc!2sSonoma%20Veterans%20Memorial%20Hall!5e0!3m2!1sen!2sus!4v1739851895715!5m2!1sen!2sus" 
-                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <a href="https://www.sonomacounty.ca.gov/" target="_blank">Read More About the Sonoma Veterans Building Here</a>
                 </div>
             </div>
         </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <p><b>Floorplan: </b></p>
+                    <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Galleries/Vets_Buildings/Sonoma%20Floorplan-Small.jpg" alt="Building Floorplan" width="600" height="400">
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3131.1838054431005!2d-122.45987038899737!3d38.29840898170802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085ac053badca27%3A0xda185cde3d5de4cc!2sSonoma%20Veterans%20Memorial%20Hall!5e0!3m2!1sen!2sus!4v1739851895715!5m2!1sen!2sus" 
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid my-4">
+            <h5><strong>Emergency Shelters Nearby:</strong></h5>
+        </div>
+ 
+        <div class="card-container">
+            <div>
+                <a href = "wildfire_incident1.html" class="card">
+                    <div class="card-body">
+                        <img src="https://media.licdn.com/dms/image/C561BAQG7SgJwFiIEJQ/company-background_10000/0/1651507429160/trinity_center_cover?e=2147483647&v=beta&t=lHinOCevpzydudsYYqD2PqsZG1U66lkzG_-5oqaQdx4" alt="Card image" class="card-img">
+                        <p><strong>Name: </strong>Palisades Fire</li></p>
+                        <p><strong>County: </strong>Los Angeles</li></p>
+                        <p><strong>Location: </strong>Southeast of Palisades Drive, Pacific Palisades</li></p>
+                        <p><strong>Date/Time: </strong>January 7, 2025, 10:30 AM UTC</li></p>
+                        <p><strong>Acres Burned: </strong>23706.6</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>        
+        
+        <div class="container-fluid my-4">
+            <h5><strong>Community Reports Nearby:</strong></h5>
+        </div>
+
+        <div class="card-container">
+            <div>
+                <a href = "news1.html" class="card">
+                    <div class="card-body">
+                        <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Card image" class="card-img">
+                        <p><b>Name: </b></p>
+                        <p><b>Source: </b></p>
+                        <p><b>Date: </b></p>
+                        <p><b>Category: </b></p>
+                        <p><b>Region: </b> </p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+
+                    <h5><strong>Other Relevant Sources:</strong></h5>
+                    <ul>
+                        <li><a href="https://sonomacounty.ca.gov/" target="_blank">County of Sonoma</a></li>
+                        <li><a href="https://www.yelp.com/biz/sonoma-veterans-memorial-hall-sonoma" target="_blank">Sonoma Veterans Building Yelp Page</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
 
 
 
