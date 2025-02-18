@@ -31,6 +31,116 @@
             width: 100%;
             z-index: 1000;
         }
+
+        .carousel-container {
+            position: relative;
+    width: 90%; /* Make it relative to the viewport width */
+    max-width: 800px; /* Max width for larger screens */
+    height: 60vh; /* Height relative to the viewport height */
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+        }
+
+        /* Styles for the images */
+        .carousel-images {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            animation: slide 9s infinite; /* Auto-scrolling effect */
+        }
+
+        .carousel-images img {
+            width: 33.3333%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Hide the radio buttons */
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Navigation dots styling */
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 15px;
+            height: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Highlight the active dot */
+        .dot.active {
+            background-color: #333;
+        }
+
+        /* Hide radio buttons for manual navigation */
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Show different slides based on the checked radio button */
+        input#slide1:checked ~ .carousel-images {
+            transform: translateX(0);
+        }
+
+        input#slide2:checked ~ .carousel-images {
+            transform: translateX(-33.3333%);
+        }
+
+        input#slide3:checked ~ .carousel-images {
+            transform: translateX(-66.6666%);
+        }
+
+        /* Highlight the active dot */
+        input#slide1:checked ~ .carousel-dots label[for="slide1"] {
+            background-color: #333;
+        }
+
+        input#slide2:checked ~ .carousel-dots label[for="slide2"] {
+            background-color: #333;
+        }
+
+        input#slide3:checked ~ .carousel-dots label[for="slide3"] {
+            background-color: #333;
+        }
+        /* CSS keyframes for auto-slide */
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            33.33% {
+                transform: translateX(-33.3333%);
+            }
+            66.66% {
+                transform: translateX(-66.6666%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Make sure the labels for dots are clickable */
+        .carousel-dots label {
+            display: block;
+            width: 15px;
+            height: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+        }
     </style>
     
     <nav class="navbar navbar-expand-lg">
@@ -51,6 +161,32 @@
         </div>
     </nav>
 
+    <div class="container-fluid my-3">
+        <div class="h3"><strong>Sonoma Veterans Building</strong></div>
+        <div class="p">West Sonoma, Sonoma County</div>
+    </div>
+
+    <div class="carousel-container">
+    
+        <!-- The images of the carousel -->
+        <div class="carousel-images">
+            <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Image 1">
+            <img src="https://seb.org/wp-content/uploads/2023/01/Main-Hall-Exterior-e1681149533890-400x284.jpg" alt="Image 2">
+            <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Image 3">
+        </div>
+    
+        <!-- Navigation dots -->
+        <div class="carousel-dots">
+            <label for="slide1" class="dot"></label>
+            <label for="slide2" class="dot"></label>
+            <label for="slide3" class="dot"></label>
+        </div>
+
+        <!-- Radio buttons (hidden) -->
+        <input type="radio" id="slide1" name="carousel" checked>
+        <input type="radio" id="slide2" name="carousel">
+        <input type="radio" id="slide3" name="carousel">
+    </div>
 
 
 </body>
