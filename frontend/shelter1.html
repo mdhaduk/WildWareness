@@ -96,7 +96,7 @@
         }
         .card {
             width: 400px;
-            height: 500px;
+            height: 600px;
             margin: 10px;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -213,44 +213,47 @@
             </div>
         </div>
 
-        <div class="container-fluid my-4">
-            <h5><strong>Wildfire Incidents Nearby:</strong></h5>
-        </div>
- 
-        <div class="card-container">
-            <div>
-                <a href = "wildfire_incident1.html" class="card">
-                    <div class="card-body">
-                        <img src="https://media.licdn.com/dms/image/C561BAQG7SgJwFiIEJQ/company-background_10000/0/1651507429160/trinity_center_cover?e=2147483647&v=beta&t=lHinOCevpzydudsYYqD2PqsZG1U66lkzG_-5oqaQdx4" alt="Card image" class="card-img">
-                        <p><strong>Name: </strong>Palisades Fire</li></p>
-                        <p><strong>County: </strong>Los Angeles</li></p>
-                        <p><strong>Location: </strong>Southeast of Palisades Drive, Pacific Palisades</li></p>
-                        <p><strong>Date/Time: </strong>January 7, 2025, 10:30 AM UTC</li></p>
-                        <p><strong>Acres Burned: </strong>23706.6</p>
+        <div style="display: flex; justify-content: center; flex-direction: column;">
+            <div style="display: flex; justify-content: center;">
+                <div class="row">
+                    <div class="col-auto">
+                        <p class="text-center"><strong>Wildfire Incidents Nearby:</strong></p>
+                        <div class="card-container">
+                                <!-- Closest to palisades -->
+                                <a href = "shelter1.html" class="card">
+                                    <div class="card-body">
+                                        <img src="https://media.licdn.com/dms/image/C561BAQG7SgJwFiIEJQ/company-background_10000/0/1651507429160/trinity_center_cover?e=2147483647&v=beta&t=lHinOCevpzydudsYYqD2PqsZG1U66lkzG_-5oqaQdx4" alt="Card image" class="card-img">
+                                        <p><strong>Name: </strong>Palisades Fire</li></p>
+                                        <p><strong>County: </strong>Los Angeles</li></p>
+                                        <p><strong>Location: </strong>Southeast of Palisades Drive, Pacific Palisades</li></p>
+                                        <p><strong>Date/Time: </strong>January 7, 2025, 10:30 AM UTC</li></p>
+                                        <p><strong>Acres Burned: </strong>23706.6</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </a>
-            </div>
-
-        </div>        
-        
-        <div class="container-fluid my-4">
-            <h5><strong>Community Reports Nearby:</strong></h5>
-        </div>
-
-        <div class="card-container">
-            <div>
-                <a href="news1.html" class="card">
-                    <div class="card-body">
-                        <img src="images/fire8.webp" alt="Card image" class="card-img">
-                        <p><b>Title: </b>Firefighters battle huge blaze near Los Angeles as winds pick up</p>
-                        <p><b>Source: </b>BBC News</p>
-                        <p><b>Date: </b>January 23, 2025</p>
-                        <p><b>Category: </b>Breaking News</p>
-                        <p><b>Region: </b>Los Angeles County</p>
+                    <div class="col-auto mb-4">
+                        <p class="text-center"><strong>Community Reports:</strong></p>
+                        <div class="card-container">
+                                <!-- Closest to Eaton Fire -->
+                                <a href="news1.html" class="card">
+                                    <div class="card-body">
+                                        <img src="images/fire8.webp" alt="Card image" class="card-img">
+                                        <p><b>Title: </b>Firefighters battle huge blaze near Los Angeles as winds pick up</p>
+                                        <p><b>Source: </b>BBC News</p>
+                                        <p><b>Date: </b>January 23, 2025</p>
+                                        <p><b>Category: </b>Breaking News</p>
+                                        <p><b>Region: </b>Los Angeles County</p>
+                                    </div>
+                                </a>
+                        </div>
                     </div>
-                </a>
+                </div>
             </div>
-
+            <div class="text-center mt-4 mb-4">
+                <a href="shelters.html" class="btn btn-secondary">← Back to Emergency Shelters</a>
+            </div>
         </div>
 
         <div class="container mt-5">
@@ -266,8 +269,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
 

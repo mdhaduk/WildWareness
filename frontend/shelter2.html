@@ -96,7 +96,7 @@
         }
         .card {
             width: 400px;
-            height: 500px;
+            height: 600px;
             margin: 10px;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -252,45 +252,49 @@
             </div>
         </div>
 
-        <div class="container-fluid my-4">
-            <h5><strong>Wildfire Incidents Nearby:</strong></h5>
-        </div>
- 
-        <div class="card-container">
-            <div>
-                <a href = "wildfire_incident3.html" class="card">
-                    <div class="card-body">
-                        <img src="https://www.hacanet.org/wp-content/uploads/2017/02/LakesideApt-27-1024x683.jpg" alt="Card image" class="card-img">
-                        <p><b>Name: </b>Oak Fire</p>
-                        <p><b>County: </b>Santa Barbara</p>
-                        <p><b>Location: </b>Sisquoc</p>
-                        <p><b>Date/Time: </b>January 1, 2025, 8:08 PM UTC</p>
-                        <p><b>Acres Burned: </b>42.0</p>
+        <div style="display: flex; justify-content: center; flex-direction: column;">
+            <div style="display: flex; justify-content: center;">
+                <div class="row">
+                    <div class="col-auto">
+                        <p class="text-center"><strong>Wildfire Incidents Nearby:</strong></p>
+                        <div class="card-container">
+                                <!-- Closest to palisades -->
+                                <a href = "shelter1.html" class="card">
+                                    <div class="card-body">
+                                        <img src="https://www.hacanet.org/wp-content/uploads/2017/02/LakesideApt-27-1024x683.jpg" alt="Card image" class="card-img">
+                                        <p><b>Name: </b>Oak Fire</p>
+                                        <p><b>County: </b>Santa Barbara</p>
+                                        <p><b>Location: </b>Sisquoc</p>
+                                        <p><b>Date/Time: </b>January 1, 2025, 8:08 PM UTC</p>
+                                        <p><b>Acres Burned: </b>42.0</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </a>
-            </div>
-
-        </div>        
-        
-        <div class="container-fluid my-4">
-            <h5><strong>Community Reports Nearby:</strong></h5>
-        </div>
-
-        <div class="card-container">
-            <div>
-                <a href="news2.html" class="card">
-                    <div class="card-body">
-                        <img src="images/fire7.webp" alt="Card image" class="card-img">
-                        <p><b>Title: </b>Maps and images reveal scale of LA wildfire devastation</p>
-                        <p><b>Source: </b>BBC News</p>
-                        <p><b>Date: </b>January 14, 2025</p>
-                        <p><b>Category: </b>Analysis</p>
-                        <p><b>Region: </b>Los Angeles County</p>
+                    <div class="col-auto mb-4">
+                        <p class="text-center"><strong>Community Reports:</strong></p>
+                        <div class="card-container">
+                                <!-- Closest to Eaton Fire -->
+                                <a href="news1.html" class="card">
+                                    <div class="card-body">
+                                        <img src="images/fire7.webp" alt="Card image" class="card-img">
+                                        <p><b>Title: </b>Maps and images reveal scale of LA wildfire devastation</p>
+                                        <p><b>Source: </b>BBC News</p>
+                                        <p><b>Date: </b>January 14, 2025</p>
+                                        <p><b>Category: </b>Analysis</p>
+                                        <p><b>Region: </b>Los Angeles County</p>
+                                    </div>
+                                </a>
+                        </div>
                     </div>
-                </a>
+                </div>
             </div>
-
+            <div class="text-center mt-4 mb-4">
+                <a href="shelters.html" class="btn btn-secondary">← Back to Emergency Shelters</a>
+            </div>
         </div>
+    
 
         <div class="container mt-5">
             <div class="row">
