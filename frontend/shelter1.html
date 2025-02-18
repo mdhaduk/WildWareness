@@ -14,7 +14,8 @@
         h1 {
             font-weight: 600;
             font-size: 2.5rem;
-            color: maroon;
+            color: black;
+            justify-content: center;
         }
         h2 {
             font-weight: 30;
@@ -25,23 +26,31 @@
             font-size: 18px;
             color: #444;
         }
+        .green-text {
+            color: rgb(59, 189, 59);
+        }
+        .red-text {
+            color: red;
+        }
         .navbar {
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             z-index: 1000;
         }
-
+        .container-fluid my-3 {
+            justify-content: center;
+            text-align: center;
+        }
         .carousel-container {
             position: relative;
-    width: 90%; /* Make it relative to the viewport width */
-    max-width: 800px; /* Max width for larger screens */
-    height: 60vh; /* Height relative to the viewport height */
-    overflow: hidden;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
+            width: 100%; /* Adjust the width to be responsive */
+            max-width: 800px; /* Max width for large screens */
+            height: 400px; /* Fixed height for the carousel */
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            margin: auto;
         }
 
         /* Styles for the images */
@@ -49,7 +58,7 @@
             display: flex;
             width: 300%;
             height: 100%;
-            animation: slide 9s infinite; /* Auto-scrolling effect */
+            animation: slide 15s infinite; /* Auto-scrolling effect */
         }
 
         .carousel-images img {
@@ -58,64 +67,7 @@
             object-fit: cover;
         }
 
-        /* Hide the radio buttons */
-        input[type="radio"] {
-            display: none;
-        }
 
-        /* Navigation dots styling */
-        .carousel-dots {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-        }
-
-        .dot {
-            width: 15px;
-            height: 15px;
-            background-color: #bbb;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Highlight the active dot */
-        .dot.active {
-            background-color: #333;
-        }
-
-        /* Hide radio buttons for manual navigation */
-        input[type="radio"] {
-            display: none;
-        }
-
-        /* Show different slides based on the checked radio button */
-        input#slide1:checked ~ .carousel-images {
-            transform: translateX(0);
-        }
-
-        input#slide2:checked ~ .carousel-images {
-            transform: translateX(-33.3333%);
-        }
-
-        input#slide3:checked ~ .carousel-images {
-            transform: translateX(-66.6666%);
-        }
-
-        /* Highlight the active dot */
-        input#slide1:checked ~ .carousel-dots label[for="slide1"] {
-            background-color: #333;
-        }
-
-        input#slide2:checked ~ .carousel-dots label[for="slide2"] {
-            background-color: #333;
-        }
-
-        input#slide3:checked ~ .carousel-dots label[for="slide3"] {
-            background-color: #333;
-        }
         /* CSS keyframes for auto-slide */
         @keyframes slide {
             0% {
@@ -131,18 +83,9 @@
                 transform: translateX(0);
             }
         }
-
-        /* Make sure the labels for dots are clickable */
-        .carousel-dots label {
-            display: block;
-            width: 15px;
-            height: 15px;
-            background-color: #bbb;
-            border-radius: 50%;
-            cursor: pointer;
-        }
+        
     </style>
-    
+
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">WildWareness</a>
@@ -161,32 +104,56 @@
         </div>
     </nav>
 
-    <div class="container-fluid my-3">
-        <div class="h3"><strong>Sonoma Veterans Building</strong></div>
-        <div class="p">West Sonoma, Sonoma County</div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center"><strong>Sonoma Veterans Building</strong></h1>
+                <p class="text-center">West Sonoma, Sonoma County</p> 
+            </div>
+        </div>
     </div>
 
+
     <div class="carousel-container">
-    
         <!-- The images of the carousel -->
         <div class="carousel-images">
             <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Image 1">
-            <img src="https://seb.org/wp-content/uploads/2023/01/Main-Hall-Exterior-e1681149533890-400x284.jpg" alt="Image 2">
-            <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Image 3">
-        </div>
-    
-        <!-- Navigation dots -->
-        <div class="carousel-dots">
-            <label for="slide1" class="dot"></label>
-            <label for="slide2" class="dot"></label>
-            <label for="slide3" class="dot"></label>
+            <img src="https://sonomacounty-veteransbuildings.com/wp-content/uploads/2023/02/sonoma-veterans-memorial-building-10x6-red.jpg" alt="Image 2">
+            <img src="https://s3-media0.fl.yelpcdn.com/bphoto/m0IJChB3cZVfdhBpSSgxsA/348s.jpg" alt="Image 2">
         </div>
 
-        <!-- Radio buttons (hidden) -->
-        <input type="radio" id="slide1" name="carousel" checked>
-        <input type="radio" id="slide2" name="carousel">
-        <input type="radio" id="slide3" name="carousel">
     </div>
+
+        <!-- Border Line -->
+        <hr>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <p><b>Name: </b>Sonoma Veterans Building</p>
+                    <p><b>Address: </b>126 1st Street</p>
+                    <p><b>City: </b>West Sonoma</p>
+                    <p><b>Contact: </b>707-938-4105</p>
+                    <p><b>Status: </b> <span class="green-text">Open</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <p>The Sonoma Veterans Memorial Building, located near Sonoma's 
+                        historic downtown, is available for event rentals. It offers 
+                        various amenities, including corporate meeting services, 
+                        outdoor spaces, and areas for ceremonies and receptions. The 
+                        facility includes an auditorium with a capacity of 700 
+                        (500 seated), a dining room for up to 309 people, and a dance area. 
+                        Rental rates range from $55 to $75 per hour, with additional charges for 
+                        late hours. Discounts are available for non-peak days, multi-day rentals, 
+                        and non-profit organizations. To reserve, contact the building via phone or 
+                        email during business hours. </p>
+                </div>
+            </div>
+        </div>
 
 
 </body>
