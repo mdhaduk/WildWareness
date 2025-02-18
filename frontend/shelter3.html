@@ -14,7 +14,8 @@
         h1 {
             font-weight: 600;
             font-size: 2.5rem;
-            color: maroon;
+            color: black;
+            justify-content: center;
         }
         h2 {
             font-weight: 30;
@@ -25,14 +26,94 @@
             font-size: 18px;
             color: #444;
         }
+        .green-text {
+            color: rgb(59, 189, 59);
+        }
+        .red-text {
+            color: red;
+        }
+        .more-padding {
+            padding: 40px;
+        }
         .navbar {
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             z-index: 1000;
         }
+        .container-fluid my-3 {
+            justify-content: center;
+            text-align: center;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%; /* Adjust the width to be responsive */
+            max-width: 800px; /* Max width for large screens */
+            height: 400px; /* Fixed height for the carousel */
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            margin: auto;
+        }
+
+        /* Styles for the images */
+        .carousel-images {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            animation: slide 15s infinite; /* Auto-scrolling effect */
+        }
+
+        .carousel-images img {
+            width: 33.3333%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        /* CSS keyframes for auto-slide */
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            33.33% {
+                transform: translateX(-33.3333%);
+            }
+            66.66% {
+                transform: translateX(-66.6666%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .card-container {
+            display: flex; /* Allows cards to adapt to window resizing */
+            flex-wrap: wrap;  /* Allows cards to wrap to a new line */
+            justify-content: center; /* Centers the cards in the container*/
+            gap: 10px;  /* Space between cards */
+            padding: 10px;
+        }
+        .card {
+            width: 400px;
+            height: 500px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .card-img {
+            width: 100%;
+            height: auto;
+            padding: 20px; 
+        }
+        
     </style>
-    
+
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">WildWareness</a>
@@ -50,6 +131,188 @@
             </div>
         </div>
     </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center"><strong>Contra Costa Community College</strong></h1>
+                <p class="text-center">San Pablo, Contra Costa County</p> 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="carousel-container">
+        <!-- The images of the carousel -->
+        <div class="carousel-images">
+            <img src="https://www.4cd.edu/_files/images/home/ccc.png" alt="Image 1">
+            <img src="https://www.contracosta.edu/wp-content/uploads/2017/03/Chemistry.jpg" alt="Image 2">
+            <img src="https://www.contracosta.edu/wp-content/uploads/2017/02/drama-performance-768x239.jpg" alt="Image 2">
+        </div>
+
+    </div>
+
+        <!-- Border Line -->
+        <hr>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <p><b>Name: </b>Contra Costa Community College</p>
+                    <p><b>Address: </b>2600 Mission Bell Drive</p>
+                    <p><b>City: </b>San Pablo</p>
+                    <p><b>Contact: </b>510-235-7800</p>
+                    <p><b>Contact Email: </b>welcome@contracosta.edu</p>
+                    <p><b>Status: </b> <span class="green-text">Open</span></p>
+                    <p><b>County: </b>Contra Costa</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <p>Contra Costa College (CCC) is a vibrant public community 
+                        college located in West Contra Costa County, California. 
+                        It serves a diverse and growing student population, offering 
+                        a wide range of educational opportunities that cater to the 
+                        needs of its local and regional community. The college is 
+                        dedicated to providing an accessible, affordable, and 
+                        high-quality education with a focus on inclusivity, 
+                        academic excellence, and student success.</p>
+                    <p>The college offers a variety of programs, 
+                        including associate degrees, certificates, and 
+                        vocational training, with pathways to transfer to 
+                        four-year universities. These programs are designed 
+                        to equip students with the skills and knowledge needed 
+                        to succeed in the workforce, continue their academic 
+                        pursuits, and contribute meaningfully to society. 
+                        Additionally, Contra Costa College supports lifelong 
+                        learning through its community outreach initiatives 
+                        and continuing education programs, aiming to serve 
+                        students at all stages of their academic and professional 
+                        journeys.</p>
+                    <p>Situated on 83 acres of scenic land, CCC features modern 
+                        facilities, including state-of-the-art classrooms, 
+                        laboratories, and recreational areas. The college has 
+                        a rich history, built on a legacy of innovation and 
+                        community engagement, and continues to develop new 
+                        programs and partnerships to meet the evolving needs 
+                        of its students. The college is committed to fostering 
+                        a culture of growth and personal development, ensuring 
+                        that students are equipped to face both local and global 
+                        challenges.
+                    </p>
+                    <p>With an emphasis on equity, CCC works to create an inclusive 
+                        environment that supports students from all backgrounds, 
+                        particularly those who are traditionally underserved in higher
+                        education. The college's faculty and staff are dedicated to 
+                        providing individualized support, mentorship, and resources 
+                        to help students succeed academically and professionally. 
+                        By focusing on equity and access, Contra Costa College 
+                        strives to empower students and improve the socio-economic 
+                        mobility of its community.</p>
+                    <p>At its core, Contra Costa College’s mission is to provide 
+                        effective learning experiences that foster academic success, 
+                        personal growth, and community engagement. The college plays 
+                        a pivotal role in the social and economic development of the 
+                        surrounding areas, preparing students for success in their 
+                        careers, further education, and beyond. Through its commitment 
+                        to inclusivity, innovation, and excellence, CCC continues to 
+                        be a beacon of opportunity for students seeking to make a 
+                        positive impact in their communities.</p>
+                    <a href="https://www.contracosta.edu/" target="_blank">Read More About the Contra Costa Community College Here</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 more-padding">
+            <div class="row">
+                <div class="col-12">
+                    <h5><b>College News Page</b></h5>
+                    <!-- Embedding an external website within an iframe -->
+                    <iframe src="https://www.contracosta.edu/news/" width="800" height="600" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container mt-5 more-padding">
+            <div class="row">
+                <div class="col-12">
+                    <h5><b>Make a Donation Here</b></h5>
+                    <!-- Embedding an external website within an iframe -->
+                    <iframe src="https://connect.clickandpledge.com/w/Form/b53b31dd-5ffc-4099-ba4c-0476c4568efd" width="800" height="600" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 more-padding">
+            <div class="row">
+                <div class="col-12">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1612512.7772625303!2d-123.74246405491536!3d37.873414575589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808577c20cc27329%3A0x70ffed6daf03671b!2sContra%20Costa%20College!5e0!3m2!1sen!2sus!4v1739884686944!5m2!1sen!2sus" 
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid my-4">
+            <h5><strong>Wildfire Incidents Nearby:</strong></h5>
+        </div>
+ 
+        <div class="card-container">
+            <div>
+                <a href = "wildfire_incident2.html" class="card">
+                    <div class="card-body">
+                        <img src="https://www.supportivehousing.org/gallery/150_holfyefd.png" alt="Card image" class="card-img">
+                        <p><b>Name: </b>Eaton Fire</p>
+                        <p><b>County: </b>Los Angeles</p>
+                        <p><b>Location: </b>Near Altadena Drive and Midwick Drive, Altadena/Pasadena</p>
+                        <p><b>Date/Time: </b>January 7, 2025, 6:18 PM UTC</p>
+                        <p><b>Acres Burned: </b>14021.0</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>        
+        
+        <div class="container-fluid my-4">
+            <h5><strong>Community Reports Nearby:</strong></h5>
+        </div>
+
+        <div class="card-container">
+            <div>
+                <a href = "news1.html" class="card">
+                    <div class="card-body">
+                        <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Card image" class="card-img">
+                        <p><b>Name: </b></p>
+                        <p><b>Source: </b></p>
+                        <p><b>Date: </b></p>
+                        <p><b>Category: </b></p>
+                        <p><b>Region: </b> </p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+
+                    <h5><strong>Other Relevant Sources:</strong></h5>
+                    <ul>
+                        <li><a href="https://www.4cd.edu/about/colleges.html" target="_blank">Contra Costa Community College District</a></li>
+                        <li><a href="https://www.usnews.com/education/community-colleges/contra-costa-college-CC02019" target="_blank">Contra Costa College U.S. News and World Report</a></li>
+                        <li><a href="https://www.yelp.com/biz/contra-costa-college-san-pablo" target="_blank">Contra Costa Community College Yelp Page</a></li>
+                        <li><a href="https://www.facebook.com/contracostacollege/" target="_blank">Contra Costa Community College Facebook Page</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+
+
 
 
 </body>
