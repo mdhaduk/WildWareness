@@ -31,3 +31,30 @@ p {
     height: 150px;
     object-fit: cover;
 }
+.card-container {
+    display: flex; /* Allows cards to adapt to window resizing */
+    flex-wrap: wrap;  /* Allows cards to wrap to a new line */
+    justify-content: center; /* Centers the cards in the container*/
+    gap: 10px;  /* Space between cards */
+    padding: 10px;
+}
+.card {
+    width: 400px;
+    height: 500px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+.card-img {
+    width: 100%;
+    height: auto;
+    padding: 20px; 
+}
+.green-text {
+    color: rgb(59, 189, 59);
+}

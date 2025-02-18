@@ -86,24 +86,49 @@
         <li class="list-group-item"><strong>Acres Burned:</strong> 23706.6</li>
     </div>
 
-    <div class="container-fluid my-4">
-        <h5><strong>Emergency Shelters Nearby:</strong></h5>
-        <li>
-            <a href="shelter1.html">Sonoma Veterans Building</a>
-        </li>
-    </div>
-
-    <div class="container-fluid my-4">
-        <h5><strong>Community Reports:</strong></h5>
-        <li>
-            <a href="news3.html">Shelters at Capacity as Wildfire Spreads</a>
-        </li>
-
-        <div class="mt-4">
+    <div style="display: flex; justify-content: center; flex-direction: column;">
+        <div style="display: flex; justify-content: center;">
+            <div class="row">
+                <div class="col-auto">
+                    <p class="text-center"><strong>Emergency Shelters Nearby:</strong></p>
+                    <div class="card-container">
+                            <!-- Closest to palisades -->
+                            <a href = "shelter1.html" class="card">
+                                <div class="card-body">
+                                    <img src="https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg" alt="Card image" class="card-img">
+                                    <p><b>Name: </b>Sonoma Veterans Building</p>
+                                    <p><b>Address: </b>126 1st Street</p>
+                                    <p><b>City: </b>West Sonoma</p>
+                                    <p><b>Contact: </b>707-938-4105</p>
+                                    <p><b>Status: </b> <span class="green-text">Open</span></p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto mb-4">
+                    <p class="text-center"><strong>Community Reports:</strong></p>
+                    <div class="card-container">
+                            <!-- Closest to Eaton Fire -->
+                            <a href = "shelter3.html" class="card">
+                                <div class="card-body">
+                                    <img src="ADD IMAGE" alt="Card image" class="card-img">
+                                    <p><b>Title: </b>Community Shelters at Capacity as Wildfire Spreads</p>
+                                    <p><b>Source: </b>Emergency Management Office</p>
+                                    <p><b>Date: </b>February 13, 2025e</p>
+                                    <p><b>Category: </b>Community Impact</p>
+                                    <p><b>Region: </b>Central California</p>
+                                    <p><b>Reporter: </b>Sarah Martinez</p>
+                                </div>
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 mb-4">
             <a href="wildfire_incidents.html" class="btn btn-secondary">← Back to Incidents</a>
         </div>
     </div>
-
 
 </body>
 
