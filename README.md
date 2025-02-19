@@ -4,6 +4,9 @@
 
 **Project Name:** WildWareness
 
+## **API Documentation**
+- [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
+
 ## Team Members:
 - Milan Dhaduk @mdhaduk
 - Audrey Tan @akt2468
