@@ -5,4 +5,5 @@ build:
   stage: build
   script:
     - 'test -f frontend/index.html'
+    - echo "Phase 1 CI"
 
