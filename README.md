@@ -10,6 +10,9 @@
 - Zakaria Sisalem @sisalemz
 - Pooja Vasanthan @PoojaVasanthan10
 
+Phase 1 leader: Milan Dhaduk
+Responsibilites: Coordinates meet times and designates tasks.
+
 ## **Proposed Project:**
 WildWareness is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates in the state of California.
 
