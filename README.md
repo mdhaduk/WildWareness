@@ -6,7 +6,7 @@
 
 ## Team Members:
 - Milan Dhaduk
-- Audrey Tan
+- Audrey Tan @akt2468
 - Zakaria Sisalem
 - Pooja Vasanthan
 
