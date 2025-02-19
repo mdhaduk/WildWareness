@@ -7,6 +7,7 @@
     <title>WildWareness</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -21,25 +22,6 @@
             font-weight: 30;
             font-size: 2.5rem;
             color: black;
-        }
-        p {
-            font-size: 18px;
-            color: #444;
-        }
-        .green-text {
-            color: rgb(59, 189, 59);
-        }
-        .red-text {
-            color: red;
-        }
-        .more-padding {
-            padding: 40px;
-        }
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            z-index: 1000;
         }
         .container-fluid my-3 {
             justify-content: center;
@@ -68,6 +50,9 @@
             width: 33.3333%;
             height: 100%;
             object-fit: cover;
+        }
+        .card:hover {
+            transform: translateY(-5px);
         }
 
 
@@ -116,7 +101,7 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">WildWareness</a>
+            <a class="navbar-brand fire-text" href="index.html" style="font-size: medium;">WildWareness</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -220,9 +205,9 @@
                         <p class="text-center"><strong>Wildfire Incidents Nearby:</strong></p>
                         <div class="card-container">
                                 <!-- Closest to palisades -->
-                                <a href = "shelter1.html" class="card">
+                                <a href = "wildfire_incident1.html" class="card">
                                     <div class="card-body">
-                                        <img src="https://media.licdn.com/dms/image/C561BAQG7SgJwFiIEJQ/company-background_10000/0/1651507429160/trinity_center_cover?e=2147483647&v=beta&t=lHinOCevpzydudsYYqD2PqsZG1U66lkzG_-5oqaQdx4" alt="Card image" class="card-img">
+                                        <img src="https://media.nbclosangeles.com/2025/01/05_swir-image-of-burning-fires-in-altadena_08jan2025_1041am_wv3.jpg?quality=85&strip=all&fit=8113%2C5613&w=775&h=436&crop=0" alt="Card image" class="card-img">
                                         <p><strong>Name: </strong>Palisades Fire</li></p>
                                         <p><strong>County: </strong>Los Angeles</li></p>
                                         <p><strong>Location: </strong>Southeast of Palisades Drive, Pacific Palisades</li></p>
@@ -239,7 +224,7 @@
                                 <!-- Closest to Eaton Fire -->
                                 <a href="news1.html" class="card">
                                     <div class="card-body">
-                                        <img src="images/fire8.webp" alt="Card image" class="card-img">
+                                        <img src="https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire8.webp" alt="Card image" class="card-img">
                                         <p><b>Title: </b>Firefighters battle huge blaze near Los Angeles as winds pick up</p>
                                         <p><b>Source: </b>BBC News</p>
                                         <p><b>Date: </b>January 23, 2025</p>
