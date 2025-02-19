@@ -10,6 +10,8 @@
 - Zakaria Sisalem @sisalemz
 - Pooja Vasanthan @PoojaVasanthan10
 
+********************************************************************************
+
 Phase 1 leader: Milan Dhaduk
 Responsibilites: Coordinates meet times and designates tasks.
 
