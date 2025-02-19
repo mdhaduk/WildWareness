@@ -62,7 +62,7 @@ Users can:
 
 
 **Estimated Instances:** ~1000  
-**Connections:** Linked to Wildfire Incidents and Community Reports
+**Connections:** Linked to Wildfire Incidents and Community Reports  
 **Media Types:**
 - Images of shelter locations
 - Interactive Maps of Shelter
@@ -78,7 +78,7 @@ Users can:
 - Reporter
 
 **Estimated Instances:** ~5000+  
-**Connections:** Linked to Wildfire Incidents and Community Reports
+**Connections:** Linked to Wildfire Incidents and Community Reports 
 **Media Types:**
 - Images of Fires, Emergency Response, etc
 - Interactive Maps
@@ -91,4 +91,4 @@ Users can:
 - Are there any community-reported updates on fire conditions in my area?
 
 ## Link to Website
-(https://wildwareness.net/)
+https://wildwareness.net/
