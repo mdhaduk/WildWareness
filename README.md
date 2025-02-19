@@ -12,6 +12,7 @@
 
 ****
 
+
 Phase 1 leader: Milan Dhaduk
 Responsibilites: Coordinates meet times and designates tasks.
 
