@@ -4,6 +4,9 @@
 
 **Project Name:** WildWareness
 
+## **Git SHA**
+- 
+
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
 
@@ -16,6 +19,19 @@
 
 Phase 1 leader: Milan Dhaduk
 Responsibilites: Coordinates meet times and designates tasks.
+
+**Estimated Time to Completion:**
+- Milan Dhaduk - 11 hours
+- Audrey Tan - 10 hours
+- Zakaria Sisalem - 10 hours
+- Pooja Vasanthan - 10 hours
+
+**Actual Time to Completion:**
+- Milan Dhaduk - 16 hours
+- Audrey Tan - 13 hours
+- Zakaria Sisalem - 12 hours
+- Pooja Vasanthan - 13 hours
+
 
 ## **Proposed Project:**
 WildWareness is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates in the state of California.
