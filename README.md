@@ -5,10 +5,10 @@
 **Project Name:** WildWareness
 
 ## Team Members:
-- Milan Dhaduk
+- Milan Dhaduk @mdhaduk
 - Audrey Tan @akt2468
-- Zakaria Sisalem
-- Pooja Vasanthan
+- Zakaria Sisalem @sisalemz
+- Pooja Vasanthan @PoojaVasanthan10
 
 ## **Proposed Project:**
 WildWareness is a web application designed to provide real-time wildfire information, emergency shelter locations, and community-reported fire updates in the state of California.
