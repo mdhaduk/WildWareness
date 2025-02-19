@@ -12,7 +12,6 @@
 
 
 Phase 1 leader: Milan Dhaduk
-
 Responsibilites: Coordinates meet times and designates tasks.
 
 ## **Proposed Project:**
@@ -32,6 +31,7 @@ Users can:
 - [NewsData.io API](https://newsdata.io/)- Community/local reports and headlinges fetched from NewsData.io
 - [Google Places API](https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1)- Google's API used for fetching information about a location on Google Maps.
 - [Google Maps Geocoding API](https://console.cloud.google.com/marketplace/product/google/geocoding-backend.googleapis.com?q=search&referrer=search&project=hardy-position-450923-v1) - a service that allows you to convert addresses into geographic coordinates (latitude & longitude) and vice versa (reverse geocoding).
+- [List of Emergency Shelters Website](https://www.californiawildfirelawyer.com/fire-damage-list-of-shelters/) - a website containing a list of emergency shelters by county and city in the form of text.
 
 
 ## Models:
@@ -39,49 +39,56 @@ Users can:
 ### 1. Wildfire Incidents
 **Attributes:**
 - Fire Name
+- County
 - Location
 - Date/time
-- Severity
-- Cause
+- Acres Burned
 
 **Estimated Instances:** ~3,500  
 **Connections:** Linked to Emergency Shelters and Community Reports  
 **Media Types:**
 - Satellite images of fires
 - Interactive maps
+- Embedded Videos
+- Text
 
 ### 2. Emergency Shelters
 **Attributes:**
 - Name
-- Location
-- Capacity
-- Status (Open/Closed)
+- Address
+- City
 - Contact Info
+- Status (Open/Closed)
+
 
 **Estimated Instances:** ~1000  
-**Connections:** Linked to Wildfire Incidents and Wildfire Incidents  
+**Connections:** Linked to Wildfire Incidents and Community Reports
 **Media Types:**
 - Images of shelter locations
-- Interactive shelter maps
-- Live availability updates
+- Interactive Maps of Shelter
+- Other Embedded Media (such as forms from shelter's website)
+- Text and Links
 
 ### 3. Community Reports
 **Attributes:**
-- Title
 - Source
 - Date/time
-- Link
-- Content Blurb
+- Category
+- Region
+- Reporter
 
 **Estimated Instances:** ~5000+  
-**Connections:** Linked to Wildfire Incidents  
+**Connections:** Linked to Wildfire Incidents and Community Reports
 **Media Types:**
-- User-uploaded images of fire conditions
-- Geo-tagged reports
-
+- Images of Fires, Emergency Response, etc
+- Interactive Maps
+- Embedded Videos
+- Text and Links
 
 ## Questions the Site Will Answer
 - Where are the current wildfires near me?
 - In California, what emergency shelters are open for wildfire evacuees?
 - Are there any community-reported updates on fire conditions in my area?
 
+## Link to Website
+(https://wildwareness.net/)
