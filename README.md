@@ -8,7 +8,7 @@
 https://wildwareness.net/
 
 ## **Git SHA**
-- 567a93295c886622d73f2477c6a3a4828f5b20a6
+- cb27b67659548f36ba60bd7c7b3962e94e7b83c6
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
