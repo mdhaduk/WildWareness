@@ -4,6 +4,9 @@
 
 **Project Name:** WildWareness
 
+## Link to Website
+https://wildwareness.net/
+
 ## **Git SHA**
 - 567a93295c886622d73f2477c6a3a4828f5b20a6
 
@@ -118,5 +121,6 @@ Users can:
 - In California, what emergency shelters are open for wildfire evacuees?
 - Are there any community-reported updates on fire conditions in my area?
 
-## Link to Website
-https://wildwareness.net/
+## Comments
+- It's important to note that we referenced last year's HomelessAid in developing 
+our HTML/CSS for Phase I 
