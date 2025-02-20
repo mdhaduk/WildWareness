@@ -18,7 +18,16 @@
 
 
 Phase 1 leader: Milan Dhaduk
-Responsibilites: Coordinates meet times and designates tasks.
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+Phase 2 leader: Pooja Vasanthan
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+Phase 3 leader: Audrey Tan
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+Phase 4 leader: Zakaria Sisalem
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
 
 **Estimated Time to Completion:**
 - Milan Dhaduk - 11 hours
