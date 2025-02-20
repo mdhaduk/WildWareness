@@ -5,7 +5,7 @@
 **Project Name:** WildWareness
 
 ## **Git SHA**
-- 
+- 567a93295c886622d73f2477c6a3a4828f5b20a6
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
