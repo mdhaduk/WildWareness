@@ -109,7 +109,7 @@ Users can:
 - Reporter
 
 **Estimated Instances:** ~5000+  
-**Connections:** Linked to Wildfire Incidents and Community Reports  
+**Connections:** Linked to Wildfire Incidents and Emergency Shelters
 **Media Types:**
 - Images of Fires, Emergency Response, etc
 - Interactive Maps
