@@ -48,7 +48,7 @@ for data in responses:
             print(f"Acres Burned: {properties.get('AcresBurned', 'N/A')}")
             print(f"Containment: {properties.get('PercentContained', 'N/A')}%")
             print(f"Start Date: {properties.get('Started', 'N/A')}")
-            print(f"Location: ({feature['geometry']['coordinates'][1]}, {feature['geometry']['coordinates'][0]})")
+            print(f"Location: {getLocation(feature['geometry']['coordinates'][1],feature['geometry']['coordinates'][0])}")
             print("-" * 40)
 
 print(total_fires)
