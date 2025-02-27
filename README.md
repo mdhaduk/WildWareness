@@ -20,16 +20,9 @@ https://wildwareness.net/
 - Pooja Vasanthan @PoojaVasanthan10
 
 
-Phase 1 leader: Milan Dhaduk                                                   
-Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+Phase 1 
 
-Phase 2 leader: Pooja Vasanthan                                               
-Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
-
-Phase 3 leader: Audrey Tan                                                     
-Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
-
-Phase 4 leader: Zakaria Sisalem                                                 
+Phase leader: Milan Dhaduk                                                   
 Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
 
 **Estimated Time to Completion:**
@@ -43,6 +36,34 @@ Responsibilites: Determine meeting times, assign tasks, ensure progress being ma
 - Audrey Tan - 13 hours
 - Zakaria Sisalem - 12 hours
 - Pooja Vasanthan - 13 hours
+
+
+
+
+Phase 2
+
+Phase leader: Pooja Vasanthan                                               
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+**Estimated Time to Completion:**
+- Milan Dhaduk - 17 hours
+- Audrey Tan - 16 hours
+- Zakaria Sisalem - 15 hours
+- Pooja Vasanthan - 16 hours
+
+**Actual Time to Completion:**
+- Milan Dhaduk - 
+- Audrey Tan - 
+- Zakaria Sisalem - 
+- Pooja Vasanthan - 
+
+
+Phase 3 leader: Audrey Tan                                                     
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+Phase 4 leader: Zakaria Sisalem                                                 
+Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
 
 
 ## **Proposed Project:**
