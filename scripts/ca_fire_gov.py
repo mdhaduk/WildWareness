@@ -15,8 +15,13 @@ def getLocation(lat, lon):
         return "Error in obtaining location"
 # GeoJSON endpoint
 url = "https://www.fire.ca.gov/umbraco/api/IncidentApi/GeoJsonList?inactive=true"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept": "application/json",
+}
+
 # # Fetching the data
-response = requests.get(url)
+response = requests.get(url, headers=headers)
 
 if response.status_code == 200:
     # Parsing the GeoJSON data
