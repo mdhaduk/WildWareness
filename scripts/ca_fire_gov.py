@@ -1,8 +1,12 @@
 import requests
 import geojson
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #Google API for location
-API_KEY = "AIzaSyC1deWzacsm0jD7h3oLxKo_Bz7W5snxbVQ"
+API_KEY = os.getenv("GOOGLE_KEY")
 def getLocation(lat, lon):
     url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={lat},{lon}&key={API_KEY}"
 
