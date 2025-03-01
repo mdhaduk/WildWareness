@@ -17,7 +17,7 @@ pull:
 	git pull
 	git status
 
-# upload files to the Grades code repo
+# upload files to the code repo
 push:
 	make --no-print-directory clean
 	@echo
