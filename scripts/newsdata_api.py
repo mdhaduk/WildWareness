@@ -7,7 +7,7 @@ import time
 API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
 
 # Define API endpoint
-url = "https://api.thenewsapi.com/v1/news/top"
+url = "https://api.thenewsapi.com/v1/news/all"
 
 
 
