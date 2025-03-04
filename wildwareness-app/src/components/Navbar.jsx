@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-            <a className="navbar-brand fire-text" href="index.html" style={{ fontSize: 'medium' }}>
+            <a className="navbar-brand fire-text" href="/" style={{ fontSize: 'medium' }}>
             WildWareness
             </a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -15,10 +15,10 @@ function Navbar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
-                <li className="nav-item"><a className="nav-link" href="wildfire_incidents.html">Wildfire Incidents</a></li>
+                <li className="nav-item"><a className="nav-link " href="/incidents">Wildfire Incidents</a></li>
                 <li className="nav-item"><a className="nav-link" href="shelters.html">Emergency Shelters</a></li>
                 <li className="nav-item"><a className="nav-link" href="news.html">Community Reports</a></li>
-                <li className="nav-item"><a className="nav-link active" href="about.html"><strong>About</strong></a></li>
+                <li className="nav-item"><a className="nav-link active" href="/about"><strong>About</strong></a></li>
             </ul>
             </div>
         </div>
