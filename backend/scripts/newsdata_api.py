@@ -18,6 +18,9 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from collections import Counter
 import nltk
+from rake_nltk import Rake
+import pytextrank
+import warnings
 
 # Define API key (Replace with your actual API key from NewsData.io)
 API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
@@ -31,7 +34,7 @@ the_headers = {
 
 # Load the spaCy language model for NER
 nlp = spacy.load("en_core_web_sm")
-
+nlp.add_pipe("textrank")
 
 def get_related_articles(soup):
     # Assuming related articles are in a section with a specific class
@@ -39,11 +42,81 @@ def get_related_articles(soup):
     related_articles = [a['href'] for a in related_section.find_all('a', href=True)]
     return related_articles
 
+
+def extract_nouns(words_list):
+    # Process the words with spaCy (it will automatically tag them with POS tags)
+    doc = nlp(" ".join(words_list))
+    # Extracting nouns (both singular and plural) and proper nouns
+    all_nouns = {token.text for token in doc if token.pos_ == "NOUN" or token.pos_ == "PROPN"}
+    return all_nouns
+
+
+def get_keywords_from_content(article_text):
+    # # Get the text of the article
+    # article_text = article_text.get_text()
+
+    # Tokenize the article text
+    # words = word_tokenize(article_text.lower())
+
+    # # Remove stopwords
+    # stop_words = set(stopwords.words('english'))
+    # filtered_words = [word for word in words if word.isalnum() and word not in stop_words]
+
+    # # Count word frequency
+    # word_freq = Counter(filtered_words)
+    
+    # # Get the most common words as potential keywords
+    # common_keywords = word_freq.most_common(10)  # Adjust the number as needed
+
+    # # Get top key words
+    # keywords =  [keyword[0] for keyword in common_keywords]
+    # keywords = extract_nouns(keywords)
+    # Initialize RAKE
+    # rake = Rake()
+
+    # # Extract keywords/phrases from the article
+    # rake.extract_keywords_from_text(article_text)
+
+    # # Get the ranked key phrases
+    # ranked_phrases = rake.get_ranked_phrases_with_scores()
+    # if len(ranked_phrases) <= 10:
+    #     return {keyword[1] for keyword in ranked_phrases}
+
+    # return {keyword[1] for keyword in ranked_phrases[:11]}
+    
+    # Process the article with spaCy
+    doc = nlp(article_text.lower())
+
+    # Extract key phrases using TextRank
+    key_phrases = [phrase.text for phrase in doc._.phrases]
+    # Extract noun phrases (potential key phrases)
+    # key_phrases = [chunk.text for chunk in doc.noun_chunks]
+
+    # # Optionally, extract named entities (e.g., organization, location)
+    # entities = [entity.text for entity in doc.ents]
+
+    # # Combine noun phrases and named entities
+    # key_phrases.extend(entities)
+    final_keywords = set()
+    index = 0
+    # find the keywords that only consist of nouns
+    while index < len(key_phrases) and len(final_keywords) < 11:
+        key_phrase = key_phrases[index]
+        doc = nlp(key_phrase)
+        
+        if all(token.pos_ in ['NOUN', 'PROPN', 'ADJ'] for token in doc):
+            final_keywords.add(key_phrase)
+        index += 1
+
+    # Display key phrases
+    return final_keywords
+
+
 # Function to extract locations from text using spaCy NER
-def extract_locations_from_text(text):
-    doc = nlp(text)
-    locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
-    return locations
+# def extract_locations_from_text(text):
+#     doc = nlp(text)
+#     locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
+#     return locations
 
 # Function to get the article text from a URL and extract locations
 def get_locations_from_article_url(article_text):
@@ -73,7 +146,11 @@ def get_locations_from_article_url(article_text):
 
 def article_text_summarizer(article_text):
     summarizer = pipeline('summarization', model = "sshleifer/distilbart-cnn-12-6")
-    summary = summarizer(article_text, max_length=200, min_length=len(article_text), do_sample=False)
+    word_count = len(article_text.split())
+    min = 150
+    if(word_count < min):
+        min = word_count
+    summary = summarizer(article_text, max_length=word_count, min_length=min, do_sample=False)
     final_summary = summary[0]['summary_text']
     return final_summary
 
@@ -192,10 +269,9 @@ def fetch_news(api_url, query_params):
                 description = article.get("description", "No description available")
                 source = article.get("source", "Unknown Source")
                 published_at = article.get("published_at", "Unknown Date")
-                
+                keywords = article.get("keywords", "")
                 image_url = article.get("image_url", "No image URL available")
                 categories = article.get("categories", [])
-                
                 # author = get_author_from_url(url, the_headers)
                 article_obj = Article(url)
                 article_obj.download()
@@ -214,32 +290,40 @@ def fetch_news(api_url, query_params):
                     article_text = ' '.join([para.get_text() for para in paragraphs])
                 
                 retrieved_locations = get_locations_from_article_url(article_text)
-                locations = []
+                locations = set()
                 geolocator = Nominatim(user_agent="location_detector")
                 # Only take locations that have a valid geographical location
                 for location in retrieved_locations:
                     geo_location = geolocator.geocode(location)
                     if geo_location:
-                        locations.append(location)
+                        locations.add(location)
                         time.sleep(1)
+                locations = list(locations)
 
                 # related_articles = get_related_articles(soup)
                 reading_time = calculate_reading_time(article_text)
                 text_summary = article_text_summarizer(article_text)
                 socials = get_social_media_links(soup)
-                print(f"🔹 Title: {title}")
-                print(f"📰 Source: {source}")
-                print(f"📅 Published At: {published_at}")
-                print(f"🔗 Link: {url}")
-                print(f"🔗 Image Link: {image_url}")
-                categories_string = ", ".join(categories)
-                print(f"Categories: {categories_string}")
-                print("Locations: ", locations)
-                print("Author: ", author)
-                print("Text Summary: ", text_summary)
-                # print("Related Articles: ", related_articles)
-                print("Estimated Reading Time: ", reading_time)
-                print("Socials: ", socials)
+                more_keywords = get_keywords_from_content(article_text)
+                if(len(keywords) > 0):
+                    keywords = set(keyword.strip().lower() for keyword in keywords.split(','))
+                    keywords = keywords | more_keywords
+                else:
+                    keywords = more_keywords
+                keywords = list(keywords)
+                # print(f"🔹 Title: {title}")
+                # print(f"📰 Source: {source}")
+                # print(f"📅 Published At: {published_at}")
+                # print(f"🔗 Link: {url}")
+                # print(f"🔗 Image Link: {image_url}")
+                # categories_string = ", ".join(categories)
+                # print(f"Categories: {categories_string}")
+                # print("Locations: ", locations)
+                # print("Author: ", author)
+                # print("Text Summary: ", text_summary)
+                # # print("Related Articles: ", related_articles)
+                # print("Estimated Reading Time: ", reading_time)
+                # print("Socials: ", socials)
                 print("=" * 80)
                 articles_retrieved.add(title)
                 article["Locations"] = locations if len(locations) > 0 else "California"
@@ -247,7 +331,10 @@ def fetch_news(api_url, query_params):
                 # article["Related_Articles"] = related_articles
                 article["Reading_time"] = reading_time
                 article["Socials"] = socials
+                if(len(text_summary.split()) < 15):
+                    text_summary = "No summary, use description"
                 article["text_summary"] = text_summary
+                article["keywords"] = keywords
                 # Print the updated dictionary
                 print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
