@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from transformers import pipeline
-
+from geopy.geocoders import Nominatim
 
 # Define API key (Replace with your actual API key from NewsData.io)
 API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
@@ -57,40 +57,40 @@ def get_locations_from_article_url(html, the_headers):
         return []
 
 
-def get_author_from_url(html, the_headers):
-    try:
-        # Fetch the content of the article page
-        # response = requests.get(url, the_headers)
-        # response.raise_for_status()  # Ensure we got a successful response
+# def get_author_from_url(html, the_headers):
+#     try:
+#         # Fetch the content of the article page
+#         # response = requests.get(url, the_headers)
+#         # response.raise_for_status()  # Ensure we got a successful response
         
-        # Parse the HTML content
-        soup = BeautifulSoup(html, 'html.parser')
+#         # Parse the HTML content
+#         soup = BeautifulSoup(html, 'html.parser')
         
-        # Try to find the author in common meta tags or other HTML tags
-        # Example 1: Search for <meta> tags with name or property="author"
-        author = soup.find('meta', {'name': 'author'}) or soup.find('meta', {'property': 'author'})
+#         # Try to find the author in common meta tags or other HTML tags
+#         # Example 1: Search for <meta> tags with name or property="author"
+#         author = soup.find('meta', {'name': 'author'}) or soup.find('meta', {'property': 'author'})
         
-        if author:
-            return author.get('content')
+#         if author:
+#             return author.get('content')
         
-        # Example 2: If not found in meta tags, try looking for a specific tag (e.g., <span> with a class for author)
-        # You'll need to inspect the HTML of the page to know the correct tag/class
-        author = soup.find('span', class_='author-class')  # Example class name (adjust based on the site)
+#         # Example 2: If not found in meta tags, try looking for a specific tag (e.g., <span> with a class for author)
+#         # You'll need to inspect the HTML of the page to know the correct tag/class
+#         author = soup.find('span', class_='author-class')  # Example class name (adjust based on the site)
         
-        if author:
-            return author.text.strip()
+#         if author:
+#             return author.text.strip()
         
-        # Example 3: Some websites may use a <div> or <a> tag for the author
-        author = soup.find('div', class_='author-container')  # Adjust the class as needed
+#         # Example 3: Some websites may use a <div> or <a> tag for the author
+#         author = soup.find('div', class_='author-container')  # Adjust the class as needed
         
-        if author:
-            return author.text.strip()
+#         if author:
+#             return author.text.strip()
 
-        return "Author not found"
+#         return "Author not found"
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching article: {e}{response.status_code}")
-        return "Error fetching article"
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error fetching article: {e}{response.status_code}")
+#         return "Error fetching article"
 
 
 articles_retrieved = set()
@@ -113,8 +113,10 @@ def fetch_news(api_url, query_params):
             
             title = article.get("title", "No title available")
             url = article.get("url", "No URL available")
+            
             html_content = None
             response = requests.get(url, the_headers)
+            html_content = response.content
             session = requests.Session()
             if(response.status_code == 403):
                 response = session.get(url, headers=the_headers)
@@ -128,7 +130,9 @@ def fetch_news(api_url, query_params):
                 # Initialize the WebDriver
                 driver = webdriver.Chrome(options=chrome_options)
                 # Wait for the elements to load
-                wait = WebDriverWait(driver, 10)  # Timeout after 10 seconds
+                # wait = WebDriverWait(driver, 10)  # Timeout after 10 seconds
+                element_present = EC.presence_of_element_located((By.ID, 'some_element_id'))
+                WebDriverWait(driver, 10).until(element_present)
                 html_content = driver.page_source
                 # Extract the author name
                 # try:
@@ -137,7 +141,8 @@ def fetch_news(api_url, query_params):
                 # except:
                 #     author = "Author not found"
             # 
-            if(response.status_code == 403 and html_content == None):
+            # If unable to open url skip article
+            if(response.status_code == 403):
                 pass
             # Only include article if it still exists (404 means the URL doesn't lead 
             # to existing article)
@@ -149,7 +154,15 @@ def fetch_news(api_url, query_params):
                 
                 image_url = article.get("image_url", "No image URL available")
                 categories = article.get("categories", [])
-                locations = get_locations_from_article_url(html_content, the_headers)
+                retrieved_locations = get_locations_from_article_url(html_content, the_headers)
+                locations = []
+                geolocator = Nominatim(user_agent="location_detector")
+                # Only take locations that have a valid geographical location
+                for location in retrieved_locations:
+                    geo_location = geolocator.geocode(location)
+                    if geo_location:
+                        locations.append(location)
+                        time.sleep(1)
                 # author = get_author_from_url(url, the_headers)
                 article_obj = Article(url)
                 article_obj.download()
@@ -169,7 +182,7 @@ def fetch_news(api_url, query_params):
                 print("Author: ", author)
                 print("=" * 80)
                 articles_retrieved.add(title)
-                article["Locations"] = locations
+                article["Locations"] = locations if len(locations) > 0 else "California"
                 article["Author"] = author
                 # Print the updated dictionary
                 print(json.dumps(article, indent=4))
