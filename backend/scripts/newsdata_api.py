@@ -13,6 +13,11 @@ from selenium.webdriver.common.by import By
 from transformers import pipeline
 from geopy.geocoders import Nominatim
 import math
+from transformers import pipeline
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from collections import Counter
+import nltk
 
 # Define API key (Replace with your actual API key from NewsData.io)
 API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
@@ -26,6 +31,13 @@ the_headers = {
 
 # Load the spaCy language model for NER
 nlp = spacy.load("en_core_web_sm")
+
+
+def get_related_articles(soup):
+    # Assuming related articles are in a section with a specific class
+    related_section = soup.find('div', {'class': 'related-articles'})
+    related_articles = [a['href'] for a in related_section.find_all('a', href=True)]
+    return related_articles
 
 # Function to extract locations from text using spaCy NER
 def extract_locations_from_text(text):
@@ -59,11 +71,11 @@ def get_locations_from_article_url(article_text):
         print(f"Error fetching article: {e}{response.status_code}")
         return []
 
-def get_related_articles(soup):
-    # Assuming related articles are in a section with a specific class
-    related_section = soup.find('div', {'class': 'related-articles'})
-    related_articles = [a['href'] for a in related_section.find_all('a', href=True)]
-    return related_articles
+def article_text_summarizer(article_text):
+    summarizer = pipeline('summarization', model = "sshleifer/distilbart-cnn-12-6")
+    summary = summarizer(article_text, max_length=200, min_length=len(article_text), do_sample=False)
+    final_summary = summary[0]['summary_text']
+    return final_summary
 
 def calculate_reading_time(article_text):
     word_count = len(article_text.split())
@@ -213,6 +225,7 @@ def fetch_news(api_url, query_params):
 
                 # related_articles = get_related_articles(soup)
                 reading_time = calculate_reading_time(article_text)
+                text_summary = article_text_summarizer(article_text)
                 socials = get_social_media_links(soup)
                 print(f"🔹 Title: {title}")
                 print(f"📰 Source: {source}")
@@ -223,6 +236,7 @@ def fetch_news(api_url, query_params):
                 print(f"Categories: {categories_string}")
                 print("Locations: ", locations)
                 print("Author: ", author)
+                print("Text Summary: ", text_summary)
                 # print("Related Articles: ", related_articles)
                 print("Estimated Reading Time: ", reading_time)
                 print("Socials: ", socials)
@@ -233,6 +247,7 @@ def fetch_news(api_url, query_params):
                 # article["Related_Articles"] = related_articles
                 article["Reading_time"] = reading_time
                 article["Socials"] = socials
+                article["text_summary"] = text_summary
                 # Print the updated dictionary
                 print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
