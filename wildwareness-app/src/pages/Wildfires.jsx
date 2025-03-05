@@ -49,12 +49,12 @@ function WildfireIncidentsPage() {
                     wildfires.map((wildfire) => (
                         <div key={wildfire.id} className="col-md-4 mb-4">
                             <div className="card" style={{ width: '22rem' }}>
-                                <img src={wildfire.images?.[0] || "default-image.jpg"} alt={wildfire.name} className="card-img-top" />
+                                <img className="card-img" src={wildfire.url || "default-image.jpg"} alt={wildfire.name}/>
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item"><strong>Name:</strong> {wildfire.name}</li>
                                     <li className="list-group-item"><strong>County:</strong> {wildfire.county}</li>
                                     <li className="list-group-item"><strong>Location:</strong> {wildfire.location}</li>
-                                    <li className="list-group-item"><strong>Date:</strong> {wildfire.date}</li>
+                                    <li className="list-group-item"><strong>Year:</strong> {wildfire.year}</li>
                                     <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
                                 </ul>
                                 <div className="card-body text-center">

@@ -30,7 +30,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange, totalItems, itemsPe
               <ul className="pagination">
                 {/* Previous Button */}
                 <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <Link className="page-link" to={`${url}?page=${currentPage - 1}`} onClick={() => handlePageChange(currentPage - 1)}>
+                <Link className="page-link" to={`${url}?page=${currentPage - 1}`} onClick={() => handlePageChange(currentPage - 1)} onMouseUp={(e) => e.currentTarget.blur()}>
                     Previous
                   </Link>
                 </li>
@@ -40,7 +40,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange, totalItems, itemsPe
   
                 {/* Next Button */}
                 <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                  <Link className="page-link" to={`${url}?page=${currentPage + 1}`} onClick={() => handlePageChange(currentPage + 1)}>
+                  <Link className="page-link" to={`${url}?page=${currentPage + 1}`} onClick={() => handlePageChange(currentPage + 1)} onMouseUp={(e) => e.currentTarget.blur()}>
                     Next
                   </Link>
                 </li>

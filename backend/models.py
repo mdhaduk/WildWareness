@@ -16,9 +16,9 @@ class Wildfire(Base):
     name = Column(Text, nullable=False)
     county = Column(Text, nullable=False)
     location = Column(Text, nullable=False)
-    date = Column(Text, nullable=False)
+    year = Column(Text, nullable=False)
     acres_burned = Column(Text, nullable=False)
-    images = Column(JSON, nullable=False, default=list)
+    url = Column(Text, nullable=False)
 
     def as_instance(self):
         instance = {
@@ -26,8 +26,8 @@ class Wildfire(Base):
             "name": self.name,
             "county": self.county,
             "location": self.location,
-            "date": self.date,
+            "year": self.year,
             "acres_burned": self.acres_burned,
-            "images": self.images
+            "url": self.url
         }
         return instance
