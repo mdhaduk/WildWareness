@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from transformers import pipeline
 from geopy.geocoders import Nominatim
+import math
 
 # Define API key (Replace with your actual API key from NewsData.io)
 API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
@@ -33,28 +34,56 @@ def extract_locations_from_text(text):
     return locations
 
 # Function to get the article text from a URL and extract locations
-def get_locations_from_article_url(html, the_headers):
+def get_locations_from_article_url(article_text):
     try:
         # Fetch the content of the article page
         # response = requests.get(url, headers=the_headers)
         # response.raise_for_status()  # Ensure the request was successful
         
         # Parse the HTML content
-        soup = BeautifulSoup(html, 'html.parser')
+        # soup = BeautifulSoup(html, 'html.parser')
         
-        # Extract the article's text (You may need to customize this based on the website's structure)
-        article_text = ""
-        paragraphs = soup.find_all('p')  # Assuming the article's content is within <p> tags
-        for p in paragraphs:
-            article_text += p.get_text()
+        # # Extract the article's text (You may need to customize this based on the website's structure)
+        # article_text = ""
+        # paragraphs = soup.find_all('p')  # Assuming the article's content is within <p> tags
+        # for p in paragraphs:
+        #     article_text += p.get_text()
         
         # Extract locations from the article text
-        locations = extract_locations_from_text(article_text)
+        # locations = extract_locations_from_text(article_text)
+        doc = nlp(article_text)
+        locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
         return locations
     
     except requests.exceptions.RequestException as e:
         print(f"Error fetching article: {e}{response.status_code}")
         return []
+
+def get_related_articles(soup):
+    # Assuming related articles are in a section with a specific class
+    related_section = soup.find('div', {'class': 'related-articles'})
+    related_articles = [a['href'] for a in related_section.find_all('a', href=True)]
+    return related_articles
+
+def calculate_reading_time(article_text):
+    word_count = len(article_text.split())
+    reading_time = math.ceil(word_count / 200)   # Average reading speed of 200 words/min
+    return reading_time
+
+def get_social_media_links(soup):
+    social_media_platforms = [
+            'facebook.com', 'twitter.com', 'linkedin.com', 'instagram.com', 'youtube.com', 'pinterest.com'
+        ]
+    # Find all anchor tags <a> with href attributes
+    links = soup.find_all('a', href=True)
+    # Filter out the social media links
+    social_links = []
+    for link in links:
+        href = link['href']
+        for platform in social_media_platforms:
+            if platform in href and href not in social_links:
+                social_links.append(href)
+    return social_links
 
 
 # def get_author_from_url(html, the_headers):
@@ -154,7 +183,25 @@ def fetch_news(api_url, query_params):
                 
                 image_url = article.get("image_url", "No image URL available")
                 categories = article.get("categories", [])
-                retrieved_locations = get_locations_from_article_url(html_content, the_headers)
+                
+                # author = get_author_from_url(url, the_headers)
+                article_obj = Article(url)
+                article_obj.download()
+                article_obj.parse()
+                author_list = article_obj.authors
+                
+                author = source if len(author_list) == 0 else author_list[0]
+                soup = BeautifulSoup(html_content, 'html.parser')
+
+                # Assuming the article's body text is inside a <div> with a specific class
+                article_text = soup.find('div', {'class': 'article-body'})
+                if article_text != None:
+                    article_text = article_text.get_text()
+                if article_text == None or len(article_text) == 0:
+                    paragraphs = soup.find_all('p')
+                    article_text = ' '.join([para.get_text() for para in paragraphs])
+                
+                retrieved_locations = get_locations_from_article_url(article_text)
                 locations = []
                 geolocator = Nominatim(user_agent="location_detector")
                 # Only take locations that have a valid geographical location
@@ -163,14 +210,10 @@ def fetch_news(api_url, query_params):
                     if geo_location:
                         locations.append(location)
                         time.sleep(1)
-                # author = get_author_from_url(url, the_headers)
-                article_obj = Article(url)
-                article_obj.download()
-                article_obj.parse()
-                author_list = article_obj.authors
-                
-                author = source if len(author_list) == 0 else author_list[0]
-                    
+
+                # related_articles = get_related_articles(soup)
+                reading_time = calculate_reading_time(article_text)
+                socials = get_social_media_links(soup)
                 print(f"🔹 Title: {title}")
                 print(f"📰 Source: {source}")
                 print(f"📅 Published At: {published_at}")
@@ -180,10 +223,16 @@ def fetch_news(api_url, query_params):
                 print(f"Categories: {categories_string}")
                 print("Locations: ", locations)
                 print("Author: ", author)
+                # print("Related Articles: ", related_articles)
+                print("Estimated Reading Time: ", reading_time)
+                print("Socials: ", socials)
                 print("=" * 80)
                 articles_retrieved.add(title)
                 article["Locations"] = locations if len(locations) > 0 else "California"
                 article["Author"] = author
+                # article["Related_Articles"] = related_articles
+                article["Reading_time"] = reading_time
+                article["Socials"] = socials
                 # Print the updated dictionary
                 print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
