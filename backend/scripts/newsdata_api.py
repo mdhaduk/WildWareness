@@ -36,74 +36,79 @@ the_headers = {
 nlp = spacy.load("en_core_web_sm")
 nlp.add_pipe("textrank")
 
-def get_related_articles(soup):
-    # Assuming related articles are in a section with a specific class
-    related_section = soup.find('div', {'class': 'related-articles'})
-    related_articles = [a['href'] for a in related_section.find_all('a', href=True)]
-    return related_articles
+
+# Your API key and Custom Search Engine ID (CX)
+GOOGLE_API_KEY = 'AIzaSyCHqe9iA0AqNH9v_Z6335Fecw3k_8sxk8k'
+CX = '05938f02891b1498d'
 
 
-def extract_nouns(words_list):
-    # Process the words with spaCy (it will automatically tag them with POS tags)
-    doc = nlp(" ".join(words_list))
-    # Extracting nouns (both singular and plural) and proper nouns
-    all_nouns = {token.text for token in doc if token.pos_ == "NOUN" or token.pos_ == "PROPN"}
-    return all_nouns
+def google_search(query, search_type='web', num_results=10):
+    # Base URL for Google Custom Search
+    if(search_type == 'video'):
+        query += " video"
+    url = f'https://www.googleapis.com/customsearch/v1?q={query}&key={GOOGLE_API_KEY}&cx={CX}&num={num_results}'
+
+    # Modify URL for images or videos based on search type
+    if search_type == 'image':
+        url += '&searchType=image'
+    elif search_type == 'video':
+        url += '&searchType=video'
+    response = requests.get(url)
+    return response.json()
+
+
+def get_content(query, image_url, url, num_results=10):
+    articles = []
+    images = []
+    videos = []
+
+    # Get articles (default search type)
+    results = google_search(query, search_type='web', num_results=num_results)
+    if 'items' in results:
+        for item in results['items']:
+            if(item['link'] != url):
+                articles.append({
+                    'title': item['title'],
+                    'snippet': item['snippet'],
+                    'link': item['link']
+                })
+    # Get images
+    results = google_search(query, search_type='image', num_results=num_results)
+    if 'items' in results:
+        for item in results['items']:
+            if(item['link'] != image_url):
+                images.append({
+                    'title': item['title'],
+                    'link': item['link'],
+                    'image_url': item['link'],
+                    'thumbnail': item['image']['thumbnailLink'] if 'image' in item else ''
+                })
+    # Get videos
+    results = google_search(query, search_type='video', num_results=num_results)
+    if 'items' in results:
+        for item in results['items']:
+            if(item['link'] != image_url):
+                videos.append({
+                    'title': item['title'],
+                    'video_url': item['link'],
+                    'snippet': item['snippet']
+                })
+
+    return articles, images, videos
+
 
 
 def get_keywords_from_content(article_text):
-    # # Get the text of the article
-    # article_text = article_text.get_text()
-
-    # Tokenize the article text
-    # words = word_tokenize(article_text.lower())
-
-    # # Remove stopwords
-    # stop_words = set(stopwords.words('english'))
-    # filtered_words = [word for word in words if word.isalnum() and word not in stop_words]
-
-    # # Count word frequency
-    # word_freq = Counter(filtered_words)
-    
-    # # Get the most common words as potential keywords
-    # common_keywords = word_freq.most_common(10)  # Adjust the number as needed
-
-    # # Get top key words
-    # keywords =  [keyword[0] for keyword in common_keywords]
-    # keywords = extract_nouns(keywords)
-    # Initialize RAKE
-    # rake = Rake()
-
-    # # Extract keywords/phrases from the article
-    # rake.extract_keywords_from_text(article_text)
-
-    # # Get the ranked key phrases
-    # ranked_phrases = rake.get_ranked_phrases_with_scores()
-    # if len(ranked_phrases) <= 10:
-    #     return {keyword[1] for keyword in ranked_phrases}
-
-    # return {keyword[1] for keyword in ranked_phrases[:11]}
-    
-    # Process the article with spaCy
     doc = nlp(article_text.lower())
 
     # Extract key phrases using TextRank
     key_phrases = [phrase.text for phrase in doc._.phrases]
-    # Extract noun phrases (potential key phrases)
-    # key_phrases = [chunk.text for chunk in doc.noun_chunks]
-
-    # # Optionally, extract named entities (e.g., organization, location)
-    # entities = [entity.text for entity in doc.ents]
-
-    # # Combine noun phrases and named entities
-    # key_phrases.extend(entities)
     final_keywords = set()
     index = 0
     # find the keywords that only consist of nouns
     while index < len(key_phrases) and len(final_keywords) < 11:
         key_phrase = key_phrases[index]
         doc = nlp(key_phrase)
-        
         if all(token.pos_ in ['NOUN', 'PROPN', 'ADJ'] for token in doc):
             final_keywords.add(key_phrase)
         index += 1
@@ -112,38 +117,12 @@ def get_keywords_from_content(article_text):
     return final_keywords
 
 
-# Function to extract locations from text using spaCy NER
-# def extract_locations_from_text(text):
-#     doc = nlp(text)
-#     locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
-#     return locations
-
 # Function to get the article text from a URL and extract locations
 def get_locations_from_article_url(article_text):
-    try:
-        # Fetch the content of the article page
-        # response = requests.get(url, headers=the_headers)
-        # response.raise_for_status()  # Ensure the request was successful
-        
-        # Parse the HTML content
-        # soup = BeautifulSoup(html, 'html.parser')
-        
-        # # Extract the article's text (You may need to customize this based on the website's structure)
-        # article_text = ""
-        # paragraphs = soup.find_all('p')  # Assuming the article's content is within <p> tags
-        # for p in paragraphs:
-        #     article_text += p.get_text()
-        
-        # Extract locations from the article text
-        # locations = extract_locations_from_text(article_text)
-        doc = nlp(article_text)
-        locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
-        return locations
+    doc = nlp(article_text)
+    locations = [ent.text for ent in doc.ents if ent.label_ in ['GPE', 'LOC']]
+    return locations
     
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching article: {e}{response.status_code}")
-        return []
-
 def article_text_summarizer(article_text):
     summarizer = pipeline('summarization', model = "sshleifer/distilbart-cnn-12-6")
     word_count = len(article_text.split())
@@ -173,42 +152,6 @@ def get_social_media_links(soup):
             if platform in href and href not in social_links:
                 social_links.append(href)
     return social_links
-
-
-# def get_author_from_url(html, the_headers):
-#     try:
-#         # Fetch the content of the article page
-#         # response = requests.get(url, the_headers)
-#         # response.raise_for_status()  # Ensure we got a successful response
-        
-#         # Parse the HTML content
-#         soup = BeautifulSoup(html, 'html.parser')
-        
-#         # Try to find the author in common meta tags or other HTML tags
-#         # Example 1: Search for <meta> tags with name or property="author"
-#         author = soup.find('meta', {'name': 'author'}) or soup.find('meta', {'property': 'author'})
-        
-#         if author:
-#             return author.get('content')
-        
-#         # Example 2: If not found in meta tags, try looking for a specific tag (e.g., <span> with a class for author)
-#         # You'll need to inspect the HTML of the page to know the correct tag/class
-#         author = soup.find('span', class_='author-class')  # Example class name (adjust based on the site)
-        
-#         if author:
-#             return author.text.strip()
-        
-#         # Example 3: Some websites may use a <div> or <a> tag for the author
-#         author = soup.find('div', class_='author-container')  # Adjust the class as needed
-        
-#         if author:
-#             return author.text.strip()
-
-#         return "Author not found"
-
-#     except requests.exceptions.RequestException as e:
-#         print(f"Error fetching article: {e}{response.status_code}")
-#         return "Error fetching article"
 
 
 articles_retrieved = set()
@@ -244,21 +187,11 @@ def fetch_news(api_url, query_params):
                 chrome_options = Options()
                 chrome_options.add_argument("--headless")  # Ensure the browser window doesn't open
                 chrome_options.add_argument("--disable-gpu")  # Disables GPU acceleration (useful in headless mode)
-
                 # Initialize the WebDriver
                 driver = webdriver.Chrome(options=chrome_options)
-                # Wait for the elements to load
-                # wait = WebDriverWait(driver, 10)  # Timeout after 10 seconds
                 element_present = EC.presence_of_element_located((By.ID, 'some_element_id'))
                 WebDriverWait(driver, 10).until(element_present)
                 html_content = driver.page_source
-                # Extract the author name
-                # try:
-                #     author_element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "author-name")))
-                #     author = author_element.text
-                # except:
-                #     author = "Author not found"
-            # 
             # If unable to open url skip article
             if(response.status_code == 403):
                 pass
@@ -311,6 +244,28 @@ def fetch_news(api_url, query_params):
                 else:
                     keywords = more_keywords
                 keywords = list(keywords)
+
+                related_articles, images, videos = get_content(title, image_url, url, num_results=7)
+                # Print articles
+                # print("\nArticles:")
+                # for i, art in enumerate(related_articles, start=1):
+                #     print(f"{i}. Title: {art['title']}")
+                #     print(f"   Link: {art['link']}")
+                #     print(f"   Snippet: {art['snippet']}\n")
+
+                # # Print images
+                # print("\nImages:")
+                # for i, image in enumerate(images, start=1):
+                #     print(f"{i}. Title: {image['title']}")
+                #     print(f"   Image URL: {image['image_url']}")
+                #     print(f"   Thumbnail: {image['thumbnail']}\n")
+
+                # # Print videos
+                # print("\nVideos:")
+                # for i, video in enumerate(videos, start=1):
+                #     print(f"{i}. Title: {video['title']}")
+                #     print(f"   Video URL: {video['video_url']}")
+                #     print(f"   Snippet: {video['snippet']}\n")
                 # print(f"🔹 Title: {title}")
                 # print(f"📰 Source: {source}")
                 # print(f"📅 Published At: {published_at}")
@@ -335,6 +290,9 @@ def fetch_news(api_url, query_params):
                     text_summary = "No summary, use description"
                 article["text_summary"] = text_summary
                 article["keywords"] = keywords
+                article["related_articles"] = related_articles
+                article["images"] = images
+                article["videos"] = videos
                 # Print the updated dictionary
                 print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
