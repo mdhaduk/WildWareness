@@ -19,6 +19,9 @@ class Wildfire(Base):
     year = Column(Text, nullable=False)
     acres_burned = Column(Text, nullable=False)
     url = Column(Text, nullable=False)
+    latitude = Column(Text, nullable=False)
+    longitude = Column(Text, nullable=False)
+    description = Column(Text, nullable=False)
 
     def as_instance(self):
         instance = {
@@ -28,6 +31,9 @@ class Wildfire(Base):
             "location": self.location,
             "year": self.year,
             "acres_burned": self.acres_burned,
-            "url": self.url
+            "url": self.url,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "description": self.description
         }
         return instance

@@ -4,6 +4,8 @@ from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
 from models import Wildfire
 from models import TESTING
+from scripts import ca_fire_gov
+from flask import render_template_string
 import os
 import awsgi
 
@@ -50,6 +52,20 @@ def get_all_incidents():
             )
         except:
             return jsonify({"error": "issue getting data"}), 500
+
+@app.route("/wildfire_incidents/<int:id>", methods=["GET"])
+def get_single_incident(id):
+    with local_session() as ls:
+        try:
+            incident = ls.query(Wildfire).get(id)
+            if incident:
+                return jsonify(incident.as_instance())
+            else:
+                return jsonify({"error": "shelter not found"}), 404
+        except:
+            return jsonify({"error": "issue getting data"}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=False)

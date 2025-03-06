@@ -1,4 +1,5 @@
 import requests
+import os
 import json
 from datetime import datetime, timedelta
 import time
@@ -20,10 +21,11 @@ from collections import Counter
 import nltk
 from rake_nltk import Rake
 import pytextrank
-import warnings
+import warningsfrom 
+from dotenv import load_dotenv
 
 # Define API key (Replace with your actual API key from NewsData.io)
-API_KEY = "4jJTsiWXz3Imehk8YIQCaeooLkdZdDaCaAO42WDa"
+API_KEY = os.getenv("NEWSDATA_KEY")
 
 # Define API endpoint
 url = "https://api.thenewsapi.com/v1/news/all"

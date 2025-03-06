@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import HomePage from './pages/HomePage'
 import About from './pages/About'
 import Wildfires from './pages/Wildfires'
+import WildfireIncidentsPage from './pages/WildfireIncidentsPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
             <Route path="/" element={<HomePage/>}></Route>
             <Route path="/about" element={<About/>}></Route>
             <Route path='/incidents' element={<Wildfires/>}></Route>
+            <Route path='/incidents/:id' element={<WildfireIncidentsPage/>}></Route>
         </Routes>
     </Router>
   )

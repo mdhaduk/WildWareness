@@ -58,7 +58,7 @@ function WildfireIncidentsPage() {
                                     <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
                                 </ul>
                                 <div className="card-body text-center">
-                                    <Link to={`/wildfire/${wildfire.id}`} className="btn btn-primary">Read More</Link>
+                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
                                 </div>
                             </div>
                         </div>
