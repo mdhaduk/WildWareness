@@ -1,7 +1,5 @@
 import requests
-import os
 import json
-from datetime import datetime, timedelta
 import time
 from bs4 import BeautifulSoup
 import spacy
@@ -17,12 +15,13 @@ import math
 from transformers import pipeline
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from collections import Counter
 import nltk
-from rake_nltk import Rake
 import pytextrank
-import warningsfrom 
+import os
 from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Define API key (Replace with your actual API key from NewsData.io)
 API_KEY = os.getenv("NEWSDATA_KEY")
@@ -40,8 +39,8 @@ nlp.add_pipe("textrank")
 
 
 # Your API key and Custom Search Engine ID (CX)
-GOOGLE_API_KEY = 'AIzaSyCHqe9iA0AqNH9v_Z6335Fecw3k_8sxk8k'
-CX = '05938f02891b1498d'
+GOOGLE_API_KEY = os.getenv("GOOGLE_KEY_TWO")
+CX = os.getenv("SEARCH_ENGINE_ID_TWO")
 
 
 def google_search(query, search_type='web', num_results=10):
@@ -226,12 +225,27 @@ def fetch_news(api_url, query_params):
                 
                 retrieved_locations = get_locations_from_article_url(article_text)
                 locations = set()
+                geo_locations_list = []
+                map_urls = []
                 geolocator = Nominatim(user_agent="location_detector")
                 # Only take locations that have a valid geographical location
                 for location in retrieved_locations:
                     geo_location = geolocator.geocode(location)
                     if geo_location:
-                        locations.add(location)
+                        # print(f"Geocoded {location}: {geo_location.raw}") 
+                        display_name = geo_location.raw.get('display_name', "None").lower()
+                        # state = address.get('state', '').lower()  # Get state and make it lowercase for comparison
+                        
+                        # Check if 'California' is part of the state
+                        if 'california' in display_name:
+                            old_size = len(locations)
+                            locations.add(location)
+                            new_size = len(locations)
+                            if(new_size > old_size):
+                                geo_locations_list.append(geo_location.raw)
+                                # z = zoom level, maptype-satellite, hybrid, roadmap, terrain
+                                map_url = f"https://www.google.com/maps?q={geo_location.latitude},{geo_location.longitude}&z=12&maptype=satellite"
+                                map_urls.append(map_url)
                         time.sleep(1)
                 locations = list(locations)
 
@@ -283,11 +297,27 @@ def fetch_news(api_url, query_params):
                 # print("Socials: ", socials)
                 print("=" * 80)
                 articles_retrieved.add(title)
-                article["Locations"] = locations if len(locations) > 0 else "California"
-                article["Author"] = author
+                article["search_query"] = params["search"]
+                article["author"] = author
+                
+                if len(locations) > 0:
+                    # The order of locations corrspond to order of geo_locations
+                    # and map_urls (first location, first geo_location and first map_url
+                    # correspond to the same location)
+                    article["locations"] = locations 
+                    article["geo_locations"] = geo_locations_list
+                    article["map_urls"] = map_urls
+                # If there is no location, default to California since
+                # website is localized to wildfires in California
+                else: 
+                    article["locations"] = ["California"] 
+                    geo_location = geolocator.geocode("California, United States")
+                    article["geo_locations"] = [geo_location.raw]
+                    map_url = f"https://www.google.com/maps?q={geo_location.latitude},{geo_location.longitude}&z=12&maptype=satellite"
+                    article["map_urls"] = [map_url]
                 # article["Related_Articles"] = related_articles
-                article["Reading_time"] = reading_time
-                article["Socials"] = socials
+                article["reading_time"] = reading_time
+                article["socials"] = socials
                 if(len(text_summary.split()) < 15):
                     text_summary = "No summary, use description"
                 article["text_summary"] = text_summary
@@ -296,10 +326,9 @@ def fetch_news(api_url, query_params):
                 article["images"] = images
                 article["videos"] = videos
                 # Print the updated dictionary
-                print(json.dumps(article, indent=4))
+                # print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
-
-        print(f"Length: {len(articles)}")
+        # print(f"Length: {len(articles)}")
 
     else:
         # If the request was not successful, print the error code
@@ -360,4 +389,15 @@ while( index < len(search_queries)):
     i += 1
     # Pause for a while before sending the next request (e.g., 5 seconds)
     time.sleep(5)  # Wait for 5 seconds before making another request
-print(len(articles_retrieved))
+
+total_reports = len(articles_all_data)
+# Save the formatted data to a JSON file
+output_file = "news_reports_data.json"
+with open(output_file, "w", encoding="utf-8") as file:
+    json.dump(articles_all_data, file, indent=4)
+
+# Print formatted JSON to console
+print(json.dumps(articles_all_data, indent=4))
+
+print(f"✅ Total Reports Retrieved: {total_reports}")
+print(f"Data saved to {output_file}")
