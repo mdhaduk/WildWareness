@@ -21,6 +21,15 @@ API_KEY = os.getenv("GOOGLE_KEY")
 # List of queries to cover different regions in California
 QUERIES = [
     "homeless shelters in Los Angeles, CA",
+    "homeless shelters in San Francisco, CA",
+    "homeless shelters in San Diego, CA",
+    "homeless shelters in Sacramento, CA",
+    "homeless shelters in Oakland, CA",
+    "homeless shelters in San Jose, CA",
+    "homeless shelters in Fresno, CA",
+    "homeless shelters in Long Beach, CA",
+    "homeless shelters in Bakersfield, CA",
+    "homeless shelters in Anaheim, CA"
 ]
 
 # Your API key and Custom Search Engine ID (CX)
@@ -184,8 +193,8 @@ def fetch_all_places(queries, api_key):
         results = fetch_all_places_for_query(query, api_key)
         all_results.extend(results)
         
-        # Stop if we have at least 100 results
-        if len(all_results) == 1:
+        # Stop if we have at least 300 results
+        if len(all_results) >= 300:
             break
     
     return all_results[:300]  # Return exactly 100 results

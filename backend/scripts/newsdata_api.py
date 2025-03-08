@@ -398,7 +398,7 @@ search_queries = ["California+wildfires", "california+fires", "california+wildfi
                      "california+wildfires+anger", "california+wildfires+service", "california+wildfires+teams", "california+wildfires+temperature", 
                      "california+wildfires+economy", "california+wildfires+businesses", "california+wildfires+humanitarian", 
                      "california+wildfires+fema", "california+wildfires+victims", "california+wildfires+international"]
-while( index < 1):
+while( index < len(search_queries)):
     print(f"Fetching news, attempt {i+1}...")
     # Define the query parameters including the API token and other filters
     params = {
