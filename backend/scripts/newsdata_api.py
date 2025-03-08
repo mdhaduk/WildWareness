@@ -19,6 +19,7 @@ import nltk
 import pytextrank
 import os
 from dotenv import load_dotenv
+from transformers import AutoTokenizer
 
 # Load environment variables
 load_dotenv()
@@ -126,11 +127,16 @@ def get_locations_from_article_url(article_text):
     
 def article_text_summarizer(article_text):
     summarizer = pipeline('summarization', model = "sshleifer/distilbart-cnn-12-6")
-    word_count = len(article_text.split())
+    tokenizer = AutoTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+    # Model input can be at most 1024 at a time so do 1020 in case
+    tokenized_text = tokenizer(article_text, truncation=True, max_length=1020, padding=False, return_tensors="pt")
+    # Decode the truncated input back to text if needed (optional, but summarizer works with text)
+    truncated_text = tokenizer.decode(tokenized_text['input_ids'][0], skip_special_tokens=True)
+    word_count = len(truncated_text.split())
     min = 150
     if(word_count < min):
         min = word_count
-    summary = summarizer(article_text, max_length=word_count, min_length=min, do_sample=False)
+    summary = summarizer(truncated_text, max_length=word_count, min_length=min, do_sample=False)
     final_summary = summary[0]['summary_text']
     return final_summary
 
@@ -239,7 +245,7 @@ def fetch_news(api_url, query_params):
                         # Check if 'California' is part of the state
                         if 'california' in display_name:
                             old_size = len(locations)
-                            locations.add(location)
+                            locations.add(location.lower())
                             new_size = len(locations)
                             if(new_size > old_size):
                                 geo_locations_list.append(geo_location.raw)
@@ -323,8 +329,26 @@ def fetch_news(api_url, query_params):
                 article["text_summary"] = text_summary
                 article["keywords"] = keywords
                 article["related_articles"] = related_articles
+                hashtag_links = []
+                for keyword in keywords:
+                    keyword = keyword.replace(" ", "")     
+                    twitter_link = f"https://twitter.com/hashtag/{keyword}"
+                    facebook_link = f"https://www.facebook.com/hashtag/{keyword}"
+                    hashtag_info = {"hashtag": keyword, "twitter_link": twitter_link, 
+                                    "facebook_link": facebook_link}
+                    hashtag_links.append(hashtag_info)
+                    # if "california" not in keyword.lower() and keyword not in locations:
+                    #     detailed_keyword = "california" + keyword
+                    #     twitter_link = f"https://twitter.com/hashtag/{detailed_keyword}"
+                    #     facebook_link = f"https://www.facebook.com/hashtag/{detailed_keyword}"
+                    #     hashtag_info = {"hashtag": detailed_keyword, "twitter_link": twitter_link, 
+                    #                 "facebook_link": facebook_link}
+                        # hashtag_links.append(hashtag_info)
+                article["hashtag_links"] = hashtag_links
                 article["images"] = images
                 article["videos"] = videos
+
+
                 # Print the updated dictionary
                 # print(json.dumps(article, indent=4))
                 articles_all_data.append(article)
@@ -374,7 +398,7 @@ search_queries = ["California+wildfires", "california+fires", "california+wildfi
                      "california+wildfires+anger", "california+wildfires+service", "california+wildfires+teams", "california+wildfires+temperature", 
                      "california+wildfires+economy", "california+wildfires+businesses", "california+wildfires+humanitarian", 
                      "california+wildfires+fema", "california+wildfires+victims", "california+wildfires+international"]
-while( index < len(search_queries)):
+while( index < 1):
     print(f"Fetching news, attempt {i+1}...")
     # Define the query parameters including the API token and other filters
     params = {
