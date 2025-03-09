@@ -4,9 +4,10 @@ import os
 import sys
 import json
 import requests
-import scripts.test as get_county_from_address
+from scripts.test import get_county_from_address
 from models import Base, Wildfire, Shelter, TESTING
 from dotenv import load_dotenv
+from collections import defaultdict
 
 DATABASE_URL = ""
 if TESTING:
@@ -46,23 +47,33 @@ def addShelters(local_session):
             ls.commit()
 
 
-
-
 def link(local_session):
     with local_session() as ls:
-        # Assuming you have a session and engine setup
+        # Fetch all wildfires and shelters
         wildfires = ls.query(Wildfire).all()
         shelters = ls.query(Shelter).all()
 
+        # Create a dictionary mapping counties to wildfires
+        wildfire_dict = defaultdict(list)
         for wildfire in wildfires:
-            for shelter in shelters:
-                wildfire_county = wildfire.county.lower().strip()
-                shelter_county = get_county_from_address(shelter.address).replace(" county", "").strip()
-                if wildfire.county == nonprofit.city:
-                    # Check if the relationship already exists
-                    if nonprofit not in shelter.nonprofits:
-                        shelter.nonprofits.append(nonprofit)
+            county = wildfire.county.lower().strip()
+            wildfire_dict[county].append(wildfire)
+
+        # Link shelters to wildfires based on county
+        for shelter in shelters:
+            shelter_county = get_county_from_address(str(shelter.address))
+            if not shelter_county:
+                continue
+            shelter_county = shelter_county.replace(" County", "").lower().strip()
+
+            if shelter_county in wildfire_dict:
+                for wildfire in wildfire_dict[shelter_county]:
+                    if shelter not in wildfire.shelters:  # Prevent duplicates
+                        wildfire.shelters.append(shelter)
+
+        # Commit the changes
         ls.commit()
+
 
 
 
@@ -71,7 +82,7 @@ if __name__ == "__main__":
     local_session = sessionmaker(bind=engine, autoflush=False, future=True)
     Base.metadata.create_all(bind=engine)
     if len(sys.argv) == 1:
-        # addWildfires(local_session)
+        addWildfires(local_session)
         addShelters(local_session)
         # link(local_session)
     else:

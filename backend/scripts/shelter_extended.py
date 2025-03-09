@@ -256,8 +256,8 @@ def main():
     for place in places:
         place_id = place.get("place_id")
         # print(place)
-        # name = place.get("name", "N/A")
-        # address = place.get("formatted_address", "N/A")
+        name = place.get("name", "N/A")
+        address = place.get("formatted_address", "N/A")
 
         # print
         

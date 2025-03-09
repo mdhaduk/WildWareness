@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import { useParams, useNavigate} from 'react-router-dom';
+import { useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import Map from '../components/Map';
 
@@ -24,12 +24,25 @@ const WildfireIncidentsPage = () => {
     return <div>Loading...</div>;
   }
 
+  const nearbyShelters = [];
+  console.log(wildfire.shelters.length)
+    for (let i = 0; i < wildfire.shelters.length; i++) {
+    console.log(wildfire.shelters[i].id)
+      nearbyShelters.push(
+        <li key={i}>
+              <Link to={`/shelters/${wildfire.shelters[i].id}`}>
+                {wildfire.shelters[i].name}
+              </Link>
+        </li>
+      );
+    }
+
+
 
   return (
-<div className="container mt-5">
+    <div className="container mt-5">
       <h3><strong>{wildfire.name}</strong></h3>
       <p>{wildfire.address}</p>
-      {/* <a href={foodBank.website_URL} target="_blank" rel="noopener noreferrer">{foodBank.name}</a> */}
 
       <div className="row my-4">
         <div className="col-auto mb-4">
@@ -59,11 +72,11 @@ const WildfireIncidentsPage = () => {
         </ul>
       </div>
 
-      {/* <div className="container-fluid my-4">
+      <div className="container-fluid my-4">
         <h5><strong>Nearby Homeless Shelters:</strong></h5>
         {nearbyShelters}
       </div>
-
+{/* 
       <div className="container-fluid my-4">
         <h5><strong>Nearby Nonprofits:</strong></h5>
         {nearbyNonprofits}

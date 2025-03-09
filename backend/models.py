@@ -31,9 +31,9 @@ class Wildfire(Base):
     longitude = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
 
-    # shelters = relationship(
-    #     "Shelter", secondary=Wildfire_Shelter, back_populates="shelters"
-    # )
+    shelters = relationship(
+        "Shelter", secondary=Wildfire_Shelter, back_populates="wildfires"
+    )
 
     def as_instance(self):
         instance = {
@@ -46,7 +46,12 @@ class Wildfire(Base):
             "url": self.url,
             "latitude": self.latitude,
             "longitude": self.longitude,
-            "description": self.description
+            "description": self.description,
+            "shelters": [
+                {"id": shelter.id, "name": shelter.name}
+                for shelter in self.shelters
+            ],
+
         }
         return instance
 
@@ -63,9 +68,9 @@ class Shelter(Base):
     imageUrl = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
 
-    # wildfires = relationship(
-    #     "Wildfire", secondary=Wildfire_Shelter, back_populates="wildfires"
-    # )
+    wildfires = relationship(
+        "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"
+    )
 
     def as_instance(self):
         instance = {
@@ -77,7 +82,11 @@ class Shelter(Base):
             "rating": self.rating,
             "reviews": self.reviews,
             "imageUrl": self.imageUrl,
-            "description": self.description
+            "description": self.description,
+            "wildfires": [
+                {"id": wildfire.id, "name": wildfire.name}
+                for wildfire in self.wildfires
+            ],
 
         }
         return instance

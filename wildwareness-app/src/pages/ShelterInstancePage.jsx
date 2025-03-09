@@ -21,7 +21,7 @@ const ShelterInstancePage = () => {
       };
       fetchShelter();
     }
-  }, [id, shelter]);
+  }, [id]);
 
   if (!shelter) {
     return <div>Loading...</div>;
