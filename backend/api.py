@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from sqlalchemy import create_engine
 from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
-from models import Wildfire
+from models import Wildfire, Shelter
 from models import TESTING
 from scripts import ca_fire_gov
 from flask import render_template_string
@@ -11,6 +11,7 @@ import awsgi
 
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
 app.json.sort_keys = False
 CORS(app)
 
@@ -61,6 +62,42 @@ def get_single_incident(id):
             if incident:
                 return jsonify(incident.as_instance())
             else:
+                return jsonify({"error": "incident not found"}), 404
+        except:
+            return jsonify({"error": "issue getting data"}), 500
+
+@app.route("/shelters", methods=["GET"])
+def get_all_shelters():
+    page = request.args.get("page", 1, type=int)
+    size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
+    with local_session() as ls:
+        try:
+            shelters = ls.query(Shelter).limit(size).offset((page - 1) * size).all()
+            shelter_cards = [shelter.as_instance() for shelter in shelters]
+            total_shelters = ls.query(Shelter).count()
+            total_pages = (total_shelters + size - 1) // size
+            return jsonify(
+                {
+                    "shelters": shelter_cards,
+                    "pagination": {
+                        "page": page,
+                        "size": size,
+                        "total_pages": total_pages,
+                        "total_items": total_shelters,
+                    },
+                }
+            )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+@app.route("/shelters/<int:id>", methods=["GET"])
+def get_single_shelter(id):
+    with local_session() as ls:
+        try:
+            shelter = ls.query(Shelter).get(id)
+            if shelter:
+                return jsonify(shelter.as_instance())
+            else:
                 return jsonify({"error": "shelter not found"}), 404
         except:
             return jsonify({"error": "issue getting data"}), 500
@@ -68,4 +105,4 @@ def get_single_incident(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

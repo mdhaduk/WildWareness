@@ -12,10 +12,11 @@ from transformers import pipeline
 from transformers import AutoTokenizer
 
 import os
+import json
 from dotenv import load_dotenv
 
+# Load API Key from .env file
 load_dotenv()
-# Replace with your API key
 API_KEY = os.getenv("GOOGLE_KEY")
 
 # List of queries to cover different regions in California
@@ -165,19 +166,16 @@ def fetch_all_places_for_query(query, api_key):
     page_token = None
     
     while True:
-        # Fetch a page of results
         data = fetch_places(query, api_key, page_token)
         
         if data.get("status") == "OK":
             all_results.extend(data.get("results", []))
             page_token = data.get("next_page_token")
             
-            # If there's no next page, stop
             if not page_token:
                 break
             
-            # Wait for the next_page_token to become valid
-            time.sleep(2)
+            time.sleep(2)  # Wait before requesting next page
         else:
             print(f"Error fetching data for query '{query}':", data.get("status"))
             break
@@ -193,23 +191,69 @@ def fetch_all_places(queries, api_key):
         results = fetch_all_places_for_query(query, api_key)
         all_results.extend(results)
         
-        # Stop if we have at least 300 results
-        if len(all_results) >= 300:
-            break
+        if len(all_results) >= 200:
+            break  # Stop at 200 results
     
-    return all_results[:300]  # Return exactly 100 results
+    return all_results[:300]
 
-# Main script
-if __name__ == "__main__":
+def get_place_id(shelter_name, shelter_address):
+    """Fetch the place_id for a given shelter name and address."""
+    base_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+    params = {
+        "input": f"{shelter_name}, {shelter_address}",
+        "inputtype": "textquery",
+        "fields": "place_id",
+        "key": API_KEY
+    }
+    
+    response = requests.get(base_url, params=params).json()
+    
+    if "candidates" in response and response["candidates"]:
+        return response["candidates"][0]["place_id"]
+    else:
+        print(f"Place ID not found for {shelter_name}.")
+        return None
+
+def get_photo_reference(place_id):
+    """Fetch the photo_reference for a given place_id."""
+    base_url = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        "place_id": place_id,
+        "fields": "photos",
+        "key": API_KEY
+    }
+    
+    response = requests.get(base_url, params=params).json()
+    
+    if "result" in response and "photos" in response["result"]:
+        return response["result"]["photos"][0]["photo_reference"]
+    else:
+        return None
+
+def get_photo_url(photo_reference):
+    """Construct the image URL using the photo_reference."""
+    return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference={photo_reference}&key={API_KEY}"
+
+def get_shelter_image(shelter_name, shelter_address):
+    place_id = get_place_id(shelter_name, shelter_address)
+    if place_id:
+        photo_reference = get_photo_reference(place_id)
+        # print(photo_reference)
+        if photo_reference:
+            return get_photo_url(photo_reference)
+        else:
+            return None
+    else:
+        return None
+
+# Main function to collect and save data
+def main():
+    places_data = []
+
     # Fetch all places matching the queries
     places = fetch_all_places(QUERIES, API_KEY)
-    shelter_data = []
-    the_headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-    }
-    # Process and print details for each place
-    for i, place in enumerate(places, start=1):
-        shelter = {}
+
+    for place in places:
         place_id = place.get("place_id")
         # print(place)
         # name = place.get("name", "N/A")
@@ -217,159 +261,36 @@ if __name__ == "__main__":
 
         # print
         
-        # print(f"\nResult {i}: {name}")
-        # print("Address:", address)
-        
-        # Fetch and print detailed information
+        # Fetch place details
         details = fetch_place_details(place_id, API_KEY)
-        # print(details)
-        if details.get("status") == "OK":
+        imageUrl = get_shelter_image(name,address)
+        if details.get("status") == "OK" and imageUrl:
             details_result = details.get("result", {})
-            if details_result:
-                shelter["place_id"] = place_id
-                shelter["name"] = place.get("name", "N/A")
-                shelter["address"] = place.get("formatted_address", "N/A")
+            phone = details_result.get("formatted_phone_number", "N/A")
+            website = details_result.get("website", "N/A")
+            rating = details_result.get("rating", "N/A")
+            reviews = [review.get("text", "No review text available.") for review in details_result.get("reviews", [])]
 
-                details_result = details.get("result", {})
-                phone = details_result.get("formatted_phone_number", "N/A")
-                shelter["phone_number"] = phone
-                website = details_result.get("website", "N/A")
-                shelter["website"] = website
-                shelter["description"] = "N/A"
-                rating = details_result.get("rating", "N/A")
-                shelter["rating"] = rating
-                reviews = details_result.get("reviews", [])
-                total_user_ratings = details_result.get("user_ratings_total", "N/A")
-                shelter["total_user_ratings"] = total_user_ratings
-                details_geometry = details_result.get("geometry", {})
-                # For embedded map in website. If not present, use provided google
-                # maps url
-                shelter["embedded_map_url"] = "N/A"
-                if details_geometry:
-                    latitude = details_geometry.get("location").get("lat")
-                    longitude = details_geometry.get("location").get("lng")
-                    map_url = f"https://www.google.com/maps?q={latitude},{longitude}&z=12&maptype=satellite"
-                    shelter["embedded_map_url"] = map_url
-                hours = details_result.get('opening_hours')
-                if hours:
-                    hours = hours.get("weekday_text")
-                else:
-                    shelter["hours"] = "N/A"
-                shelter["google_maps_url"] = details_result.get('url')
-                shelter["icon_image"] = details_result.get("icon", "N/A")
-                shelter["city"] = "N/A"
-                shelter["county"] = "N/A"
-                # Indicates if the shelter is still open, not closed
-                shelter["business_status"] = details_result.get("business_status", "N/A")
-                address_components = details_result.get("address_components", [])
-                for address_component in address_components:
-                    if(address_component["types"][0] == "locality"):
-                        shelter["city"] = address_component["long_name"]
-                    if(address_component["types"][0] == "administrative_area_level_2"):
-                        shelter["county"] = address_component["long_name"]
-                photos_list = details_result.get("photos")
-                photo_urls = []
-                shelter["additional_images"] = []
-                shelter["videos"] = []
-                shelter["embedded_content"] = []
-                shelter["socials"] = []
-                if photos_list:
-                    for photo in photos_list:
-                        photo_reference = photo["photo_reference"]
-                        photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference={photo_reference}&key={API_KEY}"
-                        # print(photo_url)
-                        photo_urls.append(photo_url)
-                # If there is no website, search the web for media
-                if website == "N/A":
-                    if len(photo_urls) < 4:
-                        images = get_content(shelter["name"]+" shelter California", "image", num_results=4)
-                        shelter["additional_images"] = images
-                    videos = get_content(shelter["name"]+ " shelter California", "video", num_results=4)
-                    shelter["videos"] = videos
-                else:
-                    # Send a GET request to the website
-                    response = requests.get(website, the_headers)
-                    session = requests.Session()
-                    html_content = response.content
-                    if(response.status_code == 403):
-                        response = session.get(website, headers=the_headers)
-                        html_content = response.content
-                    if(response.status_code == 403):
-                        # Set up ChromeOptions to run the browser in headless mode
-                        chrome_options = Options()
-                        chrome_options.add_argument("--headless")  # Ensure the browser window doesn't open
-                        chrome_options.add_argument("--disable-gpu")  # Disables GPU acceleration (useful in headless mode)
-                        # Initialize the WebDriver
-                        driver = webdriver.Chrome(options=chrome_options)
-                        element_present = EC.presence_of_element_located((By.ID, 'some_element_id'))
-                        WebDriverWait(driver, 10).until(element_present)
-                        html_content = driver.page_source
-                    # Check if the request was successful
-                    # if response.status_code !:
-                        # print(f"Failed to retrieve {url}")
-                        # Parse the HTML using BeautifulSoup
-                    soup = BeautifulSoup(html_content, 'html.parser')
-                    shelter["socials"] = get_social_media_links(soup)
-                    img_urls, video_urls, iframe_video_urls = get_media_links(website, soup)
-                    shelter["additional_images"] = img_urls
-                    shelter["videos"] = video_urls
-                    shelter["embedded_content"] = iframe_video_urls
-                    # Assuming the article's body text is inside a <div> with a specific class
-                    article_text = soup.find('div', {'class': 'article-body'})
-                    if article_text != None:
-                        article_text = article_text.get_text()
-                    if article_text == None or len(article_text) == 0:
-                        paragraphs = soup.find_all('p')
-                        article_text = ' '.join([para.get_text() for para in paragraphs])
-                    shelter["description"] = website_text_summarizer(article_text)
-                    
-                shelter["photo_urls"] = photo_urls
-                hashtag_links = []
-                keywords = ["california", "cali", "californiawildfires", "californiashelters"]
-                if(shelter["city"] != "N/A"):
-                    keywords.append(shelter["city"])
-                if(shelter["county"] != "N/A"):
-                    keywords.append(shelter["county"])
-                if(shelter["name"] != "N/A"):
-                    keywords.append(shelter["name"])
-                for keyword in keywords:
-                    keyword = keyword.replace(" ", "")     
-                    twitter_link = f"https://twitter.com/hashtag/{keyword}"
-                    facebook_link = f"https://www.facebook.com/hashtag/{keyword}"
-                    hashtag_info = {"hashtag": keyword, "twitter_link": twitter_link, 
-                                    "facebook_link": facebook_link}
-                    hashtag_links.append(hashtag_info)
-                    # if "california" not in keyword.lower() and keyword not in locations:
-                    #     detailed_keyword = "california" + keyword
-                    #     twitter_link = f"https://twitter.com/hashtag/{detailed_keyword}"
-                    #     facebook_link = f"https://www.facebook.com/hashtag/{detailed_keyword}"
-                    #     hashtag_info = {"hashtag": detailed_keyword, "twitter_link": twitter_link, 
-                    #                 "facebook_link": facebook_link}
-                        # hashtag_links.append(hashtag_info)
-                shelter["hashtag_links"] = hashtag_links
+            # Store data as dictionary
+            places_data.append({
+                "name": name,
+                "address": address,
+                "phone": phone,
+                "website": website,
+                "rating": rating,
+                "reviews": reviews,
+                "imageUrl": imageUrl,
+            })
+        else:
+            print(f"Error fetching details for {name}: {details.get('status')}")
 
-                # print("Phone:", phone)
-                # print("Website:", website)
-                # print("Rating:", rating)
-                
-                if reviews:
-                    shelter["reviews"] = reviews
-                #     print("Reviews:")
-                #     for review in reviews:
-                        # author = review.get("author_name", "Anonymous")
-                        # text = review.get("text", "No review text available.")
+    # Save the results to a JSON file
+    with open("shelters.json", "w", encoding="utf-8") as json_file:
+        json.dump(places_data, json_file, indent=4, ensure_ascii=False)
 
-                        # print(f"- {author}: {text}")
-                shelter_data.append(shelter)
-            else:
-                print("Error fetching details for this place:", details.get("status"))
-    
-    # print(f"\nTotal places fetched: {len(places)}")
-    total_shelters = len(shelter_data)
-    # Save the formatted data to a JSON file
-    output_file = "shelters_data.json"
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(shelter_data, file, indent=4)
+    return places_data  # Return the collected data
 
-    # Print formatted JSON to console
-    print(json.dumps(shelter_data, indent=4))
+# Run script
+if __name__ == "__main__":
+    shelter_data = main()
+    print(f"\nData saved to 'shelters.json'. Total shelters fetched: {len(shelter_data)}")

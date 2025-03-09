@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react';
 import { useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import WildfireMap from '../components/WildfireMap';
+import Map from '../components/Map';
 
 const WildfireIncidentsPage = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const WildfireIncidentsPage = () => {
         <h5><strong>Description:</strong></h5>
         <p>{wildfire.description}</p>
       </div>
-        <WildfireMap latitude={wildfire.latitude} longitude={wildfire.longitude} fireName={wildfire.name} />
+        <Map address={wildfire.location} instanceName={wildfire.name} />
       <div className="container-fluid my-4">
         <h5><strong>Attributes:</strong></h5>
         <ul className="list-group list-group-flush">
