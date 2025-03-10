@@ -5,7 +5,7 @@ import sys
 import json
 import requests
 import scripts.test as get_county_from_address
-from models import Base, Wildfire, Shelter, TESTING
+from models import Base, Wildfire, Shelter, NewsReport, TESTING
 from dotenv import load_dotenv
 
 DATABASE_URL = ""
@@ -65,6 +65,21 @@ def link(local_session):
         ls.commit()
 
 
+def addNewsReports(local_session):
+    allowed_keys = {"title", "description", "keywords", "snippet", "url", "image_url", "language", "published_at", "source", 
+                    "categories", "author", "locations", "geo_locations", "map_urls", "reading_time", "socials", 
+                    "text_summary", "related_articles", "hashtag_links", "images", "videos"}
+    with local_session() as ls:
+        with open("news_reports_data.json", "r") as file:
+            body = json.load(file)
+            for report in body:
+                report["published_at"] = report["published_at"][0:10]
+                report["categories"] = ", ".join(report["categories"])
+                filtered_report = {key: report[key] for key in allowed_keys if key in report}
+                reportInstance = NewsReport(**filtered_report)
+                ls.add(reportInstance)
+            ls.commit()
+
 
 if __name__ == "__main__":
     engine = create_engine(DATABASE_URL, echo=False, future=True)
@@ -73,6 +88,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         # addWildfires(local_session)
         addShelters(local_session)
+        addNewsReports(local_session)
         # link(local_session)
     else:
         clear(local_session)
