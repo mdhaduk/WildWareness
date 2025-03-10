@@ -63,6 +63,7 @@ const ShelterInstancePage = () => {
           <li className="list-group-item text-wrap"><strong>Address:</strong> {shelter.address}</li>
           <li className="list-group-item text-wrap"><strong>Phone:</strong> {shelter.phone || "N/A"}</li>
           <li className="list-group-item text-wrap"><strong>Rating:</strong> {shelter.rating ? `${shelter.rating}/5` : "No rating available"}</li>
+          <li className="list-group-item text-wrap"><strong>County:</strong> {shelter.county || "County information not available"}</li>
           <li className="list-group-item text-wrap">
             <strong>Reviews:</strong>
             {visibleReviews && visibleReviews.length > 0 ? (

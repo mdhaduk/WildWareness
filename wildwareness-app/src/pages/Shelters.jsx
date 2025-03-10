@@ -56,6 +56,7 @@ function Shelters() {
                                     <li className="list-group-item"><strong>Phone:</strong> {shelter.phone}</li>
                                     <li className="list-group-item"><strong>Website:</strong><a href='shelter.website'> {shelter.website}</a></li>
                                     <li className="list-group-item"><strong>Rating:</strong> {shelter.rating}/5</li>
+                                    <li className="list-group-item"><strong>County:</strong> {shelter.county || "N/A"}</li>
                                 </ul>
                                 <div className="card-body text-center">
                                     <Link to={`/shelters/${shelter.id}`} className="btn btn-primary">Read More</Link>

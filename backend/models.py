@@ -1,6 +1,7 @@
 from sqlalchemy import Integer, String, Float, Column, JSON, Text, ForeignKey, Table
 from sqlalchemy.orm import DeclarativeBase, relationship
 import json
+from scripts.test import get_county_from_address
 
 
 TESTING = True
@@ -62,6 +63,7 @@ class Shelter(Base):
     reviews = Column(JSON, nullable=False, default=list)
     imageUrl = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
+    county = Column(Text, nullable=True)
 
     # wildfires = relationship(
     #     "Wildfire", secondary=Wildfire_Shelter, back_populates="wildfires"
@@ -77,8 +79,8 @@ class Shelter(Base):
             "rating": self.rating,
             "reviews": self.reviews,
             "imageUrl": self.imageUrl,
-            "description": self.description
-
+            "description": self.description,
+            "county": self.county
         }
         return instance
 
