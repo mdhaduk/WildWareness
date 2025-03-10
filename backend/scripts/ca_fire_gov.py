@@ -111,5 +111,6 @@ if __name__ == '__main__':
     # Print formatted JSON to console
     print(json.dumps(fires_data, indent=4))
 
+    print(f'All Counties: {all_counties}')
     print(f"✅ Total Fires Retrieved: {total_fires}")
     print(f"🔥 Data saved to {output_file}")

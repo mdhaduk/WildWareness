@@ -82,8 +82,8 @@ if __name__ == "__main__":
     local_session = sessionmaker(bind=engine, autoflush=False, future=True)
     Base.metadata.create_all(bind=engine)
     if len(sys.argv) == 1:
-        addWildfires(local_session)
+        # addWildfires(local_session)
         addShelters(local_session)
-        # link(local_session)
+        link(local_session)
     else:
         clear(local_session)
