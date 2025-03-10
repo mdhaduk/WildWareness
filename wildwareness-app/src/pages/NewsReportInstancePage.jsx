@@ -31,59 +31,47 @@ const NewsReportInstancePage = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
-<div className="container mt-5">
+    <div className="container mt-5">
       <h3><strong>{report.title}</strong></h3>
-      {/* <p>{wildfire.address}</p> */}
-      {/* <a href={foodBank.website_URL} target="_blank" rel="noopener noreferrer">{foodBank.name}</a> */}
+      {report.source && <p>Source: {report.source}</p>}
+      {report.url && <a href={report.url} target="_blank" rel="noopener noreferrer">Read Full Article</a>}
 
-      <div className="row my-4">
-        <div className="col-auto mb-4">
+      <div className="row my-4 justify-content-center">
+        <div className="col-md-8 text-center mb-4">
           <img
-            src={report.image_url || 'default-image-url.jpg'}
+            src={report.image_url || '/default-placeholder.jpg'}
             alt={report.title}
             className="img-fluid"
-            style={{ height: '300px', objectFit: 'cover' }}
+            style={{ height: '300px', width: '600px', objectFit: 'cover' }}
+            onError={(e) => { e.target.src = '/default-placeholder.jpg'; }}
           />
         </div>
-
-        </div>
+      </div>
 
       <div className="container-fluid my-4">
         <h5><strong>Description:</strong></h5>
-        <p>{report.text_summary}</p>
+        <p>{report.text_summary || "No description available."}</p>
       </div>
-        <Map address={report.locations[0]} fireName={report.title} />
+
+      <Map address={report.locations[0]} fireName={report.title} />
+
       <div className="container-fluid my-4">
         <h5><strong>Attributes:</strong></h5>
         <ul className="list-group list-group-flush">
-        <li className="list-group-item"><strong>Title:</strong> {report.title}</li>
-        <li className="list-group-item"><strong>Source:</strong> {report.source}</li>
-        <li className="list-group-item"><strong>Date:</strong> {report.published_at}</li>
-        <li className="list-group-item"><strong>Author:</strong> {report.author}</li>
-        <li className="list-group-item"><strong>Categories:</strong> {report.categories}</li>
-        <li className="list-group-item"><strong>Estimated Reading Time (Minutes):</strong> {report.reading_time}</li>
+          <li className="list-group-item text-wrap"><strong>Title:</strong> {report.title}</li>
+          <li className="list-group-item text-wrap"><strong>Source:</strong> {report.source}</li>
+          <li className="list-group-item text-wrap"><strong>Date:</strong> {report.published_at}</li>
+          <li className="list-group-item text-wrap"><strong>Author:</strong> {report.author}</li>
+          <li className="list-group-item text-wrap"><strong>Categories:</strong> {report.categories}</li>
+          <li className="list-group-item text-wrap"><strong>Estimated Reading Time (Minutes):</strong> {report.reading_time}</li>
         </ul>
       </div>
 
-      {/* <div className="container-fluid my-4">
-        <h5><strong>Nearby Homeless Shelters:</strong></h5>
-        {nearbyShelters}
-      </div>
-
-      <div className="container-fluid my-4">
-        <h5><strong>Nearby Nonprofits:</strong></h5>
-        {nearbyNonprofits}
-      </div> */}
-      {/* <div>
-        <button className="btn btn-secondary mb-3" onClick={() => navigate('/incidents')}>Go Back</button>
-      </div> */}
       <div>
         <button className="btn btn-secondary mb-3" onClick={() => navigate('/news')}>Go Back</button>
       </div>
     </div>
-
   );
 };
 
