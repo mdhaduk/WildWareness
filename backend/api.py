@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from sqlalchemy import create_engine
 from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
-from models import Wildfire, Shelter
+from models import Wildfire, Shelter, NewsReport
 from models import TESTING
 from scripts import ca_fire_gov
 from flask import render_template_string
@@ -102,6 +102,43 @@ def get_single_shelter(id):
         except:
             return jsonify({"error": "issue getting data"}), 500
 
+
+@app.route("/news", methods=["GET"])
+def get_all_reports():
+    page = request.args.get("page", 1, type=int)
+    size = request.args.get("size", 2, type=int)
+    with local_session() as ls:
+        try:
+            incidents = ls.query(NewsReport).limit(size).offset((page - 1) * size).all()
+            incident_cards = [incident.as_instance() for incident in incidents]
+            total_incidents = ls.query(NewsReport).count()
+            total_pages = (total_incidents + size - 1) // size
+            return jsonify(
+                {
+                    "incidents": incident_cards,
+                    "pagination": {
+                        "page": page,
+                        "size": size,
+                        "total_pages": total_pages,
+                        "total_items": total_incidents,
+                    },
+                }
+            )
+        except:
+            return jsonify({"error": "issue getting data"}), 500
+
+
+@app.route("/news/<int:id>", methods=["GET"])
+def get_single_report(id):
+    with local_session() as ls:
+        try:
+            incident = ls.query(NewsReport).get(id)
+            if incident:
+                return jsonify(incident.as_instance())
+            else:
+                return jsonify({"error": "report not found"}), 404
+        except:
+            return jsonify({"error": "issue getting data"}), 500
 
 
 if __name__ == '__main__':

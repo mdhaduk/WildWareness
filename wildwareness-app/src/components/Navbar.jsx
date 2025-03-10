@@ -17,7 +17,7 @@ function Navbar() {
             <ul className="navbar-nav">
                 <li className="nav-item"><a className="nav-link " href="/incidents">Wildfire Incidents</a></li>
                 <li className="nav-item"><a className="nav-link" href="/shelters">Emergency Shelters</a></li>
-                <li className="nav-item"><a className="nav-link" href="news.html">Community Reports</a></li>
+                <li className="nav-item"><a className="nav-link" href="/news">Community Reports</a></li>
                 <li className="nav-item"><a className="nav-link active" href="/about"><strong>About</strong></a></li>
             </ul>
             </div>

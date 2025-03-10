@@ -7,6 +7,8 @@ import Wildfires from './pages/Wildfires'
 import WildfireIncidentsPage from './pages/WildfireIncidentsPage';
 import Shelters from './pages/Shelters';
 import ShelterInstancePage from './pages/ShelterInstancePage';
+import NewsReports from './pages/NewsReports'
+import NewsReportInstancePage from './pages/NewsReportInstancePage';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
             <Route path='/incidents/:id' element={<WildfireIncidentsPage/>}></Route>
             <Route path='/shelters' element={<Shelters/>}></Route>
             <Route path='/shelters/:id' element={<ShelterInstancePage/>}></Route>
+            <Route path='/news' element={<NewsReports/>}></Route>
+            <Route path='/news/:id' element={<NewsReportInstancePage/>}></Route>
         </Routes>
     </Router>
   )

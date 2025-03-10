@@ -33,10 +33,12 @@ const ShelterInstancePage = () => {
     <div className="container mt-5">
       <h3><strong>{shelter.name}</strong></h3>
       <p>{shelter.address}</p>
-      <a href={shelter.website} target="_blank" rel="noopener noreferrer">{shelter.name}</a>
+      {shelter.website && (
+        <a href={shelter.website} target="_blank" rel="noopener noreferrer">{shelter.name}</a>
+      )}
 
-      <div className="row my-4">
-        <div className="col-auto mb-4">
+      <div className="row my-4 justify-content-center">
+        <div className="col-md-8 text-center mb-4">
           <img
             src={shelter.imageUrl || '/default-placeholder.jpg'}
             alt={shelter.name}
