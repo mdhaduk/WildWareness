@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import Map from '../components/Map';
 
@@ -26,6 +26,28 @@ const ShelterInstancePage = () => {
   if (!shelter) {
     return <div>Loading...</div>;
   }
+
+  const nearbyWildfires = [];
+  for (let i = 0; i < shelter.wildfires.length; i++) {
+    nearbyWildfires.push(
+      <li key={i}>
+            <Link to={`/wildfire_incidents/${shelter.wildfires[i].id}`}>
+              {shelter.wildfires[i].name}
+            </Link>
+      </li>
+    );
+  }
+
+  const nearbyNewsreports = [];
+  for (let i = 0; i < shelter.newsreports.length; i++) {
+      nearbyNewsreports.push(
+        <li key={i}>
+              <Link to={`/news/${shelter.newsreports[i].id}`}>
+                {shelter.newsreports[i].name}
+              </Link>
+        </li>
+      );
+    }
 
   const visibleReviews = showAll ? shelter.reviews : shelter.reviews?.slice(0, 2);
 
@@ -81,6 +103,15 @@ const ShelterInstancePage = () => {
             )}
           </li>
         </ul>
+      </div>
+      <div className="container-fluid my-4">
+        <h5><strong>Nearby Wildfires:</strong></h5>
+        {nearbyWildfires}
+      </div>
+
+      <div className="container-fluid my-4">
+        <h5><strong>Nearby News Reports:</strong></h5>
+        {nearbyNewsreports}
       </div>
 
       <div>

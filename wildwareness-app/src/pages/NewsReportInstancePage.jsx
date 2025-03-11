@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import { useParams, useNavigate} from 'react-router-dom';
+import { useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import Map from '../components/Map';
 
@@ -29,6 +29,28 @@ const NewsReportInstancePage = () => {
 
   if (!report) {
     return <div>Loading...</div>;
+  }
+
+  const nearbyWildfires = [];
+  for (let i = 0; i < report.wildfires.length; i++) {
+    nearbyWildfires.push(
+      <li key={i}>
+            <Link to={`/wildfire_incidents/${report.wildfires[i].id}`}>
+              {report.wildfires[i].name}
+            </Link>
+      </li>
+    );
+  }
+
+  const nearbyShelters = [];
+  for (let i = 0; i < report.shelters.length; i++) {
+    nearbyShelters.push(
+      <li key={i}>
+            <Link to={`/shelters/${report.shelters[i].id}`}>
+              {report.shelters[i].name}
+            </Link>
+      </li>
+    );
   }
 
   return (
@@ -66,6 +88,15 @@ const NewsReportInstancePage = () => {
           <li className="list-group-item text-wrap"><strong>Categories:</strong> {report.categories}</li>
           <li className="list-group-item text-wrap"><strong>Estimated Reading Time (Minutes):</strong> {report.reading_time}</li>
         </ul>
+      </div>
+      <div className="container-fluid my-4">
+        <h5><strong>Nearby Wildfires:</strong></h5>
+        {nearbyWildfires}
+      </div>
+
+      <div className="container-fluid my-4">
+        <h5><strong>Nearby Shelters:</strong></h5>
+        {nearbyShelters}
       </div>
 
       <div>

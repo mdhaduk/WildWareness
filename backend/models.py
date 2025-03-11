@@ -12,8 +12,22 @@ class Base(DeclarativeBase):
 Wildfire_Shelter = Table(
     "wildfires_shelters",
     Base.metadata,
-    Column("wildfires_id", Integer, ForeignKey("wildfires.id"), primary_key=True),
-    Column("shelters_id", Integer, ForeignKey("shelters.id"), primary_key=True),
+    Column("wildfires_id", Integer, ForeignKey("wildfires.id", ondelete="CASCADE"), primary_key=True),
+    Column("shelters_id", Integer, ForeignKey("shelters.id", ondelete="CASCADE"), primary_key=True),
+)
+
+Wildfire_NewsReport = Table(
+    "wildfires_newsreports",
+    Base.metadata,
+    Column("wildfires_id", Integer, ForeignKey("wildfires.id", ondelete="CASCADE"), primary_key=True),
+    Column("news_id", Integer, ForeignKey("news.id", ondelete="CASCADE"), primary_key=True),
+)
+
+Shelter_NewsReport = Table(
+    "shelters_newsreports",
+    Base.metadata,
+    Column("shelters_id", Integer, ForeignKey("shelters.id", ondelete="CASCADE"), primary_key=True),
+    Column("news_id", Integer, ForeignKey("news.id", ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -36,6 +50,10 @@ class Wildfire(Base):
         "Shelter", secondary=Wildfire_Shelter, back_populates="wildfires"
     )
 
+    newsreports = relationship(
+        "NewsReport", secondary=Wildfire_NewsReport, back_populates="wildfires"
+    )
+
     def as_instance(self):
         instance = {
             "id": self.id,
@@ -51,6 +69,10 @@ class Wildfire(Base):
             "shelters": [
                 {"id": shelter.id, "name": shelter.name}
                 for shelter in self.shelters
+            ],
+            "newsreports": [
+                {"id": news.id, "name": news.title}
+                for news in self.newsreports
             ],
 
         }
@@ -74,6 +96,10 @@ class Shelter(Base):
         "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"
     )
 
+    newsreports = relationship(
+        "NewsReport", secondary=Shelter_NewsReport, back_populates="shelters"
+    )
+
     def as_instance(self):
         instance = {
             "id": self.id,
@@ -89,8 +115,10 @@ class Shelter(Base):
                 {"id": wildfire.id, "name": wildfire.name}
                 for wildfire in self.wildfires
             ],
-
-            "description": self.description,
+            "newsreports": [
+                {"id": news.id, "name": news.title}
+                for news in self.newsreports
+            ],
         }
         return instance
 
@@ -99,7 +127,6 @@ class NewsReport(Base):
     __tablename__ = "news"
     # card
     id = Column(Integer, primary_key=True, autoincrement=True)
-    uuid = Column(Text, nullable=True)
     title = Column(Text, nullable=True)
     description = Column(Text, nullable=True)
     keywords = Column(JSON, nullable=False)  # Store list of keywords as a JSON array
@@ -123,11 +150,19 @@ class NewsReport(Base):
     hashtag_links = Column(JSON, nullable=False)  # Store list of hashtag links as JSON
     images = Column(JSON, nullable=False)  # Store list of images as JSON
     videos = Column(JSON, nullable=False)  # Store list of videos as JSON
+    county = Column(JSON, nullable=False)
+
+    wildfires = relationship(
+        "Wildfire", secondary=Wildfire_NewsReport, back_populates="newsreports"
+    )
+
+    shelters = relationship(
+        "Shelter", secondary=Shelter_NewsReport, back_populates="newsreports"
+    )
 
     def as_instance(self):
         instance = {
             "id": self.id,
-            "uuid": self.uuid,
             "title": self.title,
             "description": self.description,
             "keywords": self.keywords,
@@ -150,6 +185,16 @@ class NewsReport(Base):
             "related_articles": self.related_articles,
             "hashtag_links": self.hashtag_links,
             "images": self.images,
-            "videos": self.videos
+            "videos": self.videos,
+            "county": self.county,
+            "wildfires": [
+                {"id": wildfire.id, "name": wildfire.name}
+                for wildfire in self.wildfires
+            ],
+            "shelters": [
+                {"id": shelter.id, "name": shelter.name}
+                for shelter in self.shelters
+            ],
         }
+        
         return instance

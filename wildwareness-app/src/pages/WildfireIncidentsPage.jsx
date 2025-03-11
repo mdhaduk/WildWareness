@@ -25,9 +25,7 @@ const WildfireIncidentsPage = () => {
   }
 
   const nearbyShelters = [];
-  console.log(wildfire.shelters.length)
     for (let i = 0; i < wildfire.shelters.length; i++) {
-    console.log(wildfire.shelters[i].id)
       nearbyShelters.push(
         <li key={i}>
               <Link to={`/shelters/${wildfire.shelters[i].id}`}>
@@ -36,6 +34,17 @@ const WildfireIncidentsPage = () => {
         </li>
       );
     }
+
+    const nearbyNewsreports = [];
+    for (let i = 0; i < wildfire.newsreports.length; i++) {
+        nearbyNewsreports.push(
+          <li key={i}>
+                <Link to={`/news/${wildfire.newsreports[i].id}`}>
+                  {wildfire.newsreports[i].name}
+                </Link>
+          </li>
+        );
+      }
 
 
 
@@ -78,11 +87,11 @@ const WildfireIncidentsPage = () => {
         <h5><strong>Nearby Homeless Shelters:</strong></h5>
         {nearbyShelters}
       </div>
-{/* 
+
       <div className="container-fluid my-4">
-        <h5><strong>Nearby Nonprofits:</strong></h5>
-        {nearbyNonprofits}
-      </div> */}
+        <h5><strong>Nearby News Reports:</strong></h5>
+        {nearbyNewsreports}
+      </div>
       <div>
         <button className="btn btn-secondary mb-3" onClick={() => navigate('/incidents')}>Go Back</button>
       </div>

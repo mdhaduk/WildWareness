@@ -52,12 +52,19 @@ def link(local_session):
         # Fetch all wildfires and shelters
         wildfires = ls.query(Wildfire).all()
         shelters = ls.query(Shelter).all()
+        newsdatas = ls.query(NewsReport).all()
 
         # Create a dictionary mapping counties to wildfires
         wildfire_dict = defaultdict(list)
         for wildfire in wildfires:
             county = wildfire.county.lower().strip()
             wildfire_dict[county].append(wildfire)
+
+        # Create a dictionary mapping counties to wildfires
+        shelters_dict = defaultdict(list)
+        for shelter in shelters:
+            county = get_county_from_address(str(shelter.address)).replace(" County", "").lower().strip()
+            shelters_dict[county].append(shelter)
 
         # Link shelters to wildfires based on county
         for shelter in shelters:
@@ -71,6 +78,22 @@ def link(local_session):
                     if shelter not in wildfire.shelters:  # Prevent duplicates
                         wildfire.shelters.append(shelter)
 
+        # Link news to wildfires based on county
+        for news in newsdatas:
+            news_county = news.county.lower().strip()
+            if news_county in wildfire_dict:
+                for wildfire in wildfire_dict[news_county]:
+                    if news not in wildfire.newsreports:  # Prevent duplicates
+                        wildfire.newsreports.append(news)
+
+        # Link news to wildfires based on county
+        for news in newsdatas:
+            news_county = news.county.lower().strip()
+            if news_county in shelters_dict:
+                for shelter in shelters_dict[news_county]:
+                    if news not in shelter.newsreports:  # Prevent duplicates
+                        shelter.newsreports.append(news)
+
         # Commit the changes
         ls.commit()
 
@@ -78,7 +101,7 @@ def link(local_session):
 def addNewsReports(local_session):
     allowed_keys = {"title", "description", "keywords", "snippet", "url", "image_url", "language", "published_at", "source", 
                     "categories", "author", "locations", "geo_locations", "map_urls", "reading_time", "socials", 
-                    "text_summary", "related_articles", "hashtag_links", "images", "videos"}
+                    "text_summary", "related_articles", "hashtag_links", "images", "videos", "county"}
     with local_session() as ls:
         with open("news_reports_data.json", "r") as file:
             body = json.load(file)
