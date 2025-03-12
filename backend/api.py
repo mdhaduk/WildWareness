@@ -11,7 +11,7 @@ import awsgi
 
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 app.json.sort_keys = False
 CORS(app)
 
@@ -142,4 +142,4 @@ def get_single_report(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
