@@ -104,15 +104,55 @@ const ShelterInstancePage = () => {
           </li>
         </ul>
       </div>
-      <div className="container-fluid my-4">
-        <h5><strong>Nearby Wildfires:</strong></h5>
-        {nearbyWildfires}
-      </div>
-
-      <div className="container-fluid my-4">
-        <h5><strong>Nearby News Reports:</strong></h5>
-        {nearbyNewsreports}
-      </div>
+      <div className="row">
+        <h5 className=''><strong>Nearby Wildfires:</strong></h5>
+                {shelter.wildfires.length > 0 ? (
+                    shelter.wildfires.map((wildfire) => (
+                        <div key={wildfire.id} className="col-md-4 mb-4">
+                            <div className="card" style={{ width: '22rem' }}>
+                                <img className="card-img" src={wildfire.url} alt={wildfire.name}/>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item"><strong>Name:</strong> {wildfire.name}</li>
+                                    <li className="list-group-item"><strong>County:</strong> {wildfire.county}</li>
+                                    <li className="list-group-item"><strong>Location:</strong> {wildfire.location}</li>
+                                    <li className="list-group-item"><strong>Year:</strong> {wildfire.year}</li>
+                                    <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
+                                </ul>
+                                <div className="card-body text-center">
+                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center">Loading...</p>
+                )}
+        </div>
+        <br />
+        <div className="row">
+        <h5 className=''><strong>Nearby News Reports:</strong></h5>
+                {shelter.newsreports.length > 0 ? (
+                    shelter.newsreports.map((newsreport) => (
+                        <div key={newsreport.id} className="col-md-4 mb-4">
+                            <div className="card" style={{ width: '22rem' }}>
+                                <img className="card-img" src={newsreport.image_url} alt={newsreport.title}/>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item"><strong>Title:</strong> {newsreport.title}</li>
+                                    <li className="list-group-item"><strong>Source:</strong> {newsreport.source}</li>
+                                    <li className="list-group-item"><strong>Date:</strong> {newsreport.date}</li>
+                                    <li className="list-group-item"><strong>Author:</strong> {newsreport.author}</li>
+                                    <li className="list-group-item"><strong>Categories:</strong> {newsreport.categories}</li>
+                                </ul>
+                                <div className="card-body text-center">
+                                    <Link to={`/news/${newsreport.id}`} className="btn btn-primary">Read More</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center">Loading...</p>
+                )}
+        </div>
 
       <div>
         <button className="btn btn-secondary mb-3" onClick={() => navigate('/shelters')}>Go Back</button>

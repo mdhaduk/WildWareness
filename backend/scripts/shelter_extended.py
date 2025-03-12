@@ -64,7 +64,7 @@ def fetch_all_places(queries, api_key):
     for query in queries:
         print(f"Fetching results for query: {query}")
         results = fetch_all_places_for_query(query, api_key)
-        all_results.extend(results[:4])
+        all_results.extend(results[:5])
 
         if len(all_results) >= 300:  # Stop at 300 shelters total
             break

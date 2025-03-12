@@ -67,11 +67,14 @@ class Wildfire(Base):
             "longitude": self.longitude,
             "description": self.description,
             "shelters": [
-                {"id": shelter.id, "name": shelter.name}
+                {"id": shelter.id, "name": shelter.name, "address": shelter.address,
+                    "phone": shelter.phone, "website": shelter.website, "rating": shelter.rating,
+                    "imageUrl": shelter.imageUrl}
                 for shelter in self.shelters
             ],
             "newsreports": [
-                {"id": news.id, "name": news.title}
+                {"id": news.id, "title": news.title, "source": news.source, "date": news.published_at,
+                    "author": news.author, "categories": news.categories, "image_url": news.image_url,}
                 for news in self.newsreports
             ],
 
@@ -112,11 +115,14 @@ class Shelter(Base):
             "imageUrl": self.imageUrl,
             "description": self.description,
             "wildfires": [
-                {"id": wildfire.id, "name": wildfire.name}
+                {"id": wildfire.id, "name": wildfire.name, "county": wildfire.county,
+                    "location": wildfire.location, "year": wildfire.year, "acres_burned": wildfire.acres_burned,
+                    "url": wildfire.url}
                 for wildfire in self.wildfires
             ],
             "newsreports": [
-                {"id": news.id, "name": news.title}
+                {"id": news.id, "title": news.title, "source": news.source, "date": news.published_at,
+                    "author": news.author, "categories": news.categories, "image_url": news.image_url,}
                 for news in self.newsreports
             ],
         }
@@ -127,12 +133,12 @@ class NewsReport(Base):
     __tablename__ = "news"
     # card
     id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(Text, nullable=True)
+    title = Column(Text, nullable=False)
     description = Column(Text, nullable=True)
     keywords = Column(JSON, nullable=False)  # Store list of keywords as a JSON array
     snippet = Column(Text, nullable=True)
     url = Column(Text, nullable=True)
-    image_url = Column(Text, nullable=True)
+    image_url = Column(Text, nullable=False)
     language = Column(Text, nullable=True)
     published_at = Column(Text, nullable=True)
     source = Column(Text, nullable=True)
@@ -188,11 +194,15 @@ class NewsReport(Base):
             "videos": self.videos,
             "county": self.county,
             "wildfires": [
-                {"id": wildfire.id, "name": wildfire.name}
+                {"id": wildfire.id, "name": wildfire.name, "county": wildfire.county,
+                    "location": wildfire.location, "year": wildfire.year, "acres_burned": wildfire.acres_burned,
+                    "url": wildfire.url}
                 for wildfire in self.wildfires
             ],
             "shelters": [
-                {"id": shelter.id, "name": shelter.name}
+                {"id": shelter.id, "name": shelter.name, "address": shelter.address,
+                    "phone": shelter.phone, "website": shelter.website, "rating": shelter.rating,
+                    "imageUrl": shelter.imageUrl}
                 for shelter in self.shelters
             ],
         }

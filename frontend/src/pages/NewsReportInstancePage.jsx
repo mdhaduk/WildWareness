@@ -89,15 +89,56 @@ const NewsReportInstancePage = () => {
           <li className="list-group-item text-wrap"><strong>Estimated Reading Time (Minutes):</strong> {report.reading_time}</li>
         </ul>
       </div>
-      <div className="container-fluid my-4">
-        <h5><strong>Nearby Wildfires:</strong></h5>
-        {nearbyWildfires}
-      </div>
-
-      <div className="container-fluid my-4">
-        <h5><strong>Nearby Shelters:</strong></h5>
-        {nearbyShelters}
-      </div>
+      <br />
+      <div className="row">
+        <h5 className=''><strong>Nearby Wildfires:</strong></h5>
+                {report.wildfires.length > 0 ? (
+                    report.wildfires.map((wildfire) => (
+                        <div key={wildfire.id} className="col-md-4 mb-4">
+                            <div className="card" style={{ width: '22rem' }}>
+                                <img className="card-img" src={wildfire.url} alt={wildfire.name}/>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item"><strong>Name:</strong> {wildfire.name}</li>
+                                    <li className="list-group-item"><strong>County:</strong> {wildfire.county}</li>
+                                    <li className="list-group-item"><strong>Location:</strong> {wildfire.location}</li>
+                                    <li className="list-group-item"><strong>Year:</strong> {wildfire.year}</li>
+                                    <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
+                                </ul>
+                                <div className="card-body text-center">
+                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center">Loading...</p>
+                )}
+        </div>
+        <br />
+        <div className="row">
+        <h5 className=''><strong>Nearby Shelters:</strong></h5>
+                {report.shelters.length > 0 ? (
+                    report.shelters.map((shelter) => (
+                        <div key={shelter.id} className="col-md-4 mb-4">
+                            <div className="card" style={{ width: '22rem' }}>
+                                <img className="card-img" src={shelter.imageUrl} alt={shelter.name}/>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item"><strong>Name:</strong> {shelter.name}</li>
+                                    <li className="list-group-item"><strong>Address:</strong> {shelter.address}</li>
+                                    <li className="list-group-item"><strong>Phone:</strong> {shelter.phone}</li>
+                                    <li className="list-group-item"><strong>Website:</strong> {shelter.website}</li>
+                                    <li className="list-group-item"><strong>Rating:</strong> {shelter.rating}</li>
+                                </ul>
+                                <div className="card-body text-center">
+                                    <Link to={`/shelters/${shelter.id}`} className="btn btn-primary">Read More</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center">Loading...</p>
+                )}
+        </div>
 
       <div>
         <button className="btn btn-secondary mb-3" onClick={() => navigate('/news')}>Go Back</button>
