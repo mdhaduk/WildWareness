@@ -18,7 +18,7 @@ function Shelters() {
         const fetchshelters = async () => {
             try {
                 console.log("Fetching data for page:", pageParam);
-                const response = await axios.get(`http://127.0.0.1:5000/shelters`, {
+                const response = await axios.get(`https://api.wildwareness.net/shelters`, {
                     params: { page: pageParam, size: itemsPerPage },
                 });
 
