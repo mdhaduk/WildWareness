@@ -11,7 +11,7 @@ const NewsReportInstancePage = () => {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/news/${id}`);
+        const response = await axios.get(`https://api.wildwareness.net/news/${id}`);
         const modifiedResponse = {
             ...response.data, // Spread all properties from response.data
         };

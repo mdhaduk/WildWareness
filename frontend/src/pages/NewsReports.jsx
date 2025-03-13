@@ -18,7 +18,7 @@ function NewsReports() {
         const fetchReports = async () => {
             try {
                 console.log("Fetching data for page:", pageParam);
-                const response = await axios.get(`http://127.0.0.1:5000/news`, {
+                const response = await axios.get(`https://api.wildwareness.net/news`, {
                     params: { page: pageParam, size: itemsPerPage },
                 });
 

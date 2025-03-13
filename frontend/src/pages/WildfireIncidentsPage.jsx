@@ -11,7 +11,7 @@ const WildfireIncidentsPage = () => {
   useEffect(() => {
     const fetchWildFire = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/wildfire_incidents/${id}`);
+        const response = await axios.get(`https://api.wildwareness.net/wildfire_incidents/${id}`);
         console.log(response.data)
         setWildFire(response.data);
       } catch (error) {
