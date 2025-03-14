@@ -43,8 +43,12 @@ test-backend:
 test-frontend:
 	cd frontend && npm test
 
+# Run Selenium tests
+test-selenium:
+	cd frontend && python frontendAcceptanceTests.py
+
 # Run all tests
-test: test-backend test-frontend
+test: test-backend test-frontend test-selenium
 	@echo "All tests completed"
 
 # Clean any generated files
