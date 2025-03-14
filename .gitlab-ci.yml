@@ -17,5 +17,18 @@ test:
     - npm install
   script:
     - npm run test:ci-simple
+    - python frontendAcceptanceTests.py
     - echo "Test verification complete"
+
+  test_postman:
+    stage: test
+    image: 
+      name: postman/newman:alpine
+      entrypoint: [""]
+    before_script:
+      - cd backend
+    script:
+      - newman run collection.json
+
+
 
