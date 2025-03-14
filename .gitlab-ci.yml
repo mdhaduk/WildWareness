@@ -20,6 +20,13 @@ test:
     - python frontendAcceptanceTests.py
     - echo "Test verification complete"
 
+test_selenium:
+  stage: test
+  image: python:latest
+  script:
+    - cd frontend
+    - python your_test_script.py 
+
 test_postman:
     stage: test
     image: 
@@ -28,7 +35,7 @@ test_postman:
     before_script:
       - cd backend
     script:
-      - newman run collection.json
+      - newman run wildwareness_api.json
 
 
 
