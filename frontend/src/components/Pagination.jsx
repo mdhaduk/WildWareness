@@ -27,7 +27,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange, totalItems, itemsPe
       <div className="row">
         <div className="d-flex justify-content-center my-4">
             <nav>
-              <ul className="pagination">
+              <ul className="pagination flex-wrap">
                 {/* Previous Button */}
                 <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                 <Link className="page-link" to={`${url}?page=${currentPage - 1}`} onClick={() => handlePageChange(currentPage - 1)} onMouseUp={(e) => e.currentTarget.blur()}>
