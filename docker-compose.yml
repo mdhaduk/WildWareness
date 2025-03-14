@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend  # Path to backend code
+      dockerfile: Dockerfile
+    container_name: backend-container
+    ports:
+      - "5000:5000"  # Expose Flask API on port 5000
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env  # Load environment variables
+    depends_on:
+      - db  # Ensure backend starts after the database
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend  # Path to frontend code
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    ports:
+      - "3000:80"  # Expose frontend via Nginx on port 80
+    restart: unless-stopped
+    depends_on:
+      - backend  # Ensure frontend starts after backend
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"  # Expose PostgreSQL database
+    env_file:
+      - ./backend/.env  # Load DB credentials from .env file
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
