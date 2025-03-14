@@ -20,7 +20,7 @@ test:
     - python frontendAcceptanceTests.py
     - echo "Test verification complete"
 
-  test_postman:
+test_postman:
     stage: test
     image: 
       name: postman/newman:alpine
