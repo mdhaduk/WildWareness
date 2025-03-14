@@ -24,6 +24,7 @@ test_selenium:
   image: python:latest
   script:
     - cd frontend
+    - pip install selenium  # Install Selenium directly
     - python frontendAcceptanceTests.py
 
 test_postman:
