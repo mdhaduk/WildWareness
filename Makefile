@@ -37,11 +37,11 @@ check: .gitignore .gitlab-ci.yml
 
 # Run Python backend tests
 test-backend:
-	cd backend && python run_tests.py
+	cd backend && source ./venv/bin/activate && python run_tests.py
 
 # Run JavaScript frontend tests
 test-frontend:
-	cd wildwareness-app && npm test
+	cd frontend && npm test
 
 # Run all tests
 test: test-backend test-frontend

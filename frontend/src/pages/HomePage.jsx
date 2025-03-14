@@ -18,7 +18,7 @@ function HomePage() {
                 </div>
 
                 <div className="col-lg-6 d-flex align-items-center justify-content-center mb-5">
-                    <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel" style={{ maxWidth: '900px', maxHeight: '500px' }}>
+                <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel" style={{ maxWidth: '900px', maxHeight: '500px' }} data-testid="carousel">
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <img src="https://npr.brightspotcdn.com/dims3/default/strip/false/crop/4964x3309+0+0/resize/1300/quality/85/format/webp/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F12%2F42%2Fcdcddc04453da38799e99c976828%2Fgettyimages-2193654527.jpg" className="d-block w-100" alt="Wildfire"/>
