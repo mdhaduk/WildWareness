@@ -21,7 +21,7 @@ test:
 
 test_selenium:
   stage: test
-  image: python:latest
+  image: frontend-container
   script:
     - cd frontend
     - pip install selenium  # Install Selenium directly
