@@ -1,0 +1,1139 @@
+{
+	"info": {
+		"_postman_id": "6f12d93b-5c76-4039-9794-156c17790d60",
+		"name": "WildWareness API",
+		"description": "> Endpoints for testing our own backend API developed for WildWareness",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42446942",
+		"_collection_link": "https://wildwarenessapi.postman.co/workspace/34beb2d5-79b1-4365-8c1d-b365a6db0d62/collection/42446942-6f12d93b-5c76-4039-9794-156c17790d60?action=share&source=collection_link&creator=42446942"
+	},
+	"item": [
+		{
+			"name": "Wildfires",
+			"item": [
+				{
+					"name": "Get All Wildfire Incidents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Each fire has id and sortable attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.incidents.forEach(function (fire) {",
+									"        pm.expect(fire).to.have.property('id');",
+									"        pm.expect(fire).to.have.property('name');",
+									"        pm.expect(fire).to.have.property('county');",
+									"        pm.expect(fire).to.have.property('location');",
+									"        pm.expect(fire).to.have.property('year');",
+									"        pm.expect(fire).to.have.property('acres_burned');",
+									"    });",
+									"});",
+									"",
+									"// Check ids unique",
+									"pm.test(\"All fire ids are unique\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var ids = [];",
+									"    jsonData.incidents.forEach(function(fire) {",
+									"        pm.expect(ids).to.not.include(fire.id);",
+									"        ids.push(fire.id);",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/wildfire_incidents",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"wildfire_incidents"
+							]
+						},
+						"description": "> This endpoint will retrieve all instances of wildfires, along with related images and connections."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/wildfires?createdAt=2024-01-10&toAccountId=19&fromAccountId=17",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wildfires"
+									],
+									"query": [
+										{
+											"key": "createdAt",
+											"value": "2024-01-10",
+											"description": "(Optional) filter for transactions created on or after date (YYYY-MM-DD)"
+										},
+										{
+											"key": "toAccountId",
+											"value": "19",
+											"description": "(Optional) filter for the account that initiated the transaction"
+										},
+										{
+											"key": "fromAccountId",
+											"value": "17",
+											"description": "(Optional) filter for the account that received the transaction"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 13:47:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "759"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"FeatureCollection\",\n  \"features\": [\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-120.246601, 34.883723]\n      },\n      \"properties\": {\n        \"Name\": \"Oak Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-12T09:36:42Z\",\n        \"Started\": \"2025-01-01T20:08:00Z\",\n        \"AdminUnit\": \"Santa Barbara County Fire Department\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Santa Barbara\",\n        \"Location\": \"Tepesquet Canyon/Santa Maria Mesa Road, Santa Maria\",\n        \"AcresBurned\": 42,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \"\",\n        \"Longitude\": -120.246601,\n        \"Latitude\": 34.883723,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"e2f7d285-7b47-40c0-802e-b7de9e51da56\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/1/oak-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-01\",\n        \"IsActive\": false,\n        \"CalFireIncident\": false,\n        \"NotificationDesired\": false\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-116.82817, 32.59853]\n      },\n      \"properties\": {\n        \"Name\": \"Border Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-02T22:04:25Z\",\n        \"Started\": \"2025-01-01T18:23:09Z\",\n        \"AdminUnit\": \"BLM/El Centro Office\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"San Diego\",\n        \"Location\": \"Otay Mountain Wilderness\",\n        \"AcresBurned\": 25,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \"\",\n        \"Longitude\": -116.82817,\n        \"Latitude\": 32.59853,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"4eef0191-65aa-46a0-8227-d1553896a5b0\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/1/border-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-01\",\n        \"IsActive\": false,\n        \"CalFireIncident\": false,\n        \"NotificationDesired\": false\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-118.54453, 34.07022]\n      },\n      \"properties\": {\n        \"Name\": \"Palisades Fire\",\n        \"Final\": false,\n        \"Updated\": \"2025-02-10T17:33:39Z\",\n        \"Started\": \"2025-01-07T10:30:00Z\",\n        \"AdminUnit\": \"Los Angeles City Fire Department\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Los Angeles\",\n        \"Location\": \"Southeast of Palisades Drive, Pacific Palisades\",\n        \"AcresBurned\": 23706.6,\n        \"PercentContained\": 100,\n        \"ControlStatement\": \"\",\n        \"AgencyNames\": \"City of Los Angeles, Los Angeles Department of Water & Power, Los Angeles Department of Transportation, Los Angeles City Emergency Management Department, Los Angeles County Office of Emergency Managment, Los Angeles County Department of Animal Control, Los Angeles Community Brigade, Los Angeles County Department of Public Works, Los Angeles County Department of Public Health, City of Malibu, California State Parks, Los Virgenes Municipal Water District, Southern California Edison, Pepperdine University, California Highway Patrol, American Red Cross, National Park Service, Gabrieleno Band of Mission Indians-Kizh-Nation.\",\n        \"Longitude\": -118.54453,\n        \"Latitude\": 34.07022,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"abfed7a3-794a-4294-9852-43176dcbc18a\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/7/palisades-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-07\",\n        \"IsActive\": true,\n        \"CalFireIncident\": true,\n        \"NotificationDesired\": false\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-118.069155, 34.203483]\n      },\n      \"properties\": {\n        \"Name\": \"Eaton Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-02-07T13:59:24Z\",\n        \"Started\": \"2025-01-07T18:18:00Z\",\n        \"AdminUnit\": \"Los Angeles County Fire Department\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Los Angeles\",\n        \"Location\": \"Near Altadena Drive and Midwick Drive, Altadena/Pasadena\",\n        \"AcresBurned\": 14021,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \", LA County Mental Health, LA County Dept. Public Works, Pasadena Water and Power, LA County Medical Examiner, LA County Public Health, Southern California Edison, Sierra Madre Fire Department, Gabrieleno Band of Mission Indians - Kizh Nation, Arcadia Fire Department, Southern California Gas, California National Guard\",\n        \"Longitude\": -118.069155,\n        \"Latitude\": 34.203483,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"dbfa574e-1b10-4467-b5e5-7d1c06ebc8dc\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/7/eaton-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-07\",\n        \"IsActive\": true,\n        \"CalFireIncident\": true,\n        \"NotificationDesired\": false\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-118.478134, 34.32533]\n      },\n      \"properties\": {\n        \"Name\": \"Hurst Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-16T21:51:53Z\",\n        \"Started\": \"2025-01-07T22:29:30Z\",\n        \"AdminUnit\": \"Los Angeles City Fire Department, United States Forest Service, Los Angeles Fire Department, Los Angles County Sheriff\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Los Angeles\",\n        \"Location\": \"Near Diamond Road, Sylmar\",\n        \"AcresBurned\": 799,\n        \"PercentContained\": 100,\n        \"ControlStatement\": \"\",\n        \"AgencyNames\": \"\",\n        \"Longitude\": -118.478134,\n        \"Latitude\": 34.32533,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"ed36cf94-75d8-43f6-913a-d15646907311\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/7/hurst-fire/\",\n        \"ExtinguishedDate\": \"2025-01-16T00:00:00Z\",\n        \"ExtinguishedDateOnly\": \"2025-01-16\",\n        \"StartedDateOnly\": \"2025-01-07\",\n        \"IsActive\": false,\n        \"CalFireIncident\": false,\n        \"NotificationDesired\": false\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-116.164126, 33.706565]\n      },\n      \"properties\": {\n        \"Name\": \"Tyler Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-10T11:18:58Z\",\n        \"Started\": \"2025-01-08T03:25:39Z\",\n        \"AdminUnit\": \"CAL FIRE Riverside Unit\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Riverside\",\n        \"Location\": \"Tyler Street & 47th Avenue, Coachella\",\n        \"AcresBurned\": 11,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \"\",\n        \"Longitude\": -116.164126,\n        \"Latitude\": 33.706565,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"c3e0b57e-f5b9-41e0-b9ec-eb524797c874\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/8/tyler-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-08\",\n        \"IsActive\": false,\n        \"CalFireIncident\": true,\n        \"NotificationDesired\": false\n      }\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single Wildfire-id_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check the structure of the successful response",
+									"pm.test(\"Got Response\", () => {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Fire has id and sortable attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('name');",
+									"    pm.expect(jsonData).to.have.property('county');",
+									"    pm.expect(jsonData).to.have.property('location');",
+									"    pm.expect(jsonData).to.have.property('year');",
+									"    pm.expect(jsonData).to.have.property('acres_burned');",
+									"});",
+									"",
+									"// Check id match request (1)",
+									"pm.test(\"Id matches request (1)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1);",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/wildfire_incidents/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"wildfire_incidents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) ID of wildfire"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of a wildfire incident indicated by the **id path variable**"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/wildfires/:id",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wildfires",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "17"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 13:21:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "95"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-120.246601, 34.883723]\n      },\n      \"properties\": {\n        \"Name\": \"Oak Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-12T09:36:42Z\",\n        \"Started\": \"2025-01-01T20:08:00Z\",\n        \"AdminUnit\": \"Santa Barbara County Fire Department\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Santa Barbara\",\n        \"Location\": \"Tepesquet Canyon/Santa Maria Mesa Road, Santa Maria\",\n        \"AcresBurned\": 42,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \"\",\n        \"Longitude\": -120.246601,\n        \"Latitude\": 34.883723,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"e2f7d285-7b47-40c0-802e-b7de9e51da56\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/1/oak-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-01\",\n        \"IsActive\": false,\n        \"CalFireIncident\": false,\n        \"NotificationDesired\": false\n      }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single Wildfire-id_15",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check the structure of the successful response",
+									"pm.test(\"Got Response\", () => {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Fire has id and sortable attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('name');",
+									"    pm.expect(jsonData).to.have.property('county');",
+									"    pm.expect(jsonData).to.have.property('location');",
+									"    pm.expect(jsonData).to.have.property('year');",
+									"    pm.expect(jsonData).to.have.property('acres_burned');",
+									"});",
+									"",
+									"// Check id match request (15)",
+									"pm.test(\"Id matches request (15)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(15);",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/wildfire_incidents/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"wildfire_incidents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "15",
+									"description": "(Required) ID of wildfire"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of a wildfire incident indicated by the **id path variable**"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/wildfires/:id",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"wildfires",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "17"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 13:21:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "95"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-120.246601, 34.883723]\n      },\n      \"properties\": {\n        \"Name\": \"Oak Fire\",\n        \"Final\": true,\n        \"Updated\": \"2025-01-12T09:36:42Z\",\n        \"Started\": \"2025-01-01T20:08:00Z\",\n        \"AdminUnit\": \"Santa Barbara County Fire Department\",\n        \"AdminUnitUrl\": null,\n        \"County\": \"Santa Barbara\",\n        \"Location\": \"Tepesquet Canyon/Santa Maria Mesa Road, Santa Maria\",\n        \"AcresBurned\": 42,\n        \"PercentContained\": 100,\n        \"ControlStatement\": null,\n        \"AgencyNames\": \"\",\n        \"Longitude\": -120.246601,\n        \"Latitude\": 34.883723,\n        \"Type\": \"Wildfire\",\n        \"UniqueId\": \"e2f7d285-7b47-40c0-802e-b7de9e51da56\",\n        \"Url\": \"https://www.fire.ca.gov/incidents/2025/1/1/oak-fire/\",\n        \"ExtinguishedDate\": \"\",\n        \"ExtinguishedDateOnly\": \"\",\n        \"StartedDateOnly\": \"2025-01-01\",\n        \"IsActive\": false,\n        \"CalFireIncident\": false,\n        \"NotificationDesired\": false\n      }\n}"
+						}
+					]
+				}
+			],
+			"description": "This directory contains all endpoints related to wildfire incidents"
+		},
+		{
+			"name": "Emergency Shelters",
+			"item": [
+				{
+					"name": "Get All Shelters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Each shelter has id and sortable attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.shelters.forEach(function (shelter) {",
+									"        pm.expect(shelter).to.have.property('id');",
+									"        pm.expect(shelter).to.have.property('name');",
+									"        pm.expect(shelter).to.have.property('address');",
+									"        pm.expect(shelter).to.have.property('phone');",
+									"        pm.expect(shelter).to.have.property('website');",
+									"        pm.expect(shelter).to.have.property('rating');",
+									"    });",
+									"});",
+									"",
+									"// Check ids unique",
+									"pm.test(\"All shelter ids are unique\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var ids = [];",
+									"    jsonData.shelters.forEach(function(shelter) {",
+									"        pm.expect(ids).to.not.include(shelter.id);",
+									"        ids.push(shelter.id);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/shelters",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"shelters"
+							]
+						},
+						"description": "> This endpoint will retrieve all instances of the shelter's model, along with related images and connections."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/shelters?sort_by=status&county=string&area_code=string",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"shelters"
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "status",
+											"description": "(Optional) sort by status or by city for the shelters\n"
+										},
+										{
+											"key": "county",
+											"value": "string",
+											"description": "(Optional) filter shelter's by a county"
+										},
+										{
+											"key": "area_code",
+											"value": "string",
+											"description": "(Optional) filter by area code for shelter's contact number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 13:48:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "139"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"shelters\": [\n    {\n      \"id\": 1,\n      \"name\": \"Sonoma Veterans Building\",\n      \"address\": \"4613 Tannehill Ln, Bldg 3, Austin, TX 78721\",\n      \"city\": \"West Sonoma\",\n      \"contact\": \"707-938-4105\",\n      \"status\": \"Open\",\n      \"county\": \"Sonoma\",\n      \"description\": \"The Sonoma Veterans Memorial Building is located near Sonoma's historic downtown plaza, providing a versatile and well-equipped venue for a variety of events. It offers several amenities, including corporate meeting services, outdoor meeting spaces, and areas for ceremonies and receptions. The facility includes a large auditorium with a seating capacity of up to 700 guests (500 seated), a dining room for up to 309 guests, and a smaller dining area that can accommodate 150 people.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_reports\": [\n        {\n          \"id\": 1,\n          \"name\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg\"\n      }\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Sebastopol Community Center\",\n      \"address\": \"390 Morris Street\",\n      \"city\": \"Sebastopol\",\n      \"contact\": \"530-533-7464\",\n      \"status\": \"Open\",\n      \"county\": \"Sonoma\",\n      \"description\": \"The Sebastopol Community Cultural Center (SCCC) is an integral cultural institution in Sebastopol, California, fostering a deep sense of community through a variety of programs, events, and services. Located in the heart of Sebastopol, the center offers a welcoming space for individuals of all ages to come together and engage in artistic, cultural, and educational activities. The SCCC plays a crucial role in enriching the cultural life of the community by providing diverse programming that supports local artists, performers, and creators.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Oak Fire\"\n        }\n      ],\n      \"related_reports\": [\n        {\n          \"id\": 1,\n          \"name\": \"Maps and images reveal the scale of LA wildfire devastation\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://seb.org/wp-content/uploads/2023/01/Main-Hall-Exterior-e1681149533890-400x284.jpg\"\n      }\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Contra Costa Community College\",\n      \"address\": \"2600 Mission Bell Drive\",\n      \"city\": \"San Pablo\",\n      \"contact\": \"510-235-7800\",\n      \"status\": \"Open\",\n      \"county\": \"Contra Costa\",\n      \"description\": \"Contra Costa College (CCC) is a vibrant public community college located in West Contra Costa County, California. It serves a diverse and growing student population, offering a wide range of educational opportunities that cater to the needs of its local and regional community. The college is dedicated to providing an accessible, affordable, and high-quality education with a focus on inclusivity, academic excellence, and student success.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Eaton Fire\"\n        }\n      ],\n      \"related_reports\": [\n        {\n          \"id\": 1,\n          \"name\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://www.4cd.edu/_files/images/home/ccc.png\"\n      }\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single Shelter-id_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Shelter has id and sortable attributes\", function () {",
+									"    var shelter = pm.response.json();",
+									"    pm.expect(shelter).to.have.property('id');",
+									"    pm.expect(shelter).to.have.property('name');",
+									"    pm.expect(shelter).to.have.property('address');",
+									"    pm.expect(shelter).to.have.property('phone');",
+									"    pm.expect(shelter).to.have.property('website');",
+									"    pm.expect(shelter).to.have.property('rating');",
+									"});",
+									"",
+									"// Check id match request (1)",
+									"pm.test(\"Id matches request (1)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1);",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/shelters/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"shelters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) ID of shelter"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of the Emergency Shelter model using the id path variable"
+					},
+					"response": [
+						{
+							"name": "Succesful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/accounts/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26",
+											"description": "(Required) ID of account"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 14:46:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": " {\n      \"id\": 1,\n      \"name\": \"Sonoma Veterans Building\",\n      \"address\": \"4613 Tannehill Ln, Bldg 3, Austin, TX 78721\",\n      \"city\": \"West Sonoma\",\n      \"contact\": \"707-938-4105\",\n      \"status\": \"Open\",\n      \"county\": \"Sonoma\",\n      \"description\": \"The Sonoma Veterans Memorial Building is located near Sonoma's historic downtown plaza, providing a versatile and well-equipped venue for a variety of events. It offers several amenities, including corporate meeting services, outdoor meeting spaces, and areas for ceremonies and receptions. The facility includes a large auditorium with a seating capacity of up to 700 guests (500 seated), a dining room for up to 309 guests, and a smaller dining area that can accommodate 150 people.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_reports\": [\n        {\n          \"id\": 1,\n          \"name\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg\"\n      }\n    }"
+						}
+					]
+				},
+				{
+					"name": "Get Single Shelter-id_30",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Shelter has id and sortable attributes\", function () {",
+									"    var shelter = pm.response.json();",
+									"    pm.expect(shelter).to.have.property('id');",
+									"    pm.expect(shelter).to.have.property('name');",
+									"    pm.expect(shelter).to.have.property('address');",
+									"    pm.expect(shelter).to.have.property('phone');",
+									"    pm.expect(shelter).to.have.property('website');",
+									"    pm.expect(shelter).to.have.property('rating');",
+									"});",
+									"",
+									"// Check id match request (30)",
+									"pm.test(\"Id matches request (30)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(30);",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/shelters/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"shelters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "30",
+									"description": "(Required) ID of shelter"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of the Emergency Shelter model using the id path variable"
+					},
+					"response": [
+						{
+							"name": "Succesful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/accounts/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26",
+											"description": "(Required) ID of account"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 17 Feb 2024 14:46:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "uWebSockets",
+									"value": "20"
+								}
+							],
+							"cookie": [],
+							"body": " {\n      \"id\": 1,\n      \"name\": \"Sonoma Veterans Building\",\n      \"address\": \"4613 Tannehill Ln, Bldg 3, Austin, TX 78721\",\n      \"city\": \"West Sonoma\",\n      \"contact\": \"707-938-4105\",\n      \"status\": \"Open\",\n      \"county\": \"Sonoma\",\n      \"description\": \"The Sonoma Veterans Memorial Building is located near Sonoma's historic downtown plaza, providing a versatile and well-equipped venue for a variety of events. It offers several amenities, including corporate meeting services, outdoor meeting spaces, and areas for ceremonies and receptions. The facility includes a large auditorium with a seating capacity of up to 700 guests (500 seated), a dining room for up to 309 guests, and a smaller dining area that can accommodate 150 people.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_reports\": [\n        {\n          \"id\": 1,\n          \"name\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://sonomacounty.ca.gov/Ektron%20Images/uploadedImages/Sonoma/General_Services/_Uploaded_Images/_Carousel/_Vets_Buildings/Sonoma%20500x250.jpg\"\n      }\n    }"
+						}
+					]
+				}
+			],
+			"description": "This directory contains all endpoints related to emergency shelters"
+		},
+		{
+			"name": "Community Reports",
+			"item": [
+				{
+					"name": "Get All Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Each report has id and sortable attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.incidents.forEach(function (report) {",
+									"        pm.expect(report).to.have.property('id');",
+									"        pm.expect(report).to.have.property('title');",
+									"        pm.expect(report).to.have.property('source');",
+									"        pm.expect(report).to.have.property('published_at');",
+									"        pm.expect(report).to.have.property('author');",
+									"        pm.expect(report).to.have.property('categories');",
+									"    });",
+									"});",
+									"",
+									"// Check ids unique",
+									"pm.test(\"All report ids are unique\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var ids = [];",
+									"    jsonData.incidents.forEach(function(report) {",
+									"        pm.expect(ids).to.not.include(report.id);",
+									"        ids.push(report.id);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/news",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"news"
+							]
+						},
+						"description": "> This endpoint will retrieve all instances of the Community Report model, along with related images and connections."
+					},
+					"response": [
+						{
+							"name": "Get All Community Reports",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/reports/?sort_by=date&news_type=string&region=string&reporter=string",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"reports",
+										""
+									],
+									"query": [
+										{
+											"key": "sort_by",
+											"value": "date",
+											"description": "(Optional) sort the reports by date or by source network (default to date)"
+										},
+										{
+											"key": "news_type",
+											"value": "string",
+											"description": "(Optional) filter reports by the type of news being reported"
+										},
+										{
+											"key": "region",
+											"value": "string",
+											"description": "(Optional) filter reports by region in CA"
+										},
+										{
+											"key": "reporter",
+											"value": "string",
+											"description": "(Optional) filter reports by the reporter"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"reports\": [\n    {\n      \"id\": 1,\n      \"title\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\",\n      \"source\": \"BBC News\",\n      \"date\": \"January 23, 2025\",\n      \"category\": \"Breaking News\",\n      \"region\": \"Los Angeles County\",\n      \"reporter\": \"Christal Hayes\",\n      \"description\": \"Firefighters are battling a fast-moving blaze in southern California that has swelled over the past day, with authorities warning that Thursday is \"the period of greatest concern\".\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_shelters\": [\n        {\n          \"id\": 1,\n          \"name\": \"Sonoma Veterans Building\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire8.webp\"\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Maps and images reveal scale of LA wildfire devastation\",\n      \"source\": \"BBC News\",\n      \"date\": \"January 14, 2025\",\n      \"category\": \"Analysis\",\n      \"region\": \"Los Angeles County\",\n      \"reporter\": \"Visual Journalism Team\",\n      \"description\": \"Firefighters are battling to control huge wildfires in Los Angeles that have killed at least 25 people, devoured thousands of buildings and forced tens of thousands of people to flee their homes.\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Eaton Fire\"\n        }\n      ],\n      \"related_shelters\": [\n        {\n          \"id\": 1,\n          \"name\": \"Sebastopol Community Center\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire7.webp\"\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"LA firefighters battle to contain monster inferno as death toll rises\",\n      \"source\": \"BBC News\",\n      \"date\": \"January 11, 2025\",\n      \"category\": \"Breaking News\",\n      \"region\": \"Los Angeles County\",\n      \"reporter\": \"Jude Sheerin and John Sudworth\",\n      \"description\": \"Firefighters are making an all-out assault to prevent the largest of the deadly wildfires that is threatening Los Angeles from spreading into one of the city's most exclusive neighbourhoods\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        },        {\n          \"id\": 2,\n          \"name\": \"Eaton Fire\"\n        }\n      ],\n      \"related_shelters\": [\n        {\n          \"id\": 1,\n          \"name\": \"Sonoma Veterans Building\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire6.webp\"\n      }\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single Report-id_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Each report has id and sortable attributes\", function () {",
+									"    var report = pm.response.json();",
+									"    pm.expect(report).to.have.property('id');",
+									"    pm.expect(report).to.have.property('title');",
+									"    pm.expect(report).to.have.property('source');",
+									"    pm.expect(report).to.have.property('published_at');",
+									"    pm.expect(report).to.have.property('author');",
+									"    pm.expect(report).to.have.property('categories');",
+									"});",
+									"",
+									"// Check id match request (1)",
+									"pm.test(\"Id matches request (1)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1);",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/news/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"news",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) ID of news report"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of the Community Report model using the id path variable"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/reports/:id",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"reports",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n      \"id\": 1,\n      \"title\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\",\n      \"source\": \"BBC News\",\n      \"date\": \"January 23, 2025\",\n      \"category\": \"Breaking News\",\n      \"region\": \"Los Angeles County\",\n      \"reporter\": \"Christal Hayes\",\n      \"description\": \"Firefighters are battling a fast-moving blaze in southern California that has swelled over the past day, with authorities warning that Thursday is \"the period of greatest concern\".\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_shelters\": [\n        {\n          \"id\": 1,\n          \"name\": \"Sonoma Veterans Building\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire8.webp\"\n      }\n    }"
+						}
+					]
+				},
+				{
+					"name": "Get Single Report-id_100",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if response received",
+									"pm.test(\"Response ok\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// Check if JSON received",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.have.jsonBody();",
+									"});",
+									"",
+									"// Check id property and sortable attributes",
+									"pm.test(\"Each report has id and sortable attributes\", function () {",
+									"    var report = pm.response.json();",
+									"    pm.expect(report).to.have.property('id');",
+									"    pm.expect(report).to.have.property('title');",
+									"    pm.expect(report).to.have.property('source');",
+									"    pm.expect(report).to.have.property('published_at');",
+									"    pm.expect(report).to.have.property('author');",
+									"    pm.expect(report).to.have.property('categories');",
+									"});",
+									"",
+									"// Check id match request (100)",
+									"pm.test(\"Id matches request (100)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(100);",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.wildwareness.net/news/:id",
+							"protocol": "https",
+							"host": [
+								"api",
+								"wildwareness",
+								"net"
+							],
+							"path": [
+								"news",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "100",
+									"description": "(Required) ID of news report"
+								}
+							]
+						},
+						"description": "> This endpoint will retrieve a single instance of the Community Report model using the id path variable"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://wildwareness.net/api/v1/reports/:id",
+									"protocol": "https",
+									"host": [
+										"wildwareness",
+										"net"
+									],
+									"path": [
+										"api",
+										"v1",
+										"reports",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n      \"id\": 1,\n      \"title\": \"Firefighters battle huge blaze near Los Angeles as winds pick up\",\n      \"source\": \"BBC News\",\n      \"date\": \"January 23, 2025\",\n      \"category\": \"Breaking News\",\n      \"region\": \"Los Angeles County\",\n      \"reporter\": \"Christal Hayes\",\n      \"description\": \"Firefighters are battling a fast-moving blaze in southern California that has swelled over the past day, with authorities warning that Thursday is \"the period of greatest concern\".\",\n      \"related_wildfires\": [\n        {\n          \"id\": 1,\n          \"name\": \"Palisades Fire\"\n        }\n      ],\n      \"related_shelters\": [\n        {\n          \"id\": 1,\n          \"name\": \"Sonoma Veterans Building\"\n        }\n      ],\n      \"images\": {\n        \"image1\": \"https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/raw/6cec45a1f5f22ddcc6c4571fa234129685b8434f/frontend/images/fire8.webp\"\n      }\n    }"
+						}
+					]
+				}
+			],
+			"description": "This directory contains all endpoints related to community reports."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://api.wildwareness.net/",
+			"type": "default"
+		}
+	]
+}
