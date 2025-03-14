@@ -34,3 +34,21 @@ push:
 
 # checks to see that gitignore and the pipeline file are present
 check: .gitignore .gitlab-ci.yml
+
+# Run Python backend tests
+test-backend:
+	cd backend && python run_tests.py
+
+# Run JavaScript frontend tests
+test-frontend:
+	cd wildwareness-app && npm test
+
+# Run all tests
+test: test-backend test-frontend
+	@echo "All tests completed"
+
+# Clean any generated files
+clean:
+	find . -name "__pycache__" -type d -exec rm -rf {} +
+	find . -name "*.pyc" -delete
+	find . -name ".pytest_cache" -type d -exec rm -rf {} +
