@@ -1,9 +1,21 @@
 stages:
   - build
+  - test
 
 build:
   stage: build
   script:
     - 'test -f frontend/index.html'
     - echo "Phase 1 CI"
+
+test:
+  stage: test
+  image: node:20
+  before_script:
+    - cd frontend
+    # The .npmrc file will handle the legacy-peer-deps automatically
+    - npm install
+  script:
+    - npm run test:ci-simple
+    - echo "Test verification complete"
 
