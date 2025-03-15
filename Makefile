@@ -45,7 +45,7 @@ test-frontend:
 
 # Run Selenium tests
 test-selenium:
-	cd frontend && python frontendAcceptanceTests.py
+	cd backend && source ./venv/bin/activate  && cd ../frontend && python frontendAcceptanceTests.py
 
 # Run all tests
 test: test-backend test-frontend test-selenium

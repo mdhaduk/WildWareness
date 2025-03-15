@@ -23,6 +23,9 @@ test_selenium:
   stage: test
   image: selenium/standalone-chrome
   before_script:
+    - cd backend
+    - source ./venv/bin/activate
+    - cd ..
     - pip install selenium  # Install Selenium directly
   script:
     - cd frontend
