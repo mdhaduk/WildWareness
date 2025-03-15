@@ -21,9 +21,13 @@ test:
 
 test_selenium:
   stage: test
-  image: python:3.9  # Use Python base image instead
+  image: python:3.9
   before_script:
-    - apt-get update && apt-get install -y wget unzip google-chrome-stable
+    - apt-get update && apt-get install -y wget unzip
+    # Install Chrome properly
+    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y ./google-chrome-stable_current_amd64.deb
+    # Install chromedriver
     - wget -q https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
     - unzip chromedriver_linux64.zip
     - mv chromedriver /usr/local/bin/
