@@ -8,10 +8,13 @@
 https://wildwareness.net/
 
 ## **Git SHA**
-- 8d43d71de41f403a9b9f24fb257467e15bc7f68a
+- 
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
+
+## **API Endpoint**
+- [https://api.wildwareness.net/](https://api.wildwareness.net/)
 
 ## Team Members:
 - Milan Dhaduk @mdhaduk
@@ -52,10 +55,10 @@ Responsibilites: Determine meeting times, assign tasks, ensure progress being ma
 - Pooja Vasanthan - 16 hours
 
 **Actual Time to Completion:**
-- Milan Dhaduk - 
-- Audrey Tan - 
-- Zakaria Sisalem - 
-- Pooja Vasanthan - 
+- Milan Dhaduk - 35 hours
+- Audrey Tan - 30 hours
+- Zakaria Sisalem - 30 hours
+- Pooja Vasanthan - 32 hours
 
 
 Phase 3 leader: Audrey Tan                                                     
@@ -80,10 +83,11 @@ Users can:
 
 ## **Data Sources** *(RESTful APIs and Web Scraping)*
 - [CAL FIRE](https://www.fire.ca.gov/incidents/2025) – Reports active and past wildfires with containment details (2025)
-- [NewsData.io API](https://newsdata.io/)- Community/local reports and headlinges fetched from NewsData.io
-- [Google Places API](https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1)- Google's API used for fetching information about a location on Google Maps.
+- [TheNewsAPI](https://www.thenewsapi.com/documentation)- Information about news/local reports and headlines fetched from TheNewsAPI.
+- [Google Maps API](https://mapsplatform.google.com/pricing/?utm_source=google&utm_medium=cpc&utm_campaign=gmp25_us_search_api&gad_source=1&gclid=CjwKCAjwp8--BhBREiwAj7og1_8QWnO-NMYt295SA5xAZgVTAEWjR5t_f_M6DDBTlr6awfqMmf4eRRoC5IAQAvD_BwE&gclsrc=aw.ds)-  Google's API is used for fetching information about a location.
+- [Leaflet](https://leafletjs.com/) – an API used for map rendering given details of a location.
 - [Google Maps Geocoding API](https://console.cloud.google.com/marketplace/product/google/geocoding-backend.googleapis.com?q=search&referrer=search&project=hardy-position-450923-v1) - a service that allows you to convert addresses into geographic coordinates (latitude & longitude) and vice versa (reverse geocoding).
-- [List of Emergency Shelters Website](https://www.californiawildfirelawyer.com/fire-damage-list-of-shelters/) - a website containing a list of emergency shelters by county and city in the form of text.
+- [Google Custom Search API](https://developers.google.com/custom-search/v1/overview) - Google’s API allows data to be retrieved from custom search results.
 
 
 ## Models:
@@ -93,48 +97,45 @@ Users can:
 - Fire Name
 - County
 - Location
-- Date/time
+- Year
 - Acres Burned
 
-**Estimated Instances:** ~3,500  
+**Estimated Instances:** 310  
 **Connections:** Linked to Emergency Shelters and Community Reports  
 **Media Types:**
-- Satellite images of fires
+- Images
 - Interactive maps
-- Embedded Videos
 - Text
 
 ### 2. Emergency Shelters
 **Attributes:**
 - Name
 - Address
-- City
-- Contact Info
-- Status (Open/Closed)
+- Phone
+- Website
+- Rating
 
 
-**Estimated Instances:** ~1000  
+**Estimated Instances:** 207  
 **Connections:** Linked to Wildfire Incidents and Community Reports  
 **Media Types:**
-- Images of shelter locations
+- Images of shelter
 - Interactive Maps of Shelter
-- Other Embedded Media (such as forms from shelter's website)
 - Text and Links
 
 ### 3. Community Reports
 **Attributes:**
+- Title
 - Source
-- Date/time
-- Category
-- Region
-- Reporter
+- Date
+- Author
+- Categories
 
-**Estimated Instances:** ~5000+  
+**Estimated Instances:** 115  
 **Connections:** Linked to Wildfire Incidents and Emergency Shelters
 **Media Types:**
-- Images of Fires, Emergency Response, etc
+- Images of Relevant to Articles
 - Interactive Maps
-- Embedded Videos
 - Text and Links
 
 ## Questions the Site Will Answer
@@ -144,4 +145,4 @@ Users can:
 
 ## Comments
 - It's important to note that we referenced last year's HomelessAid in developing 
-our HTML/CSS for Phase I 
+our HTML/CSS for Phase I and in the code development of Phase 2.

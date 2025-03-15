@@ -10,6 +10,7 @@ function About() {
             bio: "Sophomore year Computer Science at The University of Texas at Austin",
             responsibilities: "Full stack, Instance development",
             img: "https://miro.medium.com/v2/resize:fit:580/format:webp/1*oJeEFuioGXTVa_VSI6vadw.png",
+            tests: 15
         },
         {
             name: "Audrey Tan",
@@ -18,6 +19,7 @@ function About() {
             bio: "Junior Computer Science major at University of Texas at Austin.",
             responsibilities: "Full stack, Documentation",
             img: "https://miro.medium.com/v2/resize:fit:640/format:webp/1*8A7XXconEuan7zIsmVSLqQ.jpeg",
+            tests: 11
         },
         {
             name: "Pooja Vasanthan",
@@ -26,6 +28,7 @@ function About() {
             bio: "Junior year Computer Science major and Statistics and Data Science Minor at UT Austin",
             responsibilities: "Full stack, Instance Development, Documentation",
             img: "https://miro.medium.com/v2/resize:fit:640/format:webp/1*-GfS-B3ALo1LZKA4ZGgW0w.png",
+            tests: 19
         },
         {
             name: "Zakaria Sisalem",
@@ -34,6 +37,7 @@ function About() {
             bio: "3rd year CS & Math major at UT Austin",
             responsibilities: "Full stack, Technical Writing",
             img: "https://miro.medium.com/v2/resize:fit:720/format:webp/1*uQsOHbb6Kn6j_s27hpC-Bg.jpeg",
+            tests: 17
         }
     ];
 
@@ -127,7 +131,7 @@ function About() {
                         <p className="member-stats"><strong>Stats:</strong><br />
                             Commits: {memberStats[member.name]?.commits || 0}<br />
                             Issues: {memberStats[member.name]?.issues || 0}<br />
-                            Unit Tests: 0
+                            Unit Tests: {member.tests}
                         </p>
                     </div>
                 ))}
@@ -139,20 +143,36 @@ function About() {
                         <p className="text-center"><strong>Data Sources</strong></p>
                         <ul>
                             <li><a href="https://www.fire.ca.gov/incidents/2025" target="_blank">CAL FIRE</a> - Reports active and past wildfires.</li>
-                            <li><a href="https://newsdata.io/" target="_blank">NewsData.io API</a> - Fetches local reports and headlines.</li>
-                            <li><a href="https://console.cloud.google.com/apis/library/places-backend.googleapis.com?project=hardy-position-450923-v1" target="_blank">Google Places API</a> - Fetches location info.</li>
+                            <li><a href="https://www.thenewsapi.com/documentation" target="_blank">TheNewsAPI</a> - Fetches local reports and headlines.</li>
+                            <li><a href="https://mapsplatform.google.com/pricing/?utm_source=google&utm_medium=cpc&utm_campaign=gmp25_us_search_api&gad_source=1&gclid=CjwKCAjwp8--BhBREiwAj7og1_8QWnO-NMYt295SA5xAZgVTAEWjR5t_f_M6DDBTlr6awfqMmf4eRRoC5IAQAvD_BwE&gclsrc=aw.ds" target="_blank">Google Maps API</a> - Fetches location info.</li>
+                            <li><a href="https://leafletjs.com/" target="_blank">Leaflet</a> - Gets map rendering.</li>
+                            <li><a href="https://console.cloud.google.com/marketplace/product/google/geocoding-backend.googleapis.com?q=search&referrer=search&project=hardy-position-450923-v1" target="_blank">Google Maps Geocoding API</a> - Converts coordinates.</li>
+                            <li><a href="https://developers.google.com/custom-search/v1/overview" target="_blank">Google Custom Search API</a> - Search using Google's Custom Search.</li>
                         </ul>
                     </div>
                     <div className="col-6">
                         <p className="text-center"><strong>Tools</strong></p>
                         <ul>
                             <li>Bootstrap Framework</li>
+                            <li>React</li>
+                            <li>Python</li>
+                            <li>Docker</li>
+                            <li>Google Maps</li>
+                            <li>Amazon Route 53</li>
+                            <li>Selenium, Postman, Jest, and UnitTest Frameworks</li>
                             <li>AWS Hosting</li>
                             <li>Visual Studio Code</li>
                             <li>GitLab</li>
                         </ul>
                     </div>
-                    
+                    <div className="col-12 mt-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <p className="text-center"><strong>API Postman Documentation</strong></p>
+                        <a href="https://documenter.getpostman.com/view/31322139/2sAYdZvEUy">Click Here</a>
+                    </div>
+                    <div className="col-12 mt-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <p className="text-center"><strong>API Endpoint</strong></p>
+                        <a href="https://api.wildwareness.net/">https://api.wildwareness.net/</a>
+                    </div>
                     <div className="col-12 mt-3">
                         <p className="text-center"><strong>Significance of Data</strong></p>
                         <p>
