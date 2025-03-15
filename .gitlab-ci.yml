@@ -22,9 +22,10 @@ test:
 test_selenium:
   stage: test
   image: selenium/standalone-chrome
+  before_script:
+    - pip install selenium  # Install Selenium directly
   script:
     - cd frontend
-    - pip install selenium  # Install Selenium directly
     - python frontendAcceptanceTests.py
 
 test_postman:
