@@ -33,7 +33,8 @@ test_selenium:
     - mv chromedriver /usr/local/bin/
     - chmod +x /usr/local/bin/chromedriver
     # Install Python requirements
-    - pip install -r requirements.txt
+    - pip install --upgrade pip
+    - pip install -r frontend/selenium_tests/requirements.txt
   script:
     - cd frontend
     - python frontendAcceptanceTests.py
