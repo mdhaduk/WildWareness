@@ -21,15 +21,19 @@ test:
 
 test_selenium:
   stage: test
-  image: selenium/standalone-chrome
+  image: python:3.9  # Use Python base image instead
   before_script:
-    - cd backend
-    - source ./venv/bin/activate
-    - cd ..
-    - pip install selenium  # Install Selenium directly
+    - apt-get update && apt-get install -y wget unzip google-chrome-stable
+    - wget -q https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip
+    - mv chromedriver /usr/local/bin/
+    - chmod +x /usr/local/bin/chromedriver
+    - pip install selenium
   script:
     - cd frontend
+    - ls  # Debugging step
     - python frontendAcceptanceTests.py
+
 
 test_postman:
     stage: test
