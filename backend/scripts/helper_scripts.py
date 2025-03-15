@@ -1,5 +1,9 @@
 import requests
-api_key = "AIzaSyDJPeWEbVWBXRGI_W3FIzqkffL41rQVuOA"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv("GOOGLE_KEY")
 def get_county_from_address(address):
     base_url = "https://maps.googleapis.com/maps/api/geocode/json"
     params = {"address": address, "key": api_key}
