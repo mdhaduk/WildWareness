@@ -9,10 +9,13 @@ services:
     ports:
       - "5000:5000"  # Expose Flask API on port 5000
     restart: unless-stopped
-    env_file:
-      - ./backend/.env  # Load environment variables
-    depends_on:
-      - db  # Ensure backend starts after the database
+    environment:
+      FLASK_APP: "api.py"  # Define the Flask entry point
+      FLASK_ENV: "development"  # Enable debug mode for Flask
+      FLASK_DEBUG: "1"  # Enable auto-reloading for development
+    volumes:
+      - ./backend:/app  # Mount backend code for live changes
+      - ./backend/database.db:/app/database.db  # Persist SQLite DB file
     networks:
       - app-network
 
@@ -29,22 +32,6 @@ services:
     networks:
       - app-network
 
-  db:
-    image: postgres:15-alpine
-    container_name: postgres_db
-    restart: unless-stopped
-    ports:
-      - "5432:5432"  # Expose PostgreSQL database
-    env_file:
-      - ./backend/.env  # Load DB credentials from .env file
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres_data:
