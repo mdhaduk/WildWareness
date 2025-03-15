@@ -19,8 +19,8 @@ test:
     - npm run test:ci-simple
     - echo "Test verification complete"
 
-selenium:
-  stage: selenium-tests
+test_selenium:
+  stage: test
   image: python:latest
   before_script:
     - pip install -r frontend/selenium_tests/requirements.txt
