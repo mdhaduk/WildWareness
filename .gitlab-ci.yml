@@ -21,12 +21,13 @@ test:
 
 test_selenium:
   stage: test
-  image: python:latest
+  image: selenium/standalone-chrome
   before_script:
-    - pip install -r frontend/selenium_tests/requirements.txt
+    - apt-get update && apt-get install -y python3 python3-pip  # Install Python and pip
+    - pip3 install selenium  # Install Selenium
   script:
-  - cd frontend/selenium_tests
-  - python frontendAcceptanceTests.py
+    - cd frontend
+    - python3 frontendAcceptanceTests.py  # Run the Selenium tests
 
 
 
