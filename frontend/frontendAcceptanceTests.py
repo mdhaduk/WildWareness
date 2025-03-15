@@ -16,13 +16,16 @@ url = "https://wildwareness.net/"
 class acceptance_tests_frontend(unittest.TestCase):
 
     def setUp(self):
-        # Setup format
+        # Enhanced setup for CI environment
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Ensure the browser window doesn't open
-        chrome_options.add_argument("--disable-gpu")  # Disables GPU acceleration (useful in headless mode)
-
-        # Initialize the WebDriver (here using Chrome)
-        self.driver = webdriver.Chrome(options=chrome_options)  # Update this path
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")  # Required for running in Docker
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--window-size=1920,1080")  # Set proper window size
+        
+        # Initialize the WebDriver
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.get(url)
 
     def tearDown(self):
@@ -73,8 +76,6 @@ class acceptance_tests_frontend(unittest.TestCase):
             WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'navbar-nav'))  # Wait for the nav bar to reappear
             )
-        # Close the browser
-        driver.quit()
 
     # Test Nav-Bar Toggler
     def test_1(self) -> None:
@@ -89,13 +90,17 @@ class acceptance_tests_frontend(unittest.TestCase):
         driver.set_window_size(375, 667) # Set to a typical mobile screen size (e.g., iPhone 6/7/8)
 
         # Find the toggle button
-        toggle_button = driver.find_element(By.CLASS_NAME, "navbar-toggler")
+        toggle_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "navbar-toggler"))
+        )
 
         # Click on the toggle button to open the navbar
         toggle_button.click()
 
         # Wait for the menu to expand
-        time.sleep(2)  # Sleep for a short time to allow the animation to complete
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "navbarNav"))
+        )
 
         # Find the navbar collapse element to check if it is visible
         navbar = driver.find_element(By.ID, "navbarNav")
@@ -108,14 +113,13 @@ class acceptance_tests_frontend(unittest.TestCase):
         toggle_button.click()
 
         # Wait for the menu to collapse
-        time.sleep(2)
+        WebDriverWait(driver, 10).until(
+            EC.invisibility_of_element_located((By.ID, "navbarNav"))
+        )
 
         # Assert that the navbar is not visible after the second toggle
         assert not navbar.is_displayed(), "Navbar should not be visible after toggle"
 
-        # Close the browser
-        driver.quit()
-    
     # Check image carousel and if images present on home page
     def test_2(self) -> None:
         driver = self.driver
@@ -126,7 +130,7 @@ class acceptance_tests_frontend(unittest.TestCase):
         )
         # Wait until the page is loaded and carousel is available
         # Assuming the carousel has a class name 'carousel', adjust the selector as per your HTML
-        carousel_element = WebDriverWait(self.driver, 10).until(
+        carousel_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "carouselExampleAutoplaying"))
         )
         
@@ -139,9 +143,6 @@ class acceptance_tests_frontend(unittest.TestCase):
         # Optionally, verify that the images have a valid src attribute
         for image in images:
             self.assertTrue(image.get_attribute("src"), "Image source is empty.")
-         
-        # Close the browser
-        driver.quit()
 
     # Check if there are cards on each of the model pages
     def test_3(self) -> None:
@@ -160,19 +161,19 @@ class acceptance_tests_frontend(unittest.TestCase):
         for link_text, expected_url in navbar_links.items():
             # Click on the navbar link
             """Click a navbar link by link text"""
-            navbar_link = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.LINK_TEXT, link_text))
+            navbar_link = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, link_text))
             )
             navbar_link.click()
 
             # Wait for the page to load (You can also customize wait time for page load)
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(driver, 10).until(
                 EC.url_contains(expected_url)  # Wait until the URL contains the expected endpoint
             )
 
             """Check if cards are present on the page"""
             # Wait for cards to load
-            cards = WebDriverWait(self.driver, 10).until(
+            cards = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CLASS_NAME, "card"))  # Replace with your card class or ID
             )
 
@@ -182,23 +183,15 @@ class acceptance_tests_frontend(unittest.TestCase):
             # Check if each card is visible
             for card in cards:
                 self.assertTrue(card.is_displayed(), "Card is not displayed")
-        # Close the browser
-        driver.quit()
-
 
     def test_4(self) -> None:
         driver = self.driver
         driver.get(url)
 
         # Ensure the page is loaded and we are on the correct URL
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
-            )
-        except TimeoutException:
-            print("Timeout waiting for the URL to contain the expected string.")
-            driver.quit()
-            return
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
 
         # Define the links you want to click in the navbar
         navbar_links = {
@@ -209,50 +202,34 @@ class acceptance_tests_frontend(unittest.TestCase):
 
         for link_text, expected_url in navbar_links.items():
             # Click on the navbar link
-            """Click a navbar link by link text"""
-            navbar_link = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.LINK_TEXT, link_text))
+            navbar_link = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, link_text))
             )
             navbar_link.click()
 
-            # Wait for the page to load (You can also customize wait time for page load)
-            WebDriverWait(self.driver, 10).until(
+            # Wait for the page to load
+            WebDriverWait(driver, 10).until(
                 EC.url_contains(expected_url)  # Wait until the URL contains the expected endpoint
             )
 
-            #Wait for the pagination to be present on the page
-            try:
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '.pagination'))
-                )
-            except TimeoutException:
-                print("Pagination element not found.")
-                driver.quit()
-                return
+            # Wait for the pagination to be present on the page
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '.pagination'))
+            )
 
             # Pagination logic
             pagination_links = driver.find_elements(By.CSS_SELECTOR, '.pagination .page-item:not(.disabled) .page-link')
             total_pages = len(pagination_links)
             self.assertTrue(total_pages > 0, "There is no pagination")
 
-        # Close the browser after the test
-        driver.quit()
-
-
-
     # Check if each card has read more button
     def test_5(self) -> None:
         driver = self.driver
         driver.get(url)
         # Ensure the page is loaded and we are on the correct URL
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
-            )
-        except TimeoutException:
-            print("Timeout waiting for the URL to contain the expected string.")
-            driver.quit()
-            return
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
 
         # Define the links you want to click in the navbar
         navbar_links = {
@@ -263,34 +240,33 @@ class acceptance_tests_frontend(unittest.TestCase):
 
         for link_text, expected_url in navbar_links.items():
             # Click on the navbar link
-            """Click a navbar link by link text"""
-            navbar_link = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.LINK_TEXT, link_text))
+            navbar_link = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, link_text))
             )
             navbar_link.click()
 
-            # Wait for the page to load (You can also customize wait time for page load)
-            WebDriverWait(self.driver, 10).until(
-                EC.url_contains(expected_url)  # Wait until the URL contains the expected endpoint
+            # Wait for the page to load
+            WebDriverWait(driver, 10).until(
+                EC.url_contains(expected_url)
             )
+            
             # Wait for cards to load
-            cards = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_all_elements_located((By.CLASS_NAME, "card"))  # Replace with your card class or ID
+            cards = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CLASS_NAME, "card"))
             )
 
             # Loop through each card and check if it has a "Read More" button
             for index, card in enumerate(cards, start=1):
                 try:
-                    # Try to find the "Read More" button inside the card (adjust selector as necessary)
+                    # Try to find the "Read More" button inside the card
                     read_more_button = card.find_element(By.LINK_TEXT, "Read More")
                     
-                    # If found, ensure it is visible and enabled (i.e., clickable)
+                    # If found, ensure it is visible and enabled
                     self.assertTrue(read_more_button.is_displayed(), f"Read More button in card {index} is not visible")
                     self.assertTrue(read_more_button.is_enabled(), f"Read More button in card {index} is not clickable")
 
                 except Exception as e:
                     self.fail(f"Card {index} is missing the Read More button or there was an error: {str(e)}")
-
 
     # Check About Page Team Member Contents
     def test_6(self) -> None:
@@ -298,29 +274,27 @@ class acceptance_tests_frontend(unittest.TestCase):
         driver.get(url)
 
         # Ensure the page is loaded and we are on the correct URL
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
-            )
-        except TimeoutException:
-            print("Timeout waiting for the URL to contain the expected string.")
-            driver.quit()
-            return
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")
+        )
+        
         # Click on the navbar link
-        """Click a navbar link by link text"""
-        navbar_link = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.LINK_TEXT, "About"))
+        navbar_link = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.LINK_TEXT, "About"))
         )
         navbar_link.click()
 
-        # Wait for the page to load (You can also customize wait time for page load)
-        WebDriverWait(self.driver, 10).until(
-            EC.url_contains(f"{url}about")  # Wait until the URL contains the expected endpoint
+        # Wait for the page to load
+        WebDriverWait(driver, 10).until(
+            EC.url_contains(f"{url}about")
         )
-        # Find all the member cards (based on the "id='member-card'" attribute)
-        member_cards = driver.find_elements(By.ID, 'member-card')
+        
+        # Find all the member cards
+        member_cards = WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.ID, 'member-card'))
+        )
 
-        # Assert there are exactly 4 member cards (since you mentioned there are 4 members)
+        # Assert there are exactly 4 member cards
         self.assertEqual(len(member_cards), 4, f"Expected 4 member cards, but found {len(member_cards)}")
 
         # Loop through each member card and verify that all required elements are present
@@ -354,7 +328,7 @@ class acceptance_tests_frontend(unittest.TestCase):
         # Open the URL
         driver.get(url + "incidents/")
 
-        # Wait for the cards to load (use an appropriate wait condition)
+        # Wait for the cards to load
         WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "card"))
         )
@@ -363,14 +337,11 @@ class acceptance_tests_frontend(unittest.TestCase):
         cards = driver.find_elements(By.CLASS_NAME, "card")
 
         expected = ["Name:", "County:", "Location:", "Year:", "Acres Burned:", "Status"]
-        # Optionally, iterate over the cards to get more information (e.g., text, images, etc.)
+        # Iterate over the cards to check for expected fields
         for index, card in enumerate(cards):       
-            text= card.text
+            text = card.text
             for i in range(4):
                 assert expected[i] in text
-        # Don't forget to close the driver when done
-        driver.quit()
-
 
     # Check contents of Home Page
     def test_8(self) -> None:
@@ -378,29 +349,34 @@ class acceptance_tests_frontend(unittest.TestCase):
         driver.get(url)
  
         # Ensure the page is loaded and we are on the correct URL
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
-            )
-        except TimeoutException:
-            print("Timeout waiting for the URL to contain the expected string.")
-            driver.quit()   
-        text = driver.find_element(By.CLASS_NAME, "fire-text")
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")
+        )
+        
+        text = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "fire-text"))
+        )
         self.assertEqual(text.text, "WildWareness")
+        
         # Check for platform serves text
-        text_two = driver.find_element(By.XPATH, ".//p[strong[contains(text(), 'Platform serves')]]")
+        text_two = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, ".//p[strong[contains(text(), 'Platform serves')]]"))
+        )
         self.assertTrue(text_two.is_displayed(), f"Doesn't include purpose of platform")
+        
         # Check users text
-        text_three = driver.find_element(By.XPATH, ".//p[strong[contains(text(), 'Users can')]]")
+        text_three = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, ".//p[strong[contains(text(), 'Users can')]]"))
+        )
         self.assertTrue(text_three.is_displayed(), f"Doesn't include what users can do")
-        driver.quit()
     
     def test_9(self) -> None:
         driver = self.driver
         driver.get(url)
         WebDriverWait(driver, 10).until(
-        EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+            EC.url_contains("wildwareness.net")
         )
+        
         # Define the links you want to click in the navbar
         navbar_links = {
             "Wildfire Incidents": f'{url}incidents/',
@@ -409,26 +385,25 @@ class acceptance_tests_frontend(unittest.TestCase):
         }
         expected = ["Wildfire Incidents", "Shelters", "News Reports"]
         index = 0
+        
         for link_text, expected_url in navbar_links.items():
             # Click on the navbar link
-            """Click a navbar link by link text"""
-            navbar_link = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.LINK_TEXT, link_text))
+            navbar_link = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, link_text))
             )
             navbar_link.click()
 
-            # Wait for the page to load (You can also customize wait time for page load)
-            WebDriverWait(self.driver, 10).until(
-                EC.url_contains(expected_url)  # Wait until the URL contains the expected endpoint
+            # Wait for the page to load
+            WebDriverWait(driver, 10).until(
+                EC.url_contains(expected_url)
             )
-            time.sleep(4)
-            text = driver.find_element(By.XPATH, f".//h2[contains(text(), '{expected[index]}')]")
+            
+            # Replace sleep with explicit wait
+            text = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, f".//h2[contains(text(), '{expected[index]}')]"))
+            )
             self.assertTrue(text.is_displayed(), f'{expected[index]}')
             index += 1
-
-
-        # Close the browser
-        driver.quit()
 
 if __name__ == "__main__":
     unittest.main()
