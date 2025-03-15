@@ -26,6 +26,7 @@ test_selenium:
     - pip install -r frontend/selenium_tests/requirements.txt
   script:
   - cd frontend/selenium_tests
+  - python frontendAcceptanceTests.py
 
 
 
