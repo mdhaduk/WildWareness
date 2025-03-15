@@ -21,7 +21,7 @@ test:
 
 test_selenium:
   stage: test
-  image: frontend-container
+  image: selenium/standalone-chrome
   script:
     - cd frontend
     - pip install selenium  # Install Selenium directly
