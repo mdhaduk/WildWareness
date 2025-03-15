@@ -19,24 +19,14 @@ test:
     - npm run test:ci-simple
     - echo "Test verification complete"
 
-test_selenium:
-  stage: test
-  image: python:3.9
+selenium:
+  stage: selenium-tests
+  image: python:latest
   before_script:
-    - apt-get update && apt-get install -y wget unzip
-    # Install Chrome properly
-    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - apt-get install -y ./google-chrome-stable_current_amd64.deb
-    # Install chromedriver
-    - wget -q https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-    - unzip chromedriver_linux64.zip
-    - mv chromedriver /usr/local/bin/
-    - chmod +x /usr/local/bin/chromedriver
-    - pip install selenium
+    - pip install -r frontend/selenium_tests/requirements.txt
   script:
-    - cd frontend
-    - ls  # Debugging step
-    - python frontendAcceptanceTests.py
+  - cd frontend/selenium_tests
+
 
 
 test_postman:
