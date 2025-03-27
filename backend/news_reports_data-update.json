@@ -2,7 +2,7 @@
     {
         "uuid": "45d82639-d270-4e51-a6d9-95194b5527a6",
         "title": "Leaders criticized amid California wildfires",
-        "description": "There is growing criticism of leadership and the initial response to the California wildfires as residents in the L.A. area look for answers. About 150,000 people",
+        "description": "There is growing criticism of leadership and the initial response to the California wildfires as residents in the L.A. area look for answers. About 150,000 peop...",
         "keywords": [
             "cbs interactive inc",
             "california",
@@ -179,8 +179,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz-rvLlj8-s_defQyK9PEn7tGetJD8NOD23JO9tBjeHoD5apRXZ1_HLg&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda"
+        "videos": []
     },
     {
         "uuid": "affd0e8b-0942-4a6a-bd15-5a6ce0ea3c24",
@@ -401,8 +400,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlF8NigYUKdq9qBSKVVyfpKi_R6voL-Ddd3_eUT7S9A8Xj77gWlvrcBw&s"
             }
         ],
-        "videos": [],
-        "county": "Tehama"
+        "videos": []
     },
     {
         "uuid": "657467cc-a49c-489d-b304-8a2b0da17b6e",
@@ -636,8 +634,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy19ubApUc4-pVOjKbsGCMErF0eF26mHm5IGqd67EeGIqkrkXszyenAw8&s"
             }
         ],
-        "videos": [],
-        "county": "Colusa"
+        "videos": []
     },
     {
         "uuid": "2607c401-eb3e-4e50-bcf6-5004b61c39db",
@@ -983,8 +980,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa2NVVgDrelVwUPW1pbPPy6vzEsJ6ih-B7lTgBMWpqD-NLpNm_ucBhtBM&s"
             }
         ],
-        "videos": [],
-        "county": "Los Angeles"
+        "videos": []
     },
     {
         "uuid": "95a718ac-4f19-4f24-b180-7acce832bf03",
@@ -1204,8 +1200,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2mPZHIsSR5dKpoNteS0IpmxgbE1CaoFMRA7D_0krmSXD0ViGMAP_H5A&s"
             }
         ],
-        "videos": [],
-        "county": "Sacramento"
+        "videos": []
     },
     {
         "uuid": "15c9696f-89ea-45f1-9dad-d5d5f67b7a35",
@@ -1394,8 +1389,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvVebVH5W8ohzqE_tIbQXIkhf1COaTYYF4uFLlzV71wHryzAmrZJTtC5Y&s"
             }
         ],
-        "videos": [],
-        "county": "Mariposa"
+        "videos": []
     },
     {
         "uuid": "99a25036-8649-413a-bdee-f46d0797101b",
@@ -1631,8 +1625,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTprU9CBzqXEwNTSQoACOyqpnIo7BoneOcY9ZkvIP7aKIQSJccO6lhlKQ&s"
             }
         ],
-        "videos": [],
-        "county": "Sierra"
+        "videos": []
     },
     {
         "uuid": "228e9db8-c47b-4c89-87d7-273900f3436b",
@@ -1876,8 +1869,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb0g78i3-XJ-_AG0ZmSQz5tIrZUBs3qFPL7ukNbkg7sTIRwkE7hfIHjcw&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "cd1afd09-ea5f-4025-a7c5-5d5d92d4b032",
@@ -2161,8 +2153,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7oOGUdaoTN9DfpSXsM3sAijgq1CrVo2ib3u98EXcaYkUXpFcAtlwVCw&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     },
     {
         "uuid": "9577274d-12a0-4681-aa29-0d69eb86430a",
@@ -2361,8 +2352,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVUrDF-NyS_9f7wYN0Od4xIQ3p4gkqeAwSr2TMfx62lm2tZuQwN2APWg&s"
             }
         ],
-        "videos": [],
-        "county": "Sonoma"
+        "videos": []
     },
     {
         "uuid": "858d541b-c3ca-4ef8-baa0-3228b761386b",
@@ -2583,8 +2573,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYWXbcGiZtGR8-sv7DU8tCDBceHoZ41L9l3iE1dIUazxpwekj6P5VP4QY&s"
             }
         ],
-        "videos": [],
-        "county": "Lake"
+        "videos": []
     },
     {
         "uuid": "dfaad93b-49f3-4e97-a4b2-a5d1f17f0099",
@@ -2817,8 +2806,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShgXW6qs7Zr5IlsYALqlr5hqzdtOjb6WQm79eExftvhwinJscLm60Ubg&s"
             }
         ],
-        "videos": [],
-        "county": "Kings"
+        "videos": []
     },
     {
         "uuid": "dc68d38f-2bb7-4fbf-be49-d99c14b6d914",
@@ -3011,8 +2999,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRevFGaY69OqrSBaHDGzcCwHuBnuzOhgJ4npY0MLgGf0uizpiNPMg5Osg&s"
             }
         ],
-        "videos": [],
-        "county": "Glenn"
+        "videos": []
     },
     {
         "uuid": "9f430553-a836-49fa-9d96-2d749c64d0c7",
@@ -3259,8 +3246,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKGcLTFl4wNWa8iNekmNA-PeLns-YGasHLhh98Ml2-MLODQPe4P-R7kw&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     },
     {
         "uuid": "d5d940c1-7baa-418c-8695-cbf01ec75071",
@@ -3492,8 +3478,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkiqCOmm_FVWIWifnicUYd9ojIJNafMxYLt4N48T-yAFufn5sYd5cNzA&s"
             }
         ],
-        "videos": [],
-        "county": "Santa Barbara"
+        "videos": []
     },
     {
         "uuid": "1ce7b559-9729-4f0a-a200-36b181872e38",
@@ -3743,8 +3728,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlQxkVV8zel6WTq_7jBdAJ7F90L1iIweeVVJZ1k5-THGdQPrOiLNlxx7A&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "01e75a8e-4271-4752-b60a-57d036deb12c",
@@ -3970,8 +3954,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkruUCip85ENTgC_X3ZSiVbfWYQZH96fPzm4HpOQfWyJ3ODAOMLxWj5A&s"
             }
         ],
-        "videos": [],
-        "county": "El Dorado"
+        "videos": []
     },
     {
         "uuid": "120fa4d9-b1a4-48df-a07d-52171957ac6c",
@@ -4354,8 +4337,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXUofk9l5IvTchX8DmMgws0FYKg4qQE2MUli-uyc89_gzpg-5lR8NIQw&s"
             }
         ],
-        "videos": [],
-        "county": "Kern, San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "f8d5cf75-4789-4c04-9238-473a6c0440e6",
@@ -4601,8 +4583,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSexCP5xOFjSsYMqHoznuZhobbvOwMqT0hhhltaxM47H_OeOOngQz7knQ&s"
             }
         ],
-        "videos": [],
-        "county": "Lassen"
+        "videos": []
     },
     {
         "uuid": "db7db6a1-7e99-4a84-a433-cdd3aca93fbf",
@@ -4918,8 +4899,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Mhlp_A9Rp76V3K98R4dBk32duRDvkI5RhfE2UMa_v3YN8wLVnyZ_1Q&s"
             }
         ],
-        "videos": [],
-        "county": "Lassen"
+        "videos": []
     },
     {
         "uuid": "63c97e5a-9433-415e-8426-5bbce88e7900",
@@ -5120,8 +5100,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRGj6S67E90Z55SK7gTmmjbt8zkm1zDaSbNHVQZ0DdJdd90lEPlJDMKQ&s"
             }
         ],
-        "videos": [],
-        "county": "Monterey"
+        "videos": []
     },
     {
         "uuid": "72c86d9c-0309-4a39-b8bf-570f6b9e4381",
@@ -5304,8 +5283,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBttVfD258naloh7t9UZk8lgYff9PNNabdMmBAkV00bb9Tmp5qkcReRA&s"
             }
         ],
-        "videos": [],
-        "county": "Sacramento"
+        "videos": []
     },
     {
         "uuid": "05949e56-61ce-47e6-9289-d5ab171795c4",
@@ -5467,8 +5445,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlswdd0uMO94Weo1B_hs0l2-kWCgOBpUpIZvQvFGl_0OhqExf2v6dEyg&s"
             }
         ],
-        "videos": [],
-        "county": "San Diego"
+        "videos": []
     },
     {
         "uuid": "b013118a-1d5b-43ba-af78-56bd8566c3e6",
@@ -5743,8 +5720,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStpytA_cYuiTaIh6sNrmGjrl3fZP0yrURtCQE0G_yhgmQwW93Qx8O6UWc&s"
             }
         ],
-        "videos": [],
-        "county": "Tuolumne"
+        "videos": []
     },
     {
         "uuid": "191c8f94-c4bc-43a4-a4c9-048c1345a635",
@@ -6034,8 +6010,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoqcdBXLv_xCO2I4mj2oFTjBjjNwHO3hABPni-iZST_OTVteeVEK0hAQ&s"
             }
         ],
-        "videos": [],
-        "county": "Lake"
+        "videos": []
     },
     {
         "uuid": "7a8b8835-ed04-4976-aad9-4399f75216f0",
@@ -6520,8 +6495,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Q_HKR14oy0qSkRQva-zhsBpGsybOtNnvyQbXZK7MgmimFlUwt5_hIg&s"
             }
         ],
-        "videos": [],
-        "county": "Glenn"
+        "videos": []
     },
     {
         "uuid": "9e42e531-e10c-4a6a-8174-e2c5f5e599d8",
@@ -6887,8 +6861,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiCOEJxmQs920PffN2ViDwVcxYpuVYR16tJLGScpxsimZAVCtWOMPCQg&s"
             }
         ],
-        "videos": [],
-        "county": "Mendocino"
+        "videos": []
     },
     {
         "uuid": "44911822-ce7f-4c4f-9d9b-f5c28224df44",
@@ -7132,8 +7105,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu_raz_OYaWXmne_DpoPJO3guapzNZoSJ_gi7uZwUv7_Ui_vcfnRuk8q8y&s"
             }
         ],
-        "videos": [],
-        "county": "Tuolumne"
+        "videos": []
     },
     {
         "uuid": "c5203d5f-662a-486c-849f-208cf3fc7b38",
@@ -7585,8 +7557,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEglXwk1JLOhtKmGVc_LLJUkI_Qt_aCeQUyRMlFsuxq7AH03H-ipKg&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt, Trinity"
+        "videos": []
     },
     {
         "uuid": "673724f6-9829-4624-b7d2-0dc7a784b0a4",
@@ -7873,8 +7844,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQwfOodVDRCqwFHcTdbT6CtJHuYqx0mTN19FA_oB5PHrLxx46zc2gLvw&s"
             }
         ],
-        "videos": [],
-        "county": "Amador"
+        "videos": []
     },
     {
         "uuid": "707d2016-4646-4492-a207-2f1c98277eee",
@@ -8142,8 +8112,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjtf4Y67rdZ3vZAhRpRvjwbKANxpvN7f6Xh1H4IVQ2ASq5y5nQUr9bmik&s"
             }
         ],
-        "videos": [],
-        "county": "Tehama"
+        "videos": []
     },
     {
         "uuid": "43d2f89c-9508-4c7b-8a38-3e6153b87dbf",
@@ -8305,8 +8274,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTzjysNs0e1xLzCkrGaDCHZBVGHyaLLxJhO4X670iQmaQCSGsJUhkv6rc&s"
             }
         ],
-        "videos": [],
-        "county": "Orange, Riverside"
+        "videos": []
     },
     {
         "uuid": "ea3fe28b-4e57-4373-a59f-590426d4fbd5",
@@ -8620,8 +8588,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk7hIGjgreSH9uGCtCahlK8o1Y1Zka0ZR1Q-zctdWWoDOAELxZmxAPSa8&s"
             }
         ],
-        "videos": [],
-        "county": "Lake"
+        "videos": []
     },
     {
         "uuid": "a8e03db0-5307-4df8-a63a-1aaa38acd4f0",
@@ -8867,8 +8834,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsYmkjAUaKpXK3lZL9jpEKC9B7IMyBON02DxrSngk-Rg6JomGNTTizI6w&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt"
+        "videos": []
     },
     {
         "uuid": "a5f8bddd-dbb4-47f6-99cd-b31c4de9590d",
@@ -9038,8 +9004,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDImUS2qt0wx6wfrOZpSHIvqsDHOpxzI2TV1hVxhUwft5g9uhys0_6WQ&s"
             }
         ],
-        "videos": [],
-        "county": "Kings"
+        "videos": []
     },
     {
         "uuid": "125c6f81-4151-4b7d-803a-438e09f1f8c4",
@@ -9285,8 +9250,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx-6ZrDU2ROrxelT9aBCnTB_27EwkHtSkLUZLIdDZwTcF_0Yoy6UYQcieX&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "2da39a10-438e-409c-9812-d4272a33ef4a",
@@ -9534,8 +9498,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcdL1kfOTrewmLFdgie59EwGo4GDOS1Ztq-k-P4lCTkqjlfQVxyNMrlA&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt, Trinity"
+        "videos": []
     },
     {
         "uuid": "9d58ea08-806b-47d3-95de-216f3ecb1cda",
@@ -9734,8 +9697,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7sAtVP-UXl237jKwK5Vh1SPBRB0xSqg751Zc_x6_AONbtuBOku_DIGUA&s"
             }
         ],
-        "videos": [],
-        "county": "Madera"
+        "videos": []
     },
     {
         "uuid": "fe431a98-00d2-4b01-aff2-5231590227b8",
@@ -10044,8 +10006,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkjVlPtye9OoV38D8HrqNJOsvbBqfb34NNaUvgbNVNDu_jsaqbzwSOWQ&s"
             }
         ],
-        "videos": [],
-        "county": "Napa"
+        "videos": []
     },
     {
         "uuid": "43233ee7-96ed-4df8-a9e2-fcd58f96cc61",
@@ -10406,8 +10367,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFE4NeP7a7bgtr3j-hOi0IUe_ppahUW4AJyfmQsNX71LH_c1CmtlslLA&s"
             }
         ],
-        "videos": [],
-        "county": "San Diego"
+        "videos": []
     },
     {
         "uuid": "8bb2d512-d54c-4529-8556-f622cc6baf24",
@@ -10610,8 +10570,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNeF3HKHtxjjWCm8tYukKCXTSQU6O9nKqxHfiqsCwpp7SUkx8fxpfS8Hs&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt, Trinity"
+        "videos": []
     },
     {
         "uuid": "e8dc1eab-1a0b-4016-9cb6-e96e4a8240ec",
@@ -10859,8 +10818,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrHtnRefbANnFYzdMRp96h1Yy5YWAXWGeley07NWP7bBswuDEb8TZ3UQ&s"
             }
         ],
-        "videos": [],
-        "county": "El Dorado"
+        "videos": []
     },
     {
         "uuid": "066b1699-d222-4937-82eb-b034129ecffa",
@@ -11193,8 +11151,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUcJqSQe-4IYKPLU47KNfbP0KdR03ck0icool2mOoxc0uEXLshbpq5mkQ&s"
             }
         ],
-        "videos": [],
-        "county": "Calaveras"
+        "videos": []
     },
     {
         "uuid": "7f2d49e7-30a4-40ba-9b70-007b69ee346d",
@@ -11486,8 +11443,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuWzFTqTPddGhghct-lT_AHJWPbC8Cev3b6HQnL4PL3prpp4lGP1dtZFs&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     },
     {
         "uuid": "fc75e6ec-7266-4edf-9c23-b4a5ae7b7b05",
@@ -11763,8 +11719,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5HCdparjp7kAz9ZoT2HACBYmJYvfmqUgBLFHHtumiTNkMGPGF7OXSokM&s"
             }
         ],
-        "videos": [],
-        "county": "Santa Barbara"
+        "videos": []
     },
     {
         "uuid": "834da4db-dbbf-42d8-a03c-234980579f82",
@@ -12079,8 +12034,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ48fh95OwsIw4fH0PUPp53Nd1ttx-FrYifng4iQw5Tn-x3jWaKnQzUIpg&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "3de29575-9f19-42cf-bfc2-a181315db776",
@@ -12256,8 +12210,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBERplhIRZVCAXsvPTa-ytP0-hC-Hju_G0M2RxaNIQKTjLfhygMNCzgg&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt"
+        "videos": []
     },
     {
         "uuid": "9d56b164-f284-4f4b-bbdc-6f00ffcedeb1",
@@ -12458,8 +12411,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIdqBxohF4XmFRbDEwLgXRwj71pWhm8Kn2FBEqLpkhUPDxx9tOvytnkvKZ&s"
             }
         ],
-        "videos": [],
-        "county": "Ventura"
+        "videos": []
     },
     {
         "uuid": "e6fccb32-8c72-4dbb-ac40-88b63ec4b430",
@@ -12629,8 +12581,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPt0bvHF88GCIkK61wppi74oPU9VvWDunLQwPVY-MoVlgRpAIk5ptCTA&s"
             }
         ],
-        "videos": [],
-        "county": "Monterey"
+        "videos": []
     },
     {
         "uuid": "859dfaf9-037f-470c-aa13-59a3af766467",
@@ -12801,8 +12752,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY7-UOol-JeVLY2jUqjnYCD4c26clKgBBOi3bAW0zU4Pjnx3hUypO_d54&s"
             }
         ],
-        "videos": [],
-        "county": "Placer"
+        "videos": []
     },
     {
         "uuid": "d4f91e32-912a-40ca-be78-cb756e63d9c7",
@@ -12968,8 +12918,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcUyXkW5vMcv5kUvuTsWRTLybGBCSZAe0kmQAR-7c0izxzDPqSnIq5uQ&s"
             }
         ],
-        "videos": [],
-        "county": "Mono"
+        "videos": []
     },
     {
         "uuid": "6b5b9119-b942-48da-9b5a-fc051b46d258",
@@ -13205,8 +13154,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRL2CTWnY1b3g99Cb1lXIn2Af3ICIiNP7xJJki8fsYQIY1N0kS1nDyrNE&s"
             }
         ],
-        "videos": [],
-        "county": "Mono"
+        "videos": []
     },
     {
         "uuid": "984dfb4b-d303-4cab-ad91-a0b3a169e148",
@@ -13358,8 +13306,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfV3DhTuwdRR1gHN-qpWJ5zdT6VJxR5naaTxD-Q4SCEkbJgXiRl_qZ5g&s"
             }
         ],
-        "videos": [],
-        "county": "San Bernardino"
+        "videos": []
     },
     {
         "uuid": "ed9890be-9805-41c3-867c-b2a09883a61f",
@@ -13523,8 +13470,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz7HTFwKF3mydpI29cdLjXF1b1eSrE0BCWC8-pF2AYObBBTadSWguzLg&s"
             }
         ],
-        "videos": [],
-        "county": "Los Angeles, Ventura"
+        "videos": []
     },
     {
         "uuid": "356312cb-e4dd-467d-b145-b562f7019522",
@@ -13699,8 +13645,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQylGaFC3S9bXtmudSKBt7kdX7Ak9pDReOwa2kuE1m1WC7aktS3DWzRWQ&s"
             }
         ],
-        "videos": [],
-        "county": "Tehama"
+        "videos": []
     },
     {
         "uuid": "50ec92c9-864c-4ce1-93d9-c7517fce9bef",
@@ -13982,8 +13927,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpCnXVGfWJWSOE62s7F-1n5gfjIjN8tKRS5vrydSY8Xe2a33FNeI1tMg&s"
             }
         ],
-        "videos": [],
-        "county": "Sierra"
+        "videos": []
     },
     {
         "uuid": "94acbd1a-9c6b-4766-827e-93f2565fdd65",
@@ -14124,8 +14068,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREk8PIQHzwzwoAUXeayFA9iuNNX3HfiWVafZZnc7mOtBRwLJ_JHwDQaJI&s"
             }
         ],
-        "videos": [],
-        "county": "Kern, San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "fef80c65-4354-4a6e-a3e9-55c51b771544",
@@ -14297,8 +14240,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6JqnkbxVJMX5EA3acNWrQAhlEobzDvgwwerAZH_19N-EJDZgzFYYqmg&s"
             }
         ],
-        "videos": [],
-        "county": "Monterey"
+        "videos": []
     },
     {
         "uuid": "59982a85-a990-4459-af43-1126b71300b3",
@@ -14552,8 +14494,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT22sMIkGII_npigy5lAlu5dugVRqeoGy-PgL7cEAVPmwys2UMhVUQgKw&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda"
+        "videos": []
     },
     {
         "uuid": "2c1b6ef4-191d-4448-9d6e-d0b80bd2dd00",
@@ -14837,8 +14778,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWG9cjeaJBzfimpPXVBM5fxBtCQR0g3LJuXQCezisLJJUw6fGwO5NLkA&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda, San Joaquin"
+        "videos": []
     },
     {
         "uuid": "823156d0-4761-43c2-a2bc-6b7a4f484190",
@@ -15051,8 +14991,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqzJAvIl7nT93Owv3HLtjaLt4LwpmQxxyAa9vuQ1-BRBDU5iBuCjBStg&s"
             }
         ],
-        "videos": [],
-        "county": "El Dorado"
+        "videos": []
     },
     {
         "uuid": "1ffd9356-631a-4865-bed9-b0de840ab58c",
@@ -15243,8 +15182,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwybXYBfr-g7PaL60Je-6BS2w1qlSePNAC3Ki-sqpQ6p1eohrAGwfHtw&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     },
     {
         "uuid": "8ebf9376-4c11-465b-9e90-cd787da8ebe2",
@@ -15442,8 +15380,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThUQtC_Ci-1yl2QHj74bQg4wpueSDxiFtHFsNkNDxcLJ-W354PBNUIZg&s"
             }
         ],
-        "videos": [],
-        "county": "Tehama"
+        "videos": []
     },
     {
         "uuid": "8fddbac1-dec9-4a64-81ac-95b74a69d285",
@@ -15700,8 +15637,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrxf_danEjVfMg5v8O3Ic6ZM9Gc8v70TUS4fKkaqu3i1ncjjFDg98k-g&s"
             }
         ],
-        "videos": [],
-        "county": "Sonoma"
+        "videos": []
     },
     {
         "uuid": "1bda8712-66c0-4294-9247-1ad6dc2c52e0",
@@ -15983,8 +15919,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYZsF-UrRsJP_nC0GYzv_4yOgiRIGb54LXUkPUjjc9wPjp1GcO2fd1MQ&s"
             }
         ],
-        "videos": [],
-        "county": "Tulare"
+        "videos": []
     },
     {
         "uuid": "8dd354e5-aa8c-45e1-b74f-eec46ac225b3",
@@ -16217,8 +16152,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvitHLQi1qJJ4EU1DDf5s_FxqTiKSKYwYiYxMfrxleoh6QieWfCp_wJ-Q&s"
             }
         ],
-        "videos": [],
-        "county": "Siskiyou"
+        "videos": []
     },
     {
         "uuid": "6b8974f9-a1aa-4ffb-8048-782d8cf1813c",
@@ -16483,8 +16417,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA9R4Rp8q7Igs808pqx1obO_fnEmPXXBcJ5JUjgdMaqD1AlV20RV2N3Pg&s"
             }
         ],
-        "videos": [],
-        "county": "Yuba"
+        "videos": []
     },
     {
         "uuid": "ab7db08e-ef46-4246-b572-2b8d9380895b",
@@ -16653,8 +16586,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3O58WgKCKrWJ9wwXotQelIfkmM1s1Mclq5B9hbyibbiiVzrrMnj_yg&s"
             }
         ],
-        "videos": [],
-        "county": "Humboldt, Trinity"
+        "videos": []
     },
     {
         "uuid": "9b705b97-ec94-4b3c-bfd1-786ff7e2fe66",
@@ -17091,8 +17023,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTW6rDZcD4kPvYQhbqrMdvyuV7EqZCkPZVs1R0df5HHZ5KnEzDnYAFqRc&s"
             }
         ],
-        "videos": [],
-        "county": "Mono"
+        "videos": []
     },
     {
         "uuid": "7f5aa585-3454-4270-ae1e-0949466c23e9",
@@ -17428,8 +17359,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_j9fgLXlTRbXzpRO4IuWEsZc9174wo_Whcrv9cdH3t6UrRz40D_HgQ&s"
             }
         ],
-        "videos": [],
-        "county": "Amador"
+        "videos": []
     },
     {
         "uuid": "b899e25e-1851-46d3-b738-3d4c50b2d616",
@@ -17740,8 +17670,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKEWvYa4ObONhl8m6dYEpAYJXgEzrkNPmTpkrPaXniP7xRxxHAubROhw&s"
             }
         ],
-        "videos": [],
-        "county": "Kings"
+        "videos": []
     },
     {
         "uuid": "0597824b-fae8-47a8-b47a-9241ee931092",
@@ -18143,8 +18072,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhiVHNnP09Gww_5MtRkuA5kc1qAY8dKgRQBZPqWvF7g-xppHb2syfL0gM&s"
             }
         ],
-        "videos": [],
-        "county": "San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "e8ebfb69-87e8-431c-a6c4-05d0ed68410c",
@@ -18484,8 +18412,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKAwZZ6zuYBWBq9urW-HyriQW97ZFFnqfHbUPwy3Gcg2-TmA_VO5WlMQ&s"
             }
         ],
-        "videos": [],
-        "county": "Mendocino"
+        "videos": []
     },
     {
         "uuid": "619e6ca5-9780-4530-8025-e96acf54b43e",
@@ -18661,8 +18588,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAtgNE1yq1_itq73-As3fFD2xHW_-SADpJKPrpkn-SxCD_7eWTxBB4OVM&s"
             }
         ],
-        "videos": [],
-        "county": "Trinity"
+        "videos": []
     },
     {
         "uuid": "b1c0d2bb-08d2-4bb2-b218-74ae03fb23f7",
@@ -18933,8 +18859,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLSHVcuqF4EHpupOecmJD4VFC7xNrOlCqP4oUz443xdoTZQ2tYVZtLHHU&s"
             }
         ],
-        "videos": [],
-        "county": "Santa Clara"
+        "videos": []
     },
     {
         "uuid": "8ebc6911-bd3c-4060-bde7-5c4e352b9763",
@@ -19307,8 +19232,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1_WEqwAsR6gEUs_6a7Ltp-1rl8mrGjPpMcMPzffdORg5rDhMUJgfuBw&s"
             }
         ],
-        "videos": [],
-        "county": "Orange, Riverside"
+        "videos": []
     },
     {
         "uuid": "d039d77f-24f1-4511-b696-72d2de721b2b",
@@ -19560,8 +19484,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJsJcsVL_N3XkdVWnjh6Ula3tQC8xVN00MZkl73XQ8dMKo50IW62A-Igo&s"
             }
         ],
-        "videos": [],
-        "county": "San Bernardino"
+        "videos": []
     },
     {
         "uuid": "03952faa-d897-4cd6-af49-4cc172bc8d93",
@@ -19708,8 +19631,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6p_ubmad2OZ6I3JfdJW0m4ZzhLqWCGh_SUYokwMxW2Mctq4Msf_o5jrI&s"
             }
         ],
-        "videos": [],
-        "county": "Nevada"
+        "videos": []
     },
     {
         "uuid": "4e3a9115-0ce3-4634-beff-0679a139a918",
@@ -19937,8 +19859,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrRHnOQ_9HbHSCRMBS8VV9yGGbv_gyuyZJuNw1NNNSRJ1iOXLBOS5Bbw&s"
             }
         ],
-        "videos": [],
-        "county": "Amador"
+        "videos": []
     },
     {
         "uuid": "89834c47-e7a5-4845-a6dc-8cea28c90f98",
@@ -20324,8 +20245,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0vvY3Q7811atOM46Up4AfsFzMHOjxH-vD6LrPOu-aGUXnV8ox1qa_hZ4&s"
             }
         ],
-        "videos": [],
-        "county": "Mariposa"
+        "videos": []
     },
     {
         "uuid": "b9fcb530-2435-4c4f-a43c-e20c9760b1d6",
@@ -20522,8 +20442,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoV3zuKNTo9CZ3OWjB4YlPXKsBpaN-GqjhpUwVF-E7wSz_gYsaQZww3Zs&s"
             }
         ],
-        "videos": [],
-        "county": "Kings"
+        "videos": []
     },
     {
         "uuid": "a4c3405b-0c9c-41a0-bb8d-23ca8942bef6",
@@ -20746,8 +20665,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIjKsJsRagOQ7_MGireLdrOPFbFzPzwngEl_lWnBIGtInsVjvi6Em1vyc&s"
             }
         ],
-        "videos": [],
-        "county": "Tulare"
+        "videos": []
     },
     {
         "uuid": "d7fd0b56-cb92-40bb-b4e9-55e00e62180f",
@@ -21043,8 +20961,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXEKrc05vf-147mqNVRCVSxm5glTqGIkpfJYRMi_2BrqkxeFCg6RbJ5uc&s"
             }
         ],
-        "videos": [],
-        "county": "Mono"
+        "videos": []
     },
     {
         "uuid": "76ee41b3-6814-48be-b938-be8635d03b2c",
@@ -21388,8 +21305,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi17PXibwlMP8JJIAi0HctYs79PHnNV5pZgzOhomFITUsblj3ze8L3eiA&s"
             }
         ],
-        "videos": [],
-        "county": "Sierra"
+        "videos": []
     },
     {
         "uuid": "b3781cb4-fba7-4d1a-a714-55b966afcec8",
@@ -22095,8 +22011,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqgzPp04hjxHWjikacvpBODSyJ9kH9veUhQMP9iclDC82v1TIkNaN2kw&s"
             }
         ],
-        "videos": [],
-        "county": "Plumas"
+        "videos": []
     },
     {
         "uuid": "2ffe2bfb-a8dd-4c7c-a609-4a4c41f4c546",
@@ -22328,8 +22243,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9pqX2baqKs3cRaNPSBGvgw7aMhMcf8RIUNZvqjk8hn4uOIOiaet3m8X4&s"
             }
         ],
-        "videos": [],
-        "county": "Madera"
+        "videos": []
     },
     {
         "uuid": "d2f4e38b-38b7-4729-8bda-5f29a6611c67",
@@ -22781,8 +22695,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXqn_cz693TamBhVEs6P5hA0xDCqJ7X4ISPzwDfOVigOHD7OAlKXMb63E&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda"
+        "videos": []
     },
     {
         "uuid": "affaa94a-c2a6-4f9a-a0b2-b5ee9635e31c",
@@ -23034,8 +22947,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTyJMpFS-Os6nsjksSOtfvWkrM_eRxyDNWBlVgVtOHwnpJmRiR-xqSew&s"
             }
         ],
-        "videos": [],
-        "county": "Tulare"
+        "videos": []
     },
     {
         "uuid": "131a2ceb-9911-41e1-9185-ee6a0782898e",
@@ -23293,8 +23205,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxUDbHHTm1iRC1rdrpuLl8noXRHOqaHFGZFCtWfsjVhnAeqA_6JeBHKg&s"
             }
         ],
-        "videos": [],
-        "county": "Tulare"
+        "videos": []
     },
     {
         "uuid": "c60fcb3c-41b8-415d-93fd-f07d90275890",
@@ -23536,8 +23447,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8kkjv9jrGcqWNLgk8vOKBhqai39gNyNGnfjXd-zAeTtRfuazs0fra6FQ&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     },
     {
         "uuid": "3dd26fd6-f406-4c8f-8175-2564dc45f22c",
@@ -23825,8 +23735,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToGwHlVVCqMmC5q6ZccWc5qhHOmo6UqhYN2yT7dqkR4WuCaqeaiy9UHzQ&s"
             }
         ],
-        "videos": [],
-        "county": "San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "a547daa5-835f-44e5-959d-ceb5ffd49752",
@@ -24030,8 +23939,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXqujjGmPj4nTtVlEdh1HtCnl9PLqESG_ZL-xXFOxG6FlAx6S4vReG5dc&s"
             }
         ],
-        "videos": [],
-        "county": "San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "35ea6ec8-190e-42a5-8c65-30b0e4022861",
@@ -24537,8 +24445,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKxUq5hLAiKHbbQu59_xy712ct7Ay7lvKq7TX_wWmR3X9zZGU3nbLMdlE&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "bdf78a0f-6a51-4542-9594-b595062f66ec",
@@ -24821,8 +24728,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD63MxzDinqrpuXfrP1bIkMa_aaj_u3wqMkyjwg6GGqhbDCB78eFbmmA&s"
             }
         ],
-        "videos": [],
-        "county": "Santa Clara"
+        "videos": []
     },
     {
         "uuid": "37f0d590-5def-4637-a08b-ae484aa1bedd",
@@ -25131,8 +25037,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfZh48f1nmf8bCEtoEAZZYjOum9lbHv9pmQWTcLtrRTe8f9faJPNc5CA&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda, San Joaquin"
+        "videos": []
     },
     {
         "uuid": "a3599d88-e545-4ab4-b272-b645658c66a0",
@@ -25355,8 +25260,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAJonHRI-7hVJMpboaZeTIazcsypCeiUI96jhnvAhwKE_CuJK2vOeWqQ&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "90b19bad-6a6e-4615-b0e2-0b1027e99ebf",
@@ -25499,8 +25403,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnwNUwvifRqCk5h8akauxNGrLwoIkHm4CbC_7S-MKhGeSjmhS5wJmTFDU&s"
             }
         ],
-        "videos": [],
-        "county": "Ventura"
+        "videos": []
     },
     {
         "uuid": "d12932f8-b646-4b9d-9ae2-62a584deacb9",
@@ -25736,8 +25639,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL-3xU4vcYqN2xPo450MYFdAFf-Mdr-NqJx_Q5e9x5ZgmcKb_aY4fFjLs&s"
             }
         ],
-        "videos": [],
-        "county": "Tehama"
+        "videos": []
     },
     {
         "uuid": "34c95880-4222-4823-90bb-fbfb1b64d8fe",
@@ -26338,8 +26240,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkWZgDb0K7fzmT3n7DlJqAabO1VIBmFca4plth4KB_KqF71SMohxwLl38&s"
             }
         ],
-        "videos": [],
-        "county": "Riverside"
+        "videos": []
     },
     {
         "uuid": "55191419-13aa-42d1-b5ba-e04dd00ab076",
@@ -26584,8 +26485,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlAzW_2oBm-v_N1duP5no9V0sVwI5ho5D6DssXUFj9VM3eUlshbKT7H-o&s"
             }
         ],
-        "videos": [],
-        "county": "Napa"
+        "videos": []
     },
     {
         "uuid": "ab73b584-198e-48b9-8d17-69227426efcc",
@@ -26767,8 +26667,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTffCZQP36c-V-uMqnHwyf8BkGT9ifhWescyMJA9qucltiSl_Zm0TjE5A&s"
             }
         ],
-        "videos": [],
-        "county": "Mendocino"
+        "videos": []
     },
     {
         "uuid": "c889f40b-85ff-4b98-be19-db0184740d73",
@@ -27058,8 +26957,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-xR9P-C9NshX3PvH-1hBgUPAUT1JRwHqcla72dDOTGuZJX3qJilw3uTU&s"
             }
         ],
-        "videos": [],
-        "county": "Nevada"
+        "videos": []
     },
     {
         "uuid": "0cce325c-8aac-4323-9136-49330e88540a",
@@ -27314,8 +27212,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_E9FAshYOh6JqrXBXWL3EkmKDDRgIjYKN5jRoVGpgt7Ibq0dfn6omifI&s"
             }
         ],
-        "videos": [],
-        "county": "Contra Costa"
+        "videos": []
     },
     {
         "uuid": "c50dd68f-4b52-4fc2-ba97-4a16f69e1feb",
@@ -27619,8 +27516,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScxiHNLS4Ut4fbe1RAtKSs2tJBOy98hblkhL_lnf63_gb1deWPuOQZwQ&s"
             }
         ],
-        "videos": [],
-        "county": "Santa Clara"
+        "videos": []
     },
     {
         "uuid": "81b0d972-a27d-44f7-8fe9-68d6ecbd5019",
@@ -27844,8 +27740,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaTgADNJObFRDIhd_Ypr9aR465UT3YzLpe767l6zHbYGNYo6QI1XLLaCU&s"
             }
         ],
-        "videos": [],
-        "county": "San Luis Obispo"
+        "videos": []
     },
     {
         "uuid": "bf7972a6-b511-445a-b95e-bb0198b2f926",
@@ -28046,8 +27941,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSlqNNhDVw_Bf_p5DlMyyp2leDxJ5kYjzTRd1OiHSZ0DDYIu2A4E6aw&s"
             }
         ],
-        "videos": [],
-        "county": "Colusa"
+        "videos": []
     },
     {
         "uuid": "cf157089-ce23-4e3d-a611-deef97dbb497",
@@ -28240,8 +28134,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQeop4ies_QESHjQgKBPZ_J-osc1T0XVMuZBpBjMkQqB6wbP-zDTmvHA&s"
             }
         ],
-        "videos": [],
-        "county": "Amador"
+        "videos": []
     },
     {
         "uuid": "51c4951b-cac6-446f-a82b-f9700924d55a",
@@ -28561,8 +28454,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQosm2AIeZ5PDbi9M8p_O-_AkmBfyKyd6YuibfcPTzryipUFnUD0asr&s"
             }
         ],
-        "videos": [],
-        "county": "Merced"
+        "videos": []
     },
     {
         "uuid": "715c00dd-8971-41a6-b18e-2b7602027c87",
@@ -28745,8 +28637,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvYkvOwNLMpc3x_Aoe8wJp5z-uQbV4wgCRwfso-uTkXTUclDHbLLXE2w&s"
             }
         ],
-        "videos": [],
-        "county": "Los Angeles"
+        "videos": []
     },
     {
         "uuid": "ba46648d-a4dd-418d-9ea3-1300e660bfa2",
@@ -28968,8 +28859,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyOmKmv045A5pmKhS803zZ5NeDWz4RRkjWWa0lomaHEhZS3xeAyZFUGw&s"
             }
         ],
-        "videos": [],
-        "county": "Napa"
+        "videos": []
     },
     {
         "uuid": "0d1d825e-f484-4d9e-a03f-390cce268db3",
@@ -29370,8 +29260,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWeYis1Thr9uaX91WnfD78s56EQLCOwu2OBpLtOXA_feaTtLrSIojyag&s"
             }
         ],
-        "videos": [],
-        "county": "Alameda, San Joaquin"
+        "videos": []
     },
     {
         "uuid": "febcfa2c-857e-4602-98f3-de9ffaecdba7",
@@ -29647,8 +29536,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkpRfdqwltF9qqs2ACJuekreQ5LI85YhZg6nYBsZHx_esB5JUVq1Tz8g&s"
             }
         ],
-        "videos": [],
-        "county": "El Dorado"
+        "videos": []
     },
     {
         "uuid": "ab64d3db-ce4b-4bd3-bb68-fbcaef2bbe13",
@@ -29940,8 +29828,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0jZfdsgTa_NV7hd2rNG-UU9nRB31cTinpBkoakurgnds-bWV_huwh0Q&s"
             }
         ],
-        "videos": [],
-        "county": "San Diego"
+        "videos": []
     },
     {
         "uuid": "83f2f191-0830-4e2f-9e44-f59ae262a865",
@@ -30194,8 +30081,7 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwVf36l_pTnqV4jctMOWbjJTccRnYYAtkregGZnwEtnlaHGA9CmXTxmw&s"
             }
         ],
-        "videos": [],
-        "county": "Sierra"
+        "videos": []
     },
     {
         "uuid": "2c6e5eca-fd03-461e-9818-f9fc23d3c229",
@@ -30426,7 +30312,6 @@
                 "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQylfQBES8IepoF1NfwtAEM5P_M6LbOEEDzZe9OLdOuUqNaTl9j0u7SeA&s"
             }
         ],
-        "videos": [],
-        "county": "Kern"
+        "videos": []
     }
 ]

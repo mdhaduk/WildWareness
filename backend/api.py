@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
 from models import Wildfire, Shelter, NewsReport
@@ -8,6 +8,7 @@ from scripts import ca_fire_gov
 from flask import render_template_string
 import os
 import awsgi
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -70,6 +71,7 @@ def get_single_incident(id):
 def get_all_shelters():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
+
     with local_session() as ls:
         try:
             shelters = ls.query(Shelter).limit(size).offset((page - 1) * size).all()
@@ -106,12 +108,48 @@ def get_single_shelter(id):
 @app.route("/news", methods=["GET"])
 def get_all_reports():
     page = request.args.get("page", 1, type=int)
-    size = request.args.get("size", 2, type=int)
+    size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
+
+    # sort_by = request.args.get("sortBy", "title")  # Default sorting by name
+    # order = request.args.get("order", "asc")  # Default ordering by ascending
+    source = request.args.get("source", None)
+    # author = request.args.get("author", None)
+    # date = request.args.get("date", None)
+
+
     with local_session() as ls:
         try:
-            incidents = ls.query(NewsReport).limit(size).offset((page - 1) * size).all()
+            query = ls.query(NewsReport)
+            print(source)
+            if source:
+                query = query.filter(func.lower(NewsReport.source) == source.lower())
+
+
+            # if author:
+            #     query = query.filter(NewsReport.author.ilike(f"%{author}%"))
+
+            # if date:
+            #     date_obj = datetime.strptime(date, '%Y-%m-%d')
+            #     query = query.filter(NewsReport.published_at == date_obj)
+
+
+            # Sorting logic
+            # if sort_by == "date":
+            #     if order == "desc":
+            #         query = query.order_by(NewsReport.published_at.desc())
+            #     else:
+            #         query = query.order_by(NewsReport.published_at.asc())
+            # elif sort_by == "title":
+            #     if order == "asc":
+            #         query = query.order_by(NewsReport.title.lower().asc())
+            #     else:
+            #         query = query.order_by(NewsReport.title.lower().desc())
+
+
+            incidents = query.limit(size).offset((page - 1) * size).all()
+            print(incidents)
             incident_cards = [incident.as_instance() for incident in incidents]
-            total_incidents = ls.query(NewsReport).count()
+            total_incidents = query.count()
             total_pages = (total_incidents + size - 1) // size
             return jsonify(
                 {
@@ -142,4 +180,4 @@ def get_single_report(id):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=3000)

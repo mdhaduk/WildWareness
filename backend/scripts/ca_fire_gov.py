@@ -42,7 +42,7 @@ def get_wildfire_image(search_term):
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for HTTP issues
         data = response.json()
-
+        
         # Extract the first image URL
         if "items" in data and len(data["items"]) > 0:
             return data["items"][0]["link"]  # Return the first image URL
@@ -79,7 +79,7 @@ if __name__ == '__main__':
                     for feature in data["features"]:
                         properties = feature.get("properties", {})
                         geometry = feature.get("geometry", {})
-
+                        
                         # Extract latitude and longitude
                         coordinates = geometry.get("coordinates", [None, None])
                         lon, lat = coordinates if len(coordinates) == 2 else (None, None)
@@ -94,9 +94,9 @@ if __name__ == '__main__':
                             "longitude": lon,
                             "location": getLocation(lat, lon),
                             "acres_burned": properties.get("AcresBurned", "N/A"),
+                            "active": properties.get("IsActive", "False"),
                             "url": get_wildfire_image(f'California {properties.get("Name", "Unknown Fire")} image'),
                         }
-
                         fires_data.append(fire_entry)
 
             except requests.exceptions.JSONDecodeError:

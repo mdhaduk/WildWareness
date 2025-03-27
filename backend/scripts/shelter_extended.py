@@ -4,6 +4,7 @@ import os
 import json
 import random
 from dotenv import load_dotenv
+from helper_scripts import get_county_from_address
 
 # Load API Key from .env file
 load_dotenv()
@@ -120,7 +121,7 @@ def main():
         place_id = place.get("place_id")
         name = place.get("name", "N/A")
         address = place.get("formatted_address", "N/A")
-
+        county = get_county_from_address(address)
         details = fetch_place_details(place_id, API_KEY)
         imageUrl = get_shelter_image(name, address)
 
@@ -134,6 +135,7 @@ def main():
             places_data.append({
                 "name": name,
                 "address": address,
+                "county": county, 
                 "phone": phone,
                 "website": website,
                 "rating": rating,

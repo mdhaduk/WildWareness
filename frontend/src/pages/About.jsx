@@ -19,7 +19,7 @@ function About() {
             bio: "Junior Computer Science major at University of Texas at Austin.",
             responsibilities: "Full stack, Documentation",
             img: "https://miro.medium.com/v2/resize:fit:640/format:webp/1*8A7XXconEuan7zIsmVSLqQ.jpeg",
-            tests: 11
+            tests: 14
         },
         {
             name: "Pooja Vasanthan",
@@ -28,7 +28,7 @@ function About() {
             bio: "Junior year Computer Science major and Statistics and Data Science Minor at UT Austin",
             responsibilities: "Full stack, Instance Development, Documentation",
             img: "https://miro.medium.com/v2/resize:fit:640/format:webp/1*-GfS-B3ALo1LZKA4ZGgW0w.png",
-            tests: 19
+            tests: 18
         },
         {
             name: "Zakaria Sisalem",
@@ -37,7 +37,7 @@ function About() {
             bio: "3rd year CS & Math major at UT Austin",
             responsibilities: "Full stack, Technical Writing",
             img: "https://miro.medium.com/v2/resize:fit:720/format:webp/1*uQsOHbb6Kn6j_s27hpC-Bg.jpeg",
-            tests: 17
+            tests: 15
         }
     ];
 
