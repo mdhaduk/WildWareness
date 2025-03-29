@@ -51,7 +51,7 @@ function NewsReports() {
                             <div className="card" style={{ width: '22rem' }}>
                                 <img className="card-img" src={report.image_url} alt={report.title}/>
                                 <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Title:</strong> {report.title}</li>
+                                    <li className="list-group-item"><strong>Title:</strong> <span className='card-title'>{report.title}</span></li>
                                     <li className="list-group-item"><strong>Source:</strong> {report.source}</li>
                                     <li className="list-group-item"><strong>Date:</strong> {report.published_at}</li>
                                     <li className="list-group-item"><strong>Author:</strong> {report.author}</li>

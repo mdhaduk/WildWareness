@@ -94,6 +94,7 @@ if __name__ == '__main__':
                             "longitude": lon,
                             "location": getLocation(lat, lon),
                             "acres_burned": properties.get("AcresBurned", "N/A"),
+                            "active": properties.get("IsActive", "False"),
                             "url": get_wildfire_image(f'California {properties.get("Name", "Unknown Fire")} image'),
                         }
 

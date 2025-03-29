@@ -82,6 +82,7 @@ const ShelterInstancePage = () => {
         <h5><strong>Attributes:</strong></h5>
         <ul className="list-group list-group-flush">
           <li className="list-group-item text-wrap"><strong>Name:</strong> {shelter.name}</li>
+          <li className="list-group-item text-wrap"><strong>County:</strong> {shelter.county}</li>
           <li className="list-group-item text-wrap"><strong>Address:</strong> {shelter.address}</li>
           <li className="list-group-item text-wrap"><strong>Phone:</strong> {shelter.phone || "N/A"}</li>
           <li className="list-group-item text-wrap"><strong>Rating:</strong> {shelter.rating ? `${shelter.rating}/5` : "No rating available"}</li>

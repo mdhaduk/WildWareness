@@ -8,7 +8,7 @@
 https://wildwareness.net/
 
 ## **Git SHA**
-- 54b305bcef6c86a86a2ba2e4e961b04843abedb4
+- 
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
@@ -63,6 +63,19 @@ Responsibilites: Determine meeting times, assign tasks, ensure progress being ma
 
 Phase 3 leader: Audrey Tan                                                     
 Responsibilites: Determine meeting times, assign tasks, ensure progress being made.
+
+**Estimated Time to Completion:**
+- Milan Dhaduk - 22 hours
+- Audrey Tan - 17 hours
+- Zakaria Sisalem - 18 hours
+- Pooja Vasanthan - 19 hours
+
+**Actual Time to Completion:**
+- Milan Dhaduk - 
+- Audrey Tan - 
+- Zakaria Sisalem - 
+- Pooja Vasanthan - 
+
 
 Phase 4 leader: Zakaria Sisalem                                                 
 Responsibilites: Determine meeting times, assign tasks, ensure progress being made.

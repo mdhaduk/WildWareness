@@ -1,10 +1,10 @@
 from sqlalchemy import Integer, String, Float, Column, JSON, Text, ForeignKey, Table
 from sqlalchemy.orm import DeclarativeBase, relationship
 import json
-from scripts.test import get_county_from_address
+from scripts.helper_scripts import get_county_from_address
 
 
-TESTING = True
+TESTING = False
 
 class Base(DeclarativeBase):
     pass
@@ -45,6 +45,8 @@ class Wildfire(Base):
     latitude = Column(Text, nullable=False)
     longitude = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
+    status = Column(Text, nullable=False)
+
 
     shelters = relationship(
         "Shelter", secondary=Wildfire_Shelter, back_populates="wildfires"
@@ -66,6 +68,7 @@ class Wildfire(Base):
             "latitude": self.latitude,
             "longitude": self.longitude,
             "description": self.description,
+            "status": self.status,
             "shelters": [
                 {"id": shelter.id, "name": shelter.name, "address": shelter.address,
                     "phone": shelter.phone, "website": shelter.website, "rating": shelter.rating,
@@ -93,7 +96,7 @@ class Shelter(Base):
     reviews = Column(JSON, nullable=False, default=list)
     imageUrl = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
-    county = Column(Text, nullable=True)
+    county = Column(Text, nullable=False)
 
     wildfires = relationship(
         "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"
@@ -107,6 +110,7 @@ class Shelter(Base):
         instance = {
             "id": self.id,
             "name": self.name,
+            "county": self.county,
             "address": self.address,
             "phone": self.phone,
             "website": self.website,

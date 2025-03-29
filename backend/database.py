@@ -4,7 +4,7 @@ import os
 import sys
 import json
 import requests
-from scripts.test import get_county_from_address
+from scripts.helper_scripts import get_county_from_address
 from models import Base, Wildfire, Shelter, NewsReport, TESTING
 from dotenv import load_dotenv
 from collections import defaultdict
@@ -15,8 +15,8 @@ if TESTING:
 else:
     username = os.getenv("DB_USERNAME")
     password = os.getenv("DB_PASSWORD")
-    database_name = "homelessaid"
-    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@homelessaid-database.ctc8886awsgr.us-east-2.rds.amazonaws.com:5432/{database_name}"
+    database_name = "postgres"
+    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@wildfiredb.czwce00s2t3z.us-east-2.rds.amazonaws.com/{database_name}"
 
 
 # Note: The file this function relies on is not in the GIT repo b/c of its size, thus this won't work on a machine without the file
@@ -30,6 +30,7 @@ def addWildfires(local_session):
                 wildfire["acres_burned"] = str(wildfire["acres_burned"])
                 wildfire["latitude"] = str(wildfire["latitude"])
                 wildfire["longitude"] = str(wildfire["longitude"])
+                wildfire["status"] = "Active" if wildfire["active"] else "Inactive"
                 filtered_wildfire = {key: wildfire[key] for key in allowed_keys if key in wildfire}
                 wildfireInstance = Wildfire(**filtered_wildfire)
                 ls.add(wildfireInstance)
@@ -42,6 +43,7 @@ def addShelters(local_session):
             body = json.load(file)
             for shelter in body:
                 shelter["rating"] = str(shelter["rating"])
+                shelter["county"] = str(get_county_from_address(str(shelter["address"])))
                 shelterInstance = Shelter(**shelter)
                 ls.add(shelterInstance)
             ls.commit()
@@ -119,9 +121,9 @@ if __name__ == "__main__":
     local_session = sessionmaker(bind=engine, autoflush=False, future=True)
     Base.metadata.create_all(bind=engine)
     if len(sys.argv) == 1:
-        # addWildfires(local_session)
-        # addShelters(local_session)
-        # addNewsReports(local_session)
+        addWildfires(local_session)
+        addShelters(local_session)
+        addNewsReports(local_session)
         link(local_session)
     else:
         clear(local_session)

@@ -52,6 +52,7 @@ function Shelters() {
                                 <img className="card-img" src={shelter.imageUrl || "default-image.jpg"} alt={shelter.name}/>
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item"><strong>Name:</strong> {shelter.name}</li>
+                                    <li className="list-group-item"><strong>County:</strong> {shelter.county}</li>
                                     <li className="list-group-item"><strong>Address:</strong> {shelter.address}</li>
                                     <li className="list-group-item"><strong>Phone:</strong> {shelter.phone}</li>
                                     <li className="list-group-item"><strong>Website:</strong><a href='shelter.website'> {shelter.website}</a></li>
