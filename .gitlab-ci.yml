@@ -23,15 +23,10 @@ test_selenium:
   stage: test
   image: python:3.9-slim
   before_script:
-    - apt-get update && apt-get install -y wget curl unzip gnupg
-    - apt-get install -y chromium # Install Chromium (the browser)
-    - wget https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip  # Download the matching ChromeDriver version
-    - unzip chromedriver_linux64.zip
-    - mv chromedriver /usr/local/bin/
-    - chmod +x /usr/local/bin/chromedriver
-    - cd frontend/selenium_tests  # Navigate to your selenium test directory
-    - pip install --upgrade pip  # Ensure pip is the latest version
-    - pip install -r requirements.txt  # Install dependencies like pytest, selenium, etc.
+    - apt-get update && apt-get install -y wget curl unzip gnupg chromium
+    - cd frontend/selenium_tests # Change to the directory with requirements.txt
+    - pip install --upgrade pip
+    - pip install -r requirements.txt # This will install pytest, selenium, and webdriver-manager
   script:
     - pytest selenium_test.py # Run the tests with pytest
 
