@@ -24,7 +24,7 @@ test_selenium:
   image: python:3.9-slim
   before_script:
     - apt-get update && apt-get install -y wget curl unzip gnupg
-    - apt-get install -y google-chrome-stable
+    - apt-get install -y wget unzip curl chromium chromium-driver
     - wget https://chromedriver.storage.googleapis.com/112.0.5615.49/chromedriver_linux64.zip
     - unzip chromedriver_linux64.zip
     - mv chromedriver /usr/local/bin/
@@ -33,7 +33,7 @@ test_selenium:
     - pip install --upgrade pip
     - pip install -r requirements.txt # This will install pytest, selenium, and other dependencies
   script:
-    - pytest --maxfail=1 --disable-warnings -q # Run the tests with pytest
+    - pytest --maxfail=1 --disable-warnings -q selenium_test.py # Run the tests with pytest
 
 
 
