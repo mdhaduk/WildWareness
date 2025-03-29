@@ -33,7 +33,7 @@ test_selenium:
     - pip install --upgrade pip
     - pip install -r requirements.txt # This will install pytest, selenium, and other dependencies
   script:
-    - pytest --maxfail=1 --disable-warnings -q selenium_test.py # Run the tests with pytest
+    - pytest selenium_test.py # Run the tests with pytest
 
 
 
