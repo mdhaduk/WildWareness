@@ -28,7 +28,9 @@ test_selenium:
     - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - apt-get install -y ./google-chrome-stable_current_amd64.deb
     # Install chromedriver
-    - wget -q https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
+    - CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d. -f1-3)  # Get major version (e.g., 134.0.6998)
+    - CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)  # Get the matching chromedriver version
+    - wget -q https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
     - unzip chromedriver_linux64.zip
     - mv chromedriver /usr/local/bin/
     - chmod +x /usr/local/bin/chromedriver
