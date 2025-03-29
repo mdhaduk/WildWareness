@@ -24,16 +24,16 @@ test_selenium:
   image: python:3.9-slim
   before_script:
     - apt-get update && apt-get install -y wget curl unzip gnupg
-    - apt-get install -y firefox-esr
-    - wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
-    - tar -xvzf geckodriver-v0.30.0-linux64.tar.gz
-    - mv geckodriver /usr/local/bin/
-    - chmod +x /usr/local/bin/geckodriver
+    - apt-get install -y google-chrome-stable
+    - wget https://chromedriver.storage.googleapis.com/112.0.5615.49/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip
+    - mv chromedriver /usr/local/bin/
+    - chmod +x /usr/local/bin/chromedriver
     - cd frontend/selenium_tests # Change to the directory with requirements.txt
-    - pip install -r requirements.txt
-
+    - pip install --upgrade pip
+    - pip install -r requirements.txt # This will install pytest, selenium, and other dependencies
   script:
-    - python frontendAcceptanceTests.py
+    - pytest --maxfail=1 --disable-warnings -q # Run the tests with pytest
 
 
 
