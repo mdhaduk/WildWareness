@@ -96,7 +96,6 @@ class Shelter(Base):
     reviews = Column(JSON, nullable=False, default=list)
     imageUrl = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
-    county = Column(Text, nullable=True)
 
     wildfires = relationship(
         "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"

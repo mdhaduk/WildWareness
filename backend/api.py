@@ -122,7 +122,8 @@ def get_all_reports():
             query = ls.query(NewsReport)
             print(source)
             if source:
-                query = query.filter(func.lower(NewsReport.source) == source.lower())
+                query = query.filter(func.lower(NewsReport.source).contains(source.lower()))
+
 
 
             # if author:
