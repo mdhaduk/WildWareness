@@ -21,19 +21,18 @@ test:
 
 test_selenium:
   stage: test
-  image: python:3.12-slim
-  services:
-    - name: selenium/standalone-chrome:latest
-      alias: selenium  # This will make the Selenium container accessible as 'selenium' in your tests
-  variables:
-    SELENIUM_HOST: selenium  # Host name of the Selenium service
-    SELENIUM_PORT: 4444      # Port where Selenium WebDriver is exposed
+  image: python:3.9-slim
   before_script:
-    # Install Python requirements
-    - pip install --upgrade pip
-    - pip install -r frontend/selenium_tests/requirements.txt
+    - apt-get update && apt-get install -y wget curl unzip gnupg
+    - apt-get install -y firefox-esr
+    - wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
+    - tar -xvzf geckodriver-v0.30.0-linux64.tar.gz
+    - mv geckodriver /usr/local/bin/
+    - chmod +x /usr/local/bin/geckodriver
+    - cd frontend/selenium_tests # Change to the directory with requirements.txt
+    - pip install -r requirements.txt
+
   script:
-    - cd frontend/selenium_tests
     - python frontendAcceptanceTests.py
 
 
