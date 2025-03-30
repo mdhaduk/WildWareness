@@ -15,13 +15,13 @@ if TESTING:
 else:
     username = os.getenv("DB_USERNAME")
     password = os.getenv("DB_PASSWORD")
-    database_name = "postgres"
-    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@wildfiredb.czwce00s2t3z.us-east-2.rds.amazonaws.com/{database_name}"
+    database_name = "wildfiredb"
+    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@wildwarenessdb.czwce00s2t3z.us-east-2.rds.amazonaws.com/{database_name}"
 
 
 # Note: The file this function relies on is not in the GIT repo b/c of its size, thus this won't work on a machine without the file
 def addWildfires(local_session):
-    allowed_keys = {"name", "county", "location", "year", "acres_burned", "url", "latitude", "longitude", "description"}
+    allowed_keys = {"name", "county", "location", "year", "acres_burned", "url", "latitude", "longitude", "description", "status"}
     with local_session() as ls:
         with open("fire_incidents.json", "r") as file:
             body = json.load(file)
@@ -120,10 +120,7 @@ if __name__ == "__main__":
     engine = create_engine(DATABASE_URL, echo=False, future=True)
     local_session = sessionmaker(bind=engine, autoflush=False, future=True)
     Base.metadata.create_all(bind=engine)
-    if len(sys.argv) == 1:
-        addWildfires(local_session)
-        addShelters(local_session)
-        addNewsReports(local_session)
-        link(local_session)
-    else:
-        clear(local_session)
+    addWildfires(local_session)
+    addShelters(local_session)
+    addNewsReports(local_session)
+    link(local_session)

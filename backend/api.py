@@ -11,7 +11,6 @@ import awsgi
 
 
 app = Flask(__name__)
-# app.config["DEBUG"] = True
 app.json.sort_keys = False
 CORS(app)
 
