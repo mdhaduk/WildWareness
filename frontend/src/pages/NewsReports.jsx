@@ -26,6 +26,7 @@ function NewsReports() {
 
     // Fetch reports from the API with the current filters applied
     useEffect(() => {
+        console.log("Working")
         const fetchReports = async () => {
             setLoading(true); // Start loading before fetching data
             try {
@@ -35,7 +36,7 @@ function NewsReports() {
                     size: itemsPerPage,
                     source: source,
                 };
-                const response = await axios.get(`https://api.wildwareness.net/news`, { params });
+                const response = await axios.get(`http://localhost:5000/news`, { params });
 
                 console.log(response.data); // Debugging
                 setReports(response.data.incidents); // Update reports to the filtered results
@@ -51,7 +52,7 @@ function NewsReports() {
         };
 
         fetchReports();
-    }, [pageParam, source]); // Dependencies to trigger refetch when state changes
+    }, [pageParam, itemsPerPage, source]); // Dependencies to trigger refetch when state changes
 
     // // Update URL based on filters and page
     // useEffect(() => {
@@ -80,43 +81,43 @@ function NewsReports() {
         
         // else if (name === 'author') setAuthor(value);
         // else if (name === 'date') setDate(value);
-        fetchReports();
+        // fetchReports();
     };
 
     // Trigger a filter update when the user clicks the "Apply Filter" button
-    const handleFilterClick = () => {
-        // setReports([]);
-        // navigate("/news?page=1");
-        // Update searchParams when user clicks "Apply Filter"
-        setSearchParams({
-            page: 1,
-            // sortBy: sortBy,
-            // order: order,
-            source: source,
-            // author: author,
-            // date: date,
-        });
+    // const handleFilterClick = () => {
+    //     // setReports([]);
+    //     // navigate("/news?page=1");
+    //     // Update searchParams when user clicks "Apply Filter"
+    //     setSearchParams({
+    //         page: 1,
+    //         // sortBy: sortBy,
+    //         // order: order,
+    //         source: source,
+    //         // author: author,
+    //         // date: date,
+    //     });
        
-        // const params = {
-        //     page: 1,
-        //     size: itemsPerPage,
-        //     sortBy: sortBy,
-        //     order: order,
-        //     source: source,
-        //     author: author,
-        //     date: date,
-        // };
-        // try {
-        //     const response = axios.get(`https://api.wildwareness.net/news`, { params });
-        //     setReports(response.data.incidents); // Update reports to the filtered results
-        //     setTotalPages(response.data.pagination.total_pages);
-        //     setTotalItems(response.data.pagination.total_items);
-        //     setItemsPerPage(response.data.pagination.size);
-        // } catch (error) {
-        //     console.error("Error fetching news reports:", error);
-        //     setError(error);
-        // }
-    };
+    //     // const params = {
+    //     //     page: 1,
+    //     //     size: itemsPerPage,
+    //     //     sortBy: sortBy,
+    //     //     order: order,
+    //     //     source: source,
+    //     //     author: author,
+    //     //     date: date,
+    //     // };
+    //     // try {
+    //     //     const response = axios.get(`https://api.wildwareness.net/news`, { params });
+    //     //     setReports(response.data.incidents); // Update reports to the filtered results
+    //     //     setTotalPages(response.data.pagination.total_pages);
+    //     //     setTotalItems(response.data.pagination.total_items);
+    //     //     setItemsPerPage(response.data.pagination.size);
+    //     // } catch (error) {
+    //     //     console.error("Error fetching news reports:", error);
+    //     //     setError(error);
+    //     // }
+    // };
 
     return (
         <div className="container">
@@ -184,9 +185,9 @@ function NewsReports() {
             </div> */}
 
             {/* Apply Filter Button */}
-            <button onClick={handleFilterClick} className="btn btn-primary my-3">
+            {/* <button onClick={handleFilterClick} className="btn btn-primary my-3">
                 Apply Filter
-            </button>
+            </button> */}
 
             {/* Loading Indicator */}
             {loading && <p className="text-center">Loading...</p>}

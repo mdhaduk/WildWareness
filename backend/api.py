@@ -122,8 +122,7 @@ def get_all_reports():
             query = ls.query(NewsReport)
             print(source)
             if source:
-                query = query.filter(func.lower(NewsReport.source).contains(source.lower()))
-
+                query = query.filter(func.lower(NewsReport.source) == source.lower())
 
 
             # if author:
@@ -181,4 +180,4 @@ def get_single_report(id):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=5000)
