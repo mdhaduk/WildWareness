@@ -8,7 +8,7 @@ from scripts.helper_scripts import get_county_from_address
 from models import Base, Wildfire, Shelter, NewsReport, TESTING
 from dotenv import load_dotenv
 from collections import defaultdict
-
+load_dotenv()
 DATABASE_URL = ""
 if TESTING:
     DATABASE_URL = "sqlite:///test.db"
