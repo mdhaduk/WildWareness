@@ -4,7 +4,7 @@ import json
 from scripts.helper_scripts import get_county_from_address
 
 
-TESTING = True
+TESTING = False
 
 class Base(DeclarativeBase):
     pass

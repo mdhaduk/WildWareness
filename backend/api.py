@@ -20,19 +20,47 @@ if TESTING:
 else:
     username = os.getenv("DB_USERNAME")
     password = os.getenv("DB_PASSWORD")
-    database_name = "homelessaid"
-    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@homelessaid-database.ctc8886awsgr.us-east-2.rds.amazonaws.com:5432/{database_name}"
+    database_name = "wildfiredb"
+    DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@wildwarenessdb.czwce00s2t3z.us-east-2.rds.amazonaws.com/{database_name}"
 
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 local_session = sessionmaker(bind=engine, autoflush=False, future=True)
 
 DEFAULT_PAGE_SIZE = 10
 
+def searchModels(search_text, query, MODEL):
+    phrase_tsquery = func.plainto_tsquery('english', search_text)
+    words_tsquery_input = ' | '.join(search_text.split())
+    words_tsquery = func.to_tsquery('english', words_tsquery_input)
+    conditions = []
+    columns = ['name', 'description', 'city', 'target', 'eligibility', 'counties_served', 'main_services', 'detailed_target', 'detailed_hours', 'operating_hours']
+    for column_name in columns:
+        if not hasattr(MODEL, column_name):
+            continue
+        column = getattr(MODEL, column_name)      
+        phrase_match = func.to_tsvector('english', column).op('@@')(phrase_tsquery)
+        words_match = func.to_tsvector('english', column).op('@@')(words_tsquery)
+        conditions.append(or_(phrase_match, words_match))
+
+    # Combine all conditions with OR, so any match on any specified field will be included
+    if conditions:
+        query = query.filter(or_(*conditions))
+    
+    return query
 
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
+    sort_by = request.args.get('sort_by', 'city')
+    order = request.args.get('order', 'asc')
+    hours = request.args.get('hours', None)
+    county = request.args.get('county', None)
+    search = request.args.get('search', None)
+    eligibility = request.args.get('eligibility' , None)
+    valid_sort_columns = {'name', 'city'}
+    if sort_by not in valid_sort_columns:
+        return jsonify({'error': f"Invalid sort column '{sort_by}'"}), 400
     with local_session() as ls:
         try:
             incidents = ls.query(Wildfire).limit(size).offset((page - 1) * size).all()
