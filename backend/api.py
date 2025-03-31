@@ -7,11 +7,9 @@ from models import TESTING
 from scripts import ca_fire_gov
 from flask import render_template_string
 from dotenv import load_dotenv
-from pathlib import Path
 import os
 import awsgi
-env_path = Path("/Users/milandhaduk/CS373/cs373-spring-2025-group-03/.env")
-load_dotenv(dotenv_path=env_path)
+load_dotenv()
 
 app = Flask(__name__)
 app.json.sort_keys = False

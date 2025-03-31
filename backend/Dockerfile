@@ -18,5 +18,7 @@ ENV FLASK_APP=api.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_ENV=production
 
+
+
 # Run Flask in production mode
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "api:app"]
