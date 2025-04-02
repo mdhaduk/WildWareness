@@ -27,8 +27,6 @@ local_session = sessionmaker(bind=engine, autoflush=False, future=True)
 
 DEFAULT_PAGE_SIZE = 10
 
-wildfire_cache = []
-
 from sqlalchemy.orm import joinedload
 
 def preload_all_data():
@@ -40,17 +38,17 @@ def preload_all_data():
         ).all()
         print(f"Preloaded {len(wildfire_cache)} wildfires")
 
-        shelter_cache = session.query(Shelter).options(
-            joinedload(Shelter.wildfires),
-            joinedload(Shelter.newsreports)
-        ).all()
-        print(f"Preloaded {len(shelter_cache)} shelters")
+        # shelter_cache = session.query(Shelter).options(
+        #     joinedload(Shelter.wildfires),
+        #     joinedload(Shelter.newsreports)
+        # ).all()
+        # print(f"Preloaded {len(shelter_cache)} shelters")
 
-        news_cache = session.query(NewsReport).options(
-            joinedload(NewsReport.wildfires),
-            joinedload(NewsReport.shelters)
-        ).all()
-        print(f"Preloaded {len(news_cache)} news reports")
+        # news_cache = session.query(NewsReport).options(
+        #     joinedload(NewsReport.wildfires),
+        #     joinedload(NewsReport.shelters)
+        # ).all()
+        # print(f"Preloaded {len(news_cache)} news reports")
 
 
 
@@ -76,25 +74,37 @@ def get_all_incidents():
 
     # Apply search terms
     if search:
-        terms = search.lower().split()
-        for term in terms:
-            data = [w for w in data if
-                term in (w.name or "").lower()
-                or term in (w.description or "").lower()
-                or term in (w.county or "").lower()
-                or term in (w.location or "").lower()
-                or term in str(w.year or "")
-                or term in str(w.acres_burned or "")
-                or term in (w.status or "").lower()
-            ]
+        term = search.lower()
+
+        def match_search(wildfire):
+            if (
+                term in (wildfire.name or "").lower()
+                or term in (wildfire.county or "").lower()
+                or term in (wildfire.location or "").lower()
+                or term in str(wildfire.year or "")
+                or term in str(wildfire.acres_burned or "")
+                or term in (wildfire.status or "").lower()
+            ):
+                return True
+            return False
+
+        data = [w for w in data if match_search(w)]
+
 
     # Apply filters
     if location:
-        data = [w for w in data if location.lower() in (w.location or "").lower()]
+        data = [w for w in data if location.lower()
+        in (w.location or "").lower()
+        or location.lower() in (w.county or "").lower()]
     if year:
         data = [w for w in data if str(w.year or "") == str(year)]
     if acres_burned:
-        data = [w for w in data if str(w.acres_burned or "") == str(acres_burned)]
+        #Checks that number isnt just a string by doing: 12.34 -> 1245 (is this a number?)
+        data = [
+            w for w in data
+            if w.acres_burned and w.acres_burned.replace('.', '', 1).isdigit()
+            and float(w.acres_burned) > float(acres_burned)
+        ]
 
     # Sorting
     reverse = order == "desc"
@@ -119,6 +129,16 @@ def get_all_incidents():
             "total_items": total_items,
         },
     })
+
+@app.route("/wildfire_locations", methods=["GET"])
+def get_wildfire_locations():
+    with local_session() as ls:
+        try:
+            counties = ls.query(Wildfire.county).distinct().order_by(Wildfire.county).all()
+            county_list = [c[0] for c in counties if c[0]]
+            return jsonify({"locations": county_list})
+        except Exception as e:
+            return jsonify({"Error getting locations": str(e)}), 500
 
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
@@ -202,4 +222,4 @@ def get_single_report(id):
 
 if __name__ == '__main__':
     preload_all_data()
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=3000, debug = True)

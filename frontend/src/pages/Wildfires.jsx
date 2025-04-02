@@ -12,8 +12,9 @@ function Wildfires() {
     const [totalItems, setTotalItems] = useState();
     const [search_text, setSearchText] = useState('');
     const [loading, setLoading] = useState('');
+    const [availableLocations, setAvailableLocations] = useState([]);
 
-    const itemsPerPage = 12;
+    const itemsPerPage = 9;
     const query = useLocation();
     const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ function Wildfires() {
 
                 setLoading("Loading...");
 
-                const baseURL = `http://localhost:3000/wildfire_incidents`;
+                const baseURL = `https://api.wildwareness.net/wildfire_incidents`;
                 const url = search_text.trim()
                     ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}`
                     : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}`;
@@ -56,6 +57,20 @@ function Wildfires() {
         fetchWildfires();
     }, [search_text, currentPage, itemsPerPage, sortBy, order, location, year, acres_burned]);
 
+    useEffect(() => {
+        const fetchLocations = async () => {
+          try {
+            const res = await axios.get("https://api.wildwareness.net/wildfire_locations");
+            setAvailableLocations(res.data.locations || []);
+          } catch (error) {
+            console.error("Error loading locations:", error);
+          }
+        };
+      
+        fetchLocations();
+      }, []);
+      
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
         navigate(`/incidents?page=${page}`);
@@ -64,7 +79,7 @@ function Wildfires() {
     const updateSearchInput = (event) => {
         console.log("SEARCH TEXT: " + event.target.value)
         setSearchText(event.target.value);
-        setCurrentPage(1);
+        handlePageChange(1);
     };
 
     const handleFilterChange = (e) => {
@@ -74,6 +89,7 @@ function Wildfires() {
         else if (name === 'location') setLocation(value);
         else if (name === 'year') setYear(value);
         else if (name === 'acres_burned') setAcresBurned(value);
+        handlePageChange(1);
     };
 
     return (
@@ -101,10 +117,10 @@ function Wildfires() {
                 <div className="form-group me-2">
                     <label>Location:</label>
                     <select name="location" value={location} onChange={handleFilterChange} className="form-select form-select-sm">
-                        <option value="">All</option>
-                        <option value="Los Angeles">Los Angeles</option>
-                        <option value="l2">Location 1</option>
-                        <option value="l3">Location 2</option>
+                    <option value="">All</option>
+                    {availableLocations.map((loc) => (
+                        <option key={loc} value={loc}>{loc}</option>
+                    ))}
                     </select>
                 </div>
         
@@ -124,9 +140,14 @@ function Wildfires() {
                     <label>Acres Burned:</label>
                     <select name="acres_burned" value={acres_burned} onChange={handleFilterChange} className="form-select form-select-sm">
                         <option value="">All</option>
-                        <option value="a1">1</option>
-                        <option value="a2">2</option>
-                        <option value="a3">3</option>
+                        <option value="500">{">"}500</option>
+                        <option value="1000">{">"}1000</option>
+                        <option value="2000">{">"}2000</option>
+                        <option value="4000">{">"}4000</option>
+                        <option value="8000">{">"}8000</option>
+                        <option value="16000">{">"}16000</option>
+                        <option value="32000">{">"}32000</option>
+                        <option value="64000">{">"}64000</option>
                     </select>
                 </div>
             </div>
