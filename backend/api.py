@@ -6,6 +6,7 @@ from models import TESTING
 from flask_cors import CORS
 from dotenv import load_dotenv
 from datetime import datetime
+from sqlalchemy.orm import joinedload
 import os
 
 load_dotenv()
@@ -28,7 +29,9 @@ local_session = sessionmaker(bind=engine, autoflush=False, future=True)
 
 DEFAULT_PAGE_SIZE = 10
 
-from sqlalchemy.orm import joinedload
+wildfire_cache = []
+shelter_cache = []
+news_cache = []
 
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
@@ -227,7 +230,7 @@ def get_all_shelters():
 
 @app.route("/shelters/<int:id>", methods=["GET"])
 def get_single_shelter(id):
-    for s in shelter_cache_cache:
+    for s in shelter_cache:
         if s.id == id:
             return jsonify(s.as_instance())
     return jsonify({"error": "shelter not found"}), 404
@@ -328,42 +331,12 @@ def get_all_reports():
         },
     })
 
-
-
-
-    # page = request.args.get("page", 1, type=int)
-    # size = request.args.get("size", 2, type=int)
-    # with local_session() as ls:
-    #     try:
-    #         incidents = ls.query(NewsReport).limit(size).offset((page - 1) * size).all()
-    #         incident_cards = [incident.as_instance() for incident in incidents]
-    #         total_incidents = ls.query(NewsReport).count()
-    #         total_pages = (total_incidents + size - 1) // size
-    #         return jsonify(
-    #             {
-    #                 "incidents": incident_cards,
-    #                 "pagination": {
-    #                     "page": page,
-    #                     "size": size,
-    #                     "total_pages": total_pages,
-    #                     "total_items": total_incidents,
-    #                 },
-    #             }
-    #         )
-    #     except:
-    #         return jsonify({"error": "issue getting data"}), 500
-
 @app.route("/news/<int:id>", methods=["GET"])
 def get_single_report(id):
-    with local_session() as ls:
-        try:
-            incident = ls.query(NewsReport).get(id)
-            if incident:
-                return jsonify(incident.as_instance())
-            else:
-                return jsonify({"error": "report not found"}), 404
-        except:
-            return jsonify({"error": "issue getting data"}), 500
+    for r in news_cache:
+        if r.id == id:
+            return jsonify(r.as_instance())
+    return jsonify({"error": "incident not found"}), 404
 
 if __name__ == '__main__':
     preload_all_data()
