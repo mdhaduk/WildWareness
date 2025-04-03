@@ -31,7 +31,7 @@ function Shelters() {
                 const pageParam = queryParams.get('page');
                 const passedPageParam = pageParam ? parseInt(pageParam, 10) : 1;
                 setLoading("Loading...");
-                const baseURL = `http://localhost:3000/shelters`;
+                const baseURL = `https://api.wildwareness.net/shelters`;
                 const url = search_text.trim()
                 ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&address=${address}&rating=${rating}`
                 : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&address=${address}&rating=${rating}`;
@@ -55,7 +55,7 @@ function Shelters() {
     useEffect(() => {
         const fetchLocations = async () => {
           try {
-            const res = await axios.get("http://localhost:3000/shelter_locations");
+            const res = await axios.get("https://api.wildwareness.net/shelter_locations");
             setAvailableLocations(res.data.locations || []);
           } catch (error) {
             console.error("Error loading locations:", error);

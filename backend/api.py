@@ -33,17 +33,17 @@ from sqlalchemy.orm import joinedload
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
     with local_session() as session:
-        # wildfire_cache = session.query(Wildfire).options(
-        #     joinedload(Wildfire.shelters),
-        #     joinedload(Wildfire.newsreports)
-        # ).all()
-        # print(f"Preloaded {len(wildfire_cache)} wildfires")
+        wildfire_cache = session.query(Wildfire).options(
+            joinedload(Wildfire.shelters),
+            joinedload(Wildfire.newsreports)
+        ).all()
+        print(f"Preloaded {len(wildfire_cache)} wildfires")
 
-        # shelter_cache = session.query(Shelter).options(
-        #     joinedload(Shelter.wildfires),
-        #     joinedload(Shelter.newsreports)
-        # ).all()
-        # print(f"Preloaded {len(shelter_cache)} shelters")
+        shelter_cache = session.query(Shelter).options(
+            joinedload(Shelter.wildfires),
+            joinedload(Shelter.newsreports)
+        ).all()
+        print(f"Preloaded {len(shelter_cache)} shelters")
 
         news_cache = session.query(NewsReport).options(
             joinedload(NewsReport.wildfires),
@@ -288,7 +288,7 @@ def get_all_reports():
         print(categories.split(","))
         data = [
             r for r in data
-            if all(c in category_list for c in r.categories)
+            if all(cat in r.categories for cat in category_list)
         ]
     # Sorting
     reverse = order == "desc"
