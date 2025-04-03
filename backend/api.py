@@ -32,17 +32,17 @@ from sqlalchemy.orm import joinedload
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
     with local_session() as session:
-        wildfire_cache = session.query(Wildfire).options(
-            joinedload(Wildfire.shelters),
-            joinedload(Wildfire.newsreports)
-        ).all()
-        print(f"Preloaded {len(wildfire_cache)} wildfires")
-
-        # shelter_cache = session.query(Shelter).options(
-        #     joinedload(Shelter.wildfires),
-        #     joinedload(Shelter.newsreports)
+        # wildfire_cache = session.query(Wildfire).options(
+        #     joinedload(Wildfire.shelters),
+        #     joinedload(Wildfire.newsreports)
         # ).all()
-        # print(f"Preloaded {len(shelter_cache)} shelters")
+        # print(f"Preloaded {len(wildfire_cache)} wildfires")
+
+        shelter_cache = session.query(Shelter).options(
+            joinedload(Shelter.wildfires),
+            joinedload(Shelter.newsreports)
+        ).all()
+        print(f"Preloaded {len(shelter_cache)} shelters")
 
         # news_cache = session.query(NewsReport).options(
         #     joinedload(NewsReport.wildfires),
@@ -54,8 +54,6 @@ def preload_all_data():
 
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
-    global wildfire_cache
-
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     sort_by = request.args.get("sort_by", "county")
@@ -140,6 +138,16 @@ def get_wildfire_locations():
         except Exception as e:
             return jsonify({"Error getting locations": str(e)}), 500
 
+@app.route("/shelter_locations", methods=["GET"])
+def get_shelter_locations():
+    with local_session() as ls:
+        try:
+            counties = ls.query(Shelter.county).distinct().order_by(Shelter.county).all()
+            county_list = [c[0] for c in counties if c[0]]
+            return jsonify({"locations": county_list})
+        except Exception as e:
+            return jsonify({"Error getting locations": str(e)}), 500
+
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
     global wildfire_cache
@@ -152,25 +160,70 @@ def get_single_incident(id):
 def get_all_shelters():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
-    with local_session() as ls:
-        try:
-            shelters = ls.query(Shelter).limit(size).offset((page - 1) * size).all()
-            shelter_cards = [shelter.as_instance() for shelter in shelters]
-            total_shelters = ls.query(Shelter).count()
-            total_pages = (total_shelters + size - 1) // size
-            return jsonify(
-                {
-                    "shelters": shelter_cards,
-                    "pagination": {
-                        "page": page,
-                        "size": size,
-                        "total_pages": total_pages,
-                        "total_items": total_shelters,
-                    },
-                }
-            )
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+    sort_by = request.args.get("sort_by", "county")
+    order = request.args.get("order", "asc")
+    address = request.args.get("address")
+    rating = request.args.get("rating")
+    search = request.args.get("search")
+
+    valid_sort_columns = {"name", "county"}
+    if sort_by not in valid_sort_columns:
+        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
+
+    # Copy the cache to filter/sort
+    data = shelter_cache[:]
+
+    # Apply search terms
+    if search:
+        term = search.lower()
+
+        def match_search(shelter):
+            if (
+                term in (shelter.name or "").lower()
+                or term in (shelter.county or "").lower()
+                or term in (shelter.address or "").lower()
+                or term in str(shelter.rating or "")
+                or term in (shelter.phone or "").lower()
+            ):
+                return True
+            return False
+
+        data = [s for s in data if match_search(s)]
+
+
+    # Apply filters
+    if address:
+        data = [s for s in data if address.lower() in (s.address or "").lower()
+        or address.lower() in (s.county or "").lower()]
+    if rating:
+        data = [s for s in data 
+        if s.rating and s.rating!="N/A"
+        and float(s.rating.split('/')[0] or 0) >= float(rating)
+        and float(s.rating.split('/')[0] or 0) < float(rating) + 1]
+
+    # Sorting
+    reverse = order == "desc"
+    try:
+        data.sort(key=lambda s: (getattr(s, sort_by) or "").lower(), reverse=reverse)
+    except AttributeError:
+        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+
+    # Pagination
+    total_items = len(data)
+    total_pages = (total_items + size - 1) // size
+    start = (page - 1) * size
+    end = start + size
+    paged_data = data[start:end]
+
+    return jsonify({
+        "shelters": [s.as_instance() for s in paged_data],
+        "pagination": {
+            "page": page,
+            "size": size,
+            "total_pages": total_pages,
+            "total_items": total_items,
+        },
+    })
 
 @app.route("/shelters/<int:id>", methods=["GET"])
 def get_single_shelter(id):

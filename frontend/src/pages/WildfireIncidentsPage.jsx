@@ -22,7 +22,7 @@ const WildfireIncidentsPage = () => {
   }, [id]);
 
   if (!wildfire) {
-    return <div>Loading...</div>;
+    return <div className='text-center'>Loading...</div>;
   }
 
   const nearbyShelters = [];
