@@ -338,6 +338,9 @@ def get_single_report(id):
             return jsonify(r.as_instance())
     return jsonify({"error": "incident not found"}), 404
 
-if __name__ == '__main__':
+@app.before_first_request
+def load_data_once():
     preload_all_data()
-    app.run(host="0.0.0.0", port=3000, debug = True)
+    
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=3000)
