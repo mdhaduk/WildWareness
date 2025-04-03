@@ -37,7 +37,6 @@ function Shelters() {
                 : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&address=${address}&rating=${rating}`;
                 const response = await axios.get(url)
                 setShelters(response.data.shelters);
-                console.log("NUMBER OF OBJECTS:" + response.data.pagination.total_items )
                 if (response.data.pagination.total_items === 0) {
                     setLoading("No Results");
                 }

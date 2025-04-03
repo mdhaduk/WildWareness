@@ -5,6 +5,7 @@ from models import Wildfire, Shelter, NewsReport
 from models import TESTING
 from flask_cors import CORS
 from dotenv import load_dotenv
+from datetime import datetime
 import os
 
 load_dotenv()
@@ -38,17 +39,17 @@ def preload_all_data():
         # ).all()
         # print(f"Preloaded {len(wildfire_cache)} wildfires")
 
-        shelter_cache = session.query(Shelter).options(
-            joinedload(Shelter.wildfires),
-            joinedload(Shelter.newsreports)
-        ).all()
-        print(f"Preloaded {len(shelter_cache)} shelters")
-
-        # news_cache = session.query(NewsReport).options(
-        #     joinedload(NewsReport.wildfires),
-        #     joinedload(NewsReport.shelters)
+        # shelter_cache = session.query(Shelter).options(
+        #     joinedload(Shelter.wildfires),
+        #     joinedload(Shelter.newsreports)
         # ).all()
-        # print(f"Preloaded {len(news_cache)} news reports")
+        # print(f"Preloaded {len(shelter_cache)} shelters")
+
+        news_cache = session.query(NewsReport).options(
+            joinedload(NewsReport.wildfires),
+            joinedload(NewsReport.shelters)
+        ).all()
+        print(f"Preloaded {len(news_cache)} news reports")
 
 
 
@@ -150,7 +151,6 @@ def get_shelter_locations():
 
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
-    global wildfire_cache
     for w in wildfire_cache:
         if w.id == id:
             return jsonify(w.as_instance())
@@ -227,39 +227,131 @@ def get_all_shelters():
 
 @app.route("/shelters/<int:id>", methods=["GET"])
 def get_single_shelter(id):
-    with local_session() as ls:
-        try:
-            shelter = ls.query(Shelter).get(id)
-            if shelter:
-                return jsonify(shelter.as_instance())
-            else:
-                return jsonify({"error": "shelter not found"}), 404
-        except:
-            return jsonify({"error": "issue getting data"}), 500
+    for s in shelter_cache_cache:
+        if s.id == id:
+            return jsonify(s.as_instance())
+    return jsonify({"error": "shelter not found"}), 404
 
 @app.route("/news", methods=["GET"])
 def get_all_reports():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", 2, type=int)
-    with local_session() as ls:
-        try:
-            incidents = ls.query(NewsReport).limit(size).offset((page - 1) * size).all()
-            incident_cards = [incident.as_instance() for incident in incidents]
-            total_incidents = ls.query(NewsReport).count()
-            total_pages = (total_incidents + size - 1) // size
-            return jsonify(
-                {
-                    "incidents": incident_cards,
-                    "pagination": {
-                        "page": page,
-                        "size": size,
-                        "total_pages": total_pages,
-                        "total_items": total_incidents,
-                    },
-                }
+    source = request.args.get("source", None)
+    author = request.args.get("author", None)
+    date = request.args.get("date", None)
+    categories = request.args.get('categories', '') 
+    sortBy = request.args.get("sortBy", "title")  # Default to 'title'
+    order = request.args.get("order", "asc")  # Default to ascending order
+    search = request.args.get("search", None)
+
+
+    valid_sort_columns = {"title", "published_at", "author", "source"}
+    if sortBy not in valid_sort_columns:
+        return jsonify({"error": f"Invalid sort column '{sortBy}'"}), 400
+
+    # Copy the cache to filter/sort
+    data = news_cache[:]
+
+    # Apply search terms
+    if search:
+        term = search.lower()
+
+        def match_search(report):
+            if (
+                term in (report.title or "").lower()
+                or term in (report.source or "").lower()
+                or term in (report.published_at or "").lower()
+                or term in (report.author or "").lower()
+                or term in (report.categories or "").lower()
+            ):
+                return True
+            return False
+
+        data = [r for r in data if match_search(r)]
+
+
+    # Apply filters
+    if source:
+        data = [r for r in data if source.lower()
+        in (r.source or "").lower()]
+    if author:
+        data = [r for r in data if author.lower() 
+        in (r.author or "").lower()]
+    if date:
+        date_obj = datetime.strptime(date,'%Y-%m-%d').date()
+        date_string = date_obj.strftime('%Y-%m-%d')
+        data = [
+            r for r in data
+            if r.published_at == date_string]
+    if categories:
+        category_list = categories.split(",")
+        print(categories.split(","))
+        data = [
+            r for r in data
+            if all(c in category_list for c in r.categories)
+        ]
+    # Sorting
+    reverse = order == "desc"
+
+    try:
+        if sortBy == "date":
+            # Assuming published_at is a string like '2023-12-01'
+            data.sort(
+                key=lambda r: datetime.strptime(getattr(r, "published_at", ""), "%Y-%m-%d"),
+                reverse=reverse
             )
-        except:
-            return jsonify({"error": "issue getting data"}), 500
+        else:
+            data.sort(
+                key=lambda r: (getattr(r, sortBy) or "").lower(),
+                reverse=reverse
+            )
+
+    except AttributeError:
+        return jsonify({"error": f"Invalid sort field '{sortBy}'"}), 400
+    except ValueError:
+        return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
+
+    # Pagination
+    total_items = len(data)
+    total_pages = (total_items + size - 1) // size
+    start = (page - 1) * size
+    end = start + size
+    paged_data = data[start:end]
+
+    return jsonify({
+        "reports": [r.as_instance() for r in paged_data],
+        "pagination": {
+            "page": page,
+            "size": size,
+            "total_pages": total_pages,
+            "total_items": total_items,
+        },
+    })
+
+
+
+
+    # page = request.args.get("page", 1, type=int)
+    # size = request.args.get("size", 2, type=int)
+    # with local_session() as ls:
+    #     try:
+    #         incidents = ls.query(NewsReport).limit(size).offset((page - 1) * size).all()
+    #         incident_cards = [incident.as_instance() for incident in incidents]
+    #         total_incidents = ls.query(NewsReport).count()
+    #         total_pages = (total_incidents + size - 1) // size
+    #         return jsonify(
+    #             {
+    #                 "incidents": incident_cards,
+    #                 "pagination": {
+    #                     "page": page,
+    #                     "size": size,
+    #                     "total_pages": total_pages,
+    #                     "total_items": total_incidents,
+    #                 },
+    #             }
+    #         )
+    #     except:
+    #         return jsonify({"error": "issue getting data"}), 500
 
 @app.route("/news/<int:id>", methods=["GET"])
 def get_single_report(id):
