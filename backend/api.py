@@ -53,7 +53,7 @@ def preload_all_data():
             joinedload(NewsReport.shelters)
         ).all()
         print(f"Preloaded {len(news_cache)} news reports")
-
+preload_all_data() #GET ALL THE DATA
 
 
 @app.route("/wildfire_incidents", methods=["GET"])
@@ -338,9 +338,7 @@ def get_single_report(id):
             return jsonify(r.as_instance())
     return jsonify({"error": "incident not found"}), 404
 
-@app.before_first_request
-def load_data_once():
-    preload_all_data()
-    
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000)
