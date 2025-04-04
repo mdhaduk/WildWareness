@@ -3,6 +3,7 @@ import sys
 import os
 import json
 from unittest.mock import patch, MagicMock
+import requests
 
 # Add the parent directory to the path so we can import the modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -235,7 +236,157 @@ class TestAPI(unittest.TestCase):
         # Assertions
         self.assertEqual(result["title"], "Test News")
         self.assertEqual(result["id"], 1)
+    
+
+# New test class with renamed methods to avoid clashes with existing tests
+class TestAPIv2(unittest.TestCase):
+    def get_response(self, endpoint, exp_status=200):
+        url = f"https://api.wildwareness.net/{endpoint}" 
+        response = requests.get(url)
+        self.assertEqual(response.status_code, exp_status)
+        return response.json()
+    
+    def test_fires(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('wildfire_incidents?page=2')
+        # Assertions
+        self.assertEqual(len(response["incidents"]), 10)  # Adjusted the expected length
+        self.assertIn("name", response["incidents"][0])
+        self.assertIn("acres_burned", response["incidents"][0])
+    
+    def test_single_fire(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('wildfire_incidents/10')
+        # Assertions
+        self.assertIn("name", response)
+        self.assertIn("id", response)
+        self.assertIn("county", response)
+        self.assertIn("acres_burned", response)
+    
+    def test_shelters(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('shelters')
+        # Assertions
+        self.assertEqual(len(response["shelters"]), 10)  # Adjusted the expected length
+        self.assertIn("website", response["shelters"][0])
+        self.assertIn("phone", response["shelters"][0])
+    
+    def test_single_shelter(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('shelters/20')
+        # Assertions
+        self.assertIn("id", response)
+        self.assertIn("address", response)
+        self.assertIn("reviews", response)
+        self.assertIn("name", response)
+
+    def test_reports(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('news?page=1')
+        # Assertions
+        self.assertEqual(len(response["reports"]), 2)  # Adjusted the expected length
+        self.assertIn("author", response["reports"][0])
+        self.assertIn("categories", response["reports"][0])
+    
+    def test_single_report(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('news/15')
+        # Assertions
+        self.assertIn("id", response)
+        self.assertIn("title", response)
+        self.assertIn("reading_time", response)
+        self.assertIn("locations", response)
+
+
+# New test class with renamed methods to avoid clashes with existing tests
+# Tests sorting, seaching, filtering
+class TestAPIv3(unittest.TestCase):
+    def get_response(self, endpoint, exp_status=200):
+        url = f"https://api.wildwareness.net/{endpoint}" 
+        response = requests.get(url)
+        self.assertEqual(response.status_code, exp_status)
+        return response.json()
+    
+    def test_fires_search(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('wildfire_incidents?page=&size=&search=bryson&sort_by=name&order=asc&location=&year=&acres_burned=&status=')
+        # Assertions
+        self.assertEqual((response["incidents"][0]["name"]).strip().lower(), "bryson fire")
+        self.assertEqual(len(response["incidents"]), 1)
+        self.assertEqual((response["incidents"][0]["county"]).strip().lower(), "monterey")
+
+    def test_fires_filter(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('wildfire_incidents?page=&size=&sort_by=name&order=asc&location=Colusa&year=&acres_burned=&status=')
+        # Assertions
+        self.assertEqual((response["incidents"][0]["name"]).strip().lower(), "sites fire")
+        self.assertEqual(len(response["incidents"]), 1)
+        self.assertEqual((response["incidents"][0]["county"]).strip().lower(), "colusa")
+    
+    def test_fires_sort(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('wildfire_incidents?page=&size=&sort_by=county&order=desc&location=&year=&acres_burned=&status=')
+        # Assertions
+        self.assertEqual((response["incidents"][0]["name"]).strip().lower(), "pendola fire")
+        self.assertEqual((response["incidents"][1]["name"]).strip().lower(), "spenceville fire")
+        self.assertEqual((response["incidents"][2]["name"]).strip().lower(), "double fire")
+
+
+    def test_shelters_search(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('shelters?page=&size=&search=butte&sort_by=name&order=asc&location=&year=&acres_burned=&status=')
+        # Assertions
+        self.assertEqual((response["shelters"][1]["name"]).strip().lower(), "esplanade house")
+        self.assertEqual(len(response["shelters"]), 10)
+        self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "butte county")
+
+    def test_shelters_filter(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('shelters?page=&size=&sort_by=name&order=asc&county=&zipCode=95642&phone=&rating=4')
+        # Assertions
+        self.assertEqual((response["shelters"][1]["name"]).strip().lower(), "atcaa jackson service center")
+        self.assertEqual(len(response["shelters"]), 2)
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "amador tuolumne community action agency")
+    
+    def test_shelters_sort(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('shelters?page=&size=&sort_by=county&order=desc&county=&zipCode=&phone=&rating=')
+        # Assertions
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "twin cities rescue mission")
+        self.assertEqual(len(response["shelters"]), 10)
+        self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "yuba county")
+    
+
+    def test_reports_search(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('news?page=&size=&search=air&sort_by=title&order=asc&source=&author=&date=&categories=')
+        # Assertions
+        self.assertEqual((response["reports"][0]["source"]).strip().lower(), "adweek.com")
+        self.assertEqual(len(response["reports"]), 2)
+        self.assertEqual((response["reports"][1]["author"]).strip().lower(), "abc news")
+    
+
+    def test_reports_filter(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('news?page=&size=&sort_by=title&order=asc&source=&author=&date=&categories=general,business')
+        # Assertions
+        self.assertEqual((response["reports"][0]["source"]).strip().lower(), "ibtimes.com")
+        self.assertEqual((response["reports"][1]["author"]).strip().lower(), "manilatimes.net")
+        self.assertEqual((response["reports"][1]["title"]).strip().lower(), "acwa statement on southern california wildfires")
+    
+    def test_reports_sort(self):
+        # Call the mock API endpoint for wildfire incidents
+        response = self.get_response('news?page=&size=&sort_by=published_at&order=desc&source=&author=&date=&categories=')
+        # Assertions
+        self.assertEqual((response["reports"][0]["published_at"]).strip().lower(), "2025-03-05")
+        self.assertEqual((response["reports"][1]["published_at"]).strip().lower(), "2025-02-23")
+        self.assertEqual((response["reports"][0]["source"]).strip().lower(), "webpronews.com")
+
+    
+
+
 
 
 if __name__ == "__main__":
     unittest.main() 
+
