@@ -44,6 +44,7 @@ test_backend:
   stage: test
   image: python:3.9
   before_script:
+    - pip install requests
     - cd backend/tests
   script:
     - python test_api.py
@@ -55,7 +56,6 @@ test_postman:
       name: postman/newman:alpine
       entrypoint: [""]
     before_script:
-      - pip install requests
       - cd backend
     script:
       - newman run wildwareness_api.json
