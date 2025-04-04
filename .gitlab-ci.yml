@@ -55,6 +55,7 @@ test_postman:
       name: postman/newman:alpine
       entrypoint: [""]
     before_script:
+      - pip install requests
       - cd backend
     script:
       - newman run wildwareness_api.json
