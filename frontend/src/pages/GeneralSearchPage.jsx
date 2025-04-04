@@ -108,29 +108,44 @@ const GeneralSearchPage = () => {
 
     return (
         <div className="container text-center">
-            <h1>Search Across All Models</h1>
-            <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-                <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                    onChange={updateSearchInput}
-                />
-                <button
-                    className="btn btn-outline-success"
-                    type="button"
-                    onClick={() => {
-                        setCurrentPage(1); // Reset to page 1 on new search
-                        setResults([]);
-                        search(); // Trigger search on button click
-                    }} // Reset to page 1 on search
-                >
-                    Search
-                </button>
-            </form>
-            <div className="row gy-4 mt-3">
-                {results.length > 0 ? results.map((result) => determineIdentity(result)) : <p>{loading}</p>}
+            <h1>Search</h1>
+            {/* Search Bar */}
+            <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
+                <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+                    <input
+                        className="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                        value={search_text}
+                        onChange={updateSearchInput}
+                    />
+                </form>
+            </div>
+            {/* All Cards */}
+            <div className="row">
+                {wildfires.length > 0 ? (
+                    wildfires.map((wildfire) => (
+                        <div key={wildfire.id} className="col-md-4 mb-4">
+                            <div className="card" style={{ width: '22rem' }}>
+                                <img className="card-img" src={wildfire.url || "default-image.jpg"} alt={wildfire.name} />
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item"><strong>Name:</strong> {highlightText(wildfire.name, search_text)}</li>
+                                    <li className="list-group-item"><strong>County:</strong> {highlightText(wildfire.county, search_text)}</li>
+                                    <li className="list-group-item"><strong>Location:</strong> {highlightText(wildfire.location, search_text)}</li>
+                                    <li className="list-group-item"><strong>Year:</strong> {highlightText(wildfire.year, search_text)}</li>
+                                    <li className="list-group-item"><strong>Acres Burned:</strong> {highlightText(wildfire.acres_burned, search_text)}</li>
+                                    <li className="list-group-item"><strong>Status:</strong> {highlightText(wildfire.status, search_text)}</li>
+                                </ul>
+                                <div className="card-body text-center">
+                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className='text-center'>{loading}</p>
+                )}
             </div>
             <div className="d-flex justify-content-center mt-4">
                 <Pagination

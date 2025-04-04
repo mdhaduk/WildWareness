@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
-import { highlightText } from '../components/GeneralSearchPage';
+import { highlightText } from './GeneralSearchPage';
 
 function Wildfires() {
     const [wildfires, setWildfires] = useState([]);

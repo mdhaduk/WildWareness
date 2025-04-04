@@ -55,7 +55,6 @@ def preload_all_data():
         print(f"Preloaded {len(news_cache)} news reports")
 preload_all_data() #GET ALL THE DATA
 
-
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
     page = request.args.get("page", 1, type=int)
@@ -337,6 +336,68 @@ def get_single_report(id):
         if r.id == id:
             return jsonify(r.as_instance())
     return jsonify({"error": "incident not found"}), 404
+
+@app.route("/search", methods=["GET"])
+def search_all_cards():
+    page = request.args.get("page", 1, type=int)
+    size = request.args.get("size", 2, type=int)
+    text = request.args.get("text", None)
+
+    # Copy the cache to filter/sort
+    data = [*wildfire_cache, *shelter_cache, *news_cache]
+
+    # Apply search terms
+    if text:
+        term = text.lower()
+
+        def match_search(obj):
+            if isinstance(obj, Wildfire):
+                return (
+                    term in (obj.name or "").lower()
+                    or term in (obj.county or "").lower()
+                    or term in (obj.location or "").lower()
+                    or term in str(obj.year or "")
+                    or term in str(obj.acres_burned or "")
+                    or term in (obj.status or "").lower()
+                )
+
+            elif isinstance(obj, NewsReport):
+                return (
+                    term in (obj.title or "").lower()
+                    or term in (obj.source or "").lower()
+                    or term in (obj.published_at or "").lower()
+                    or term in (obj.author or "").lower()
+                    or term in (obj.categories or "").lower()
+                )
+
+            elif isinstance(obj, Shelter):
+                return (
+                    term in (obj.county or "").lower()
+                    or term in (obj.address or "").lower()
+                    or term in str(obj.rating or "")
+                    or term in (obj.phone or "").lower()
+                )
+
+            return False
+
+
+        data = [card for card in data if match_search(card)]
+    # Pagination
+    total_items = len(data)
+    total_pages = (total_items + size - 1) // size
+    start = (page - 1) * size
+    end = start + size
+    paged_data = data[start:end]
+
+    return jsonify({
+        "instances": [r.as_instance() for r in paged_data],
+        "pagination": {
+            "page": page,
+            "size": size,
+            "total_pages": total_pages,
+            "total_items": total_items,
+        },
+    })
 
 
 
