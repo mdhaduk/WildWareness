@@ -40,7 +40,13 @@ test_selenium:
     - cd frontend/selenium_tests
 
 
-
+test_backend:
+  stage: test
+  image: python:3.9
+  before_script:
+    - cd backend/tests
+  script:
+    - python test_api.py
 
 
 test_postman:
