@@ -152,14 +152,14 @@ function Wildfires() {
                         <option value="64000">{">"}64000</option>
                     </select>
                 </div>
-            </div>
-            <div className="form-group me-2">
+                <div className="form-group me-2">
                     <label>Status:</label>
                     <select name="status" value={status} onChange={handleFilterChange} className="form-select form-select-sm">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select>
+                </div>
             </div>
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
