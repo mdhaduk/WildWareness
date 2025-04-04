@@ -103,7 +103,80 @@ const GeneralSearchPage = () => {
                     </div>
                 </div>
             );
-        } 
+        }
+        else if (card.identity === 'shelter') {
+            return (
+                <div key={card.id} className="col">
+                    <div className="card" style={{ width: '22rem' }}>
+                        <img
+                            src={card.thumbnail_URL}
+                            style={{ height: '200px', objectFit: 'cover' }}
+                            className="card-img-top"
+                            alt={card.name}
+                        />
+                        <ul className="list-group list-group-flush">
+                            <li className="list-group-item text-truncate">
+                                <strong>Name:</strong> {highlightText(card.name, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>County:</strong> {highlightText(card.county, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Address:</strong> {highlightText(card.address, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Phone:</strong> {highlightText(card.phone, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Rating:</strong> {highlightText(card.rating, search_input)}
+                            </li>
+                        </ul>
+                        <div className="card-body">
+                            <Link to={`/shelters/${card.id}`} state={{ searchTerm: search_input }} className="card-link">
+                                Read More
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        else if (card.identity === 'report') {
+            return (
+                <div key={card.id} className="col">
+                    <div className="card" style={{ width: '22rem' }}>
+                        <img
+                            src={card.thumbnail_URL}
+                            style={{ height: '200px', objectFit: 'cover' }}
+                            className="card-img-top"
+                            alt={card.name}
+                        />
+                        <ul className="list-group list-group-flush">
+                            <li className="list-group-item text-truncate">
+                                <strong>Title:</strong> {highlightText(card.title, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Source:</strong> {highlightText(card.source, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Date:</strong> {highlightText(card.published_at, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Author:</strong> {highlightText(card.author, search_input)}
+                            </li>
+                            <li className="list-group-item text-truncate">
+                                <strong>Categories:</strong> {highlightText(card.categories, search_input)}
+                            </li>
+                        </ul>
+                        <div className="card-body">
+                            <Link to={`/news/${card.id}`} state={{ searchTerm: search_input }} className="card-link">
+                                Read More
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+                      
     };
 
     return (
