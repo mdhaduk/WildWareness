@@ -117,13 +117,17 @@ const GeneralSearchPage = () => {
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
-                        value={search_text}
+                        value={search_input}
                         onChange={updateSearchInput}
                     />
                 </form>
+                <div className="row gy-4 mt-3">
+                {results.length > 0 ? results.map((result) => determineIdentity(result)) : <p>{loading}</p>}
+            </div>
+
             </div>
             {/* All Cards */}
-            <div className="row">
+            {/* <div className="row">
                 {wildfires.length > 0 ? (
                     wildfires.map((wildfire) => (
                         <div key={wildfire.id} className="col-md-4 mb-4">
@@ -146,7 +150,7 @@ const GeneralSearchPage = () => {
                 ) : (
                     <p className='text-center'>{loading}</p>
                 )}
-            </div>
+            </div> */}
             <div className="d-flex justify-content-center mt-4">
                 <Pagination
                     totalPages={totalPages}

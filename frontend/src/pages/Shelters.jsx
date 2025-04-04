@@ -21,7 +21,9 @@ function Shelters() {
     // Filters and sorting state
     const [sortBy, setSortBy] = useState('county');
     const [order, setOrder] = useState('asc');
-    const [address, setAddress] = useState('');
+    const [county, setCounty] = useState('');
+    const [zipCode, setZipCode] = useState('');
+    const [phone, setPhone] = useState('');
     const [rating, setRating] = useState('');
 
     useEffect(() => {
@@ -33,8 +35,8 @@ function Shelters() {
                 setLoading("Loading...");
                 const baseURL = `https://api.wildwareness.net/shelters`;
                 const url = search_text.trim()
-                ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&address=${address}&rating=${rating}`
-                : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&address=${address}&rating=${rating}`;
+                ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`
+                : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`;
                 const response = await axios.get(url)
                 setShelters(response.data.shelters);
                 if (response.data.pagination.total_items === 0) {
@@ -50,7 +52,7 @@ function Shelters() {
         };
 
         fetchshelters();
-    }, [search_text, currentPage, itemsPerPage, sortBy, order, address, rating]);
+    }, [search_text, currentPage, itemsPerPage, sortBy, order, county, zipCode, phone, rating]);
 
     useEffect(() => {
         const fetchLocations = async () => {
@@ -80,7 +82,9 @@ function Shelters() {
         const { name, value } = e.target;
         if (name === 'sortBy') setSortBy(value);
         else if (name === 'order') setOrder(value);
-        else if (name === 'address') setAddress(value);
+        else if (name === 'county') setCounty(value);
+        else if (name === 'zipCode') setZipCode(value);
+        else if (name === 'phone') setPhone(value);
         else if (name === 'rating') setRating(value);
         handlePageChange(1);
     };
@@ -109,15 +113,36 @@ function Shelters() {
                 </div>
 
                 <div className="form-group me-2">
-                    <label>Address:</label>
-                    <select name="address" value={address} onChange={handleFilterChange} className="form-select form-select-sm">
+                    <label>County:</label>
+                    <select name="county" value={county} onChange={handleFilterChange} className="form-select form-select-sm">
                     <option value="">All</option>
                     {availableLocations.map((loc) => (
                         <option key={loc} value={loc}>{loc}</option>
                     ))}
                     </select>
                 </div>
-        
+                <div className="form-group me-2">
+                    <label>Zip Code:</label>
+                    <input
+                        type="text"
+                        name="zipCode"
+                        value={zipCode}
+                        onChange={handleFilterChange}
+                        className="form-control form-control-sm"
+                        placeholder="Enter Zip Code"
+                    />
+                </div>
+                <div className="form-group me-2">
+                    <label>Phone Area Code:</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                        onChange={handleFilterChange}
+                        className="form-control form-control-sm"
+                        placeholder="Enter Area Code"
+                    />
+                </div>
                 <div className="form-group me-2">
                     <label>Rating:</label>
                     <input

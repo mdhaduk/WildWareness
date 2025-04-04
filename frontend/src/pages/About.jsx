@@ -166,6 +166,10 @@ function About() {
                         </ul>
                     </div>
                     <div className="col-12 mt-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <p className="text-center"><strong>GitLab Repo Link</strong></p>
+                        <a href="https://gitlab.com/mdhaduk1/cs373-spring-2025-group-03/-/tree/development?ref_type=heads">Click Here</a>
+                    </div>
+                    <div className="col-12 mt-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <p className="text-center"><strong>API Postman Documentation</strong></p>
                         <a href="https://documenter.getpostman.com/view/31322139/2sAYdZvEUy">Click Here</a>
                     </div>

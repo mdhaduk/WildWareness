@@ -168,7 +168,9 @@ def get_all_shelters():
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     sort_by = request.args.get("sort_by", "county")
     order = request.args.get("order", "asc")
-    address = request.args.get("address")
+    county = request.args.get("county")
+    zipCode = request.args.get("zipCode")
+    phone = request.args.get("phone")
     rating = request.args.get("rating")
     search = request.args.get("search")
 
@@ -198,9 +200,23 @@ def get_all_shelters():
 
 
     # Apply filters
-    if address:
-        data = [s for s in data if address.lower() in (s.address or "").lower()
-        or address.lower() in (s.county or "").lower()]
+    if county:
+        data = [s for s in data if county.lower() in (s.address or "").lower()
+        or county.lower() in (s.county or "").lower()]
+    if zipCode:
+        zipCode = str(zipCode)
+        data = [s for s in data if zipCode.strip() in (s.address or "").lower()]
+
+    if phone:
+        # Clean the input phone by removing all non-numeric characters
+        cleaned_phone = ''.join(filter(str.isdigit, str(phone)))
+
+        # Get the first three digits of the cleaned phone number
+        first_three_phone = cleaned_phone[:3]
+
+        # Filter the data based on the first three digits of the phone number in the dataset
+        data = [s for s in data if first_three_phone in ''.join(filter(str.isdigit, s.phone or ""))[:3]]
+
     if rating:
         data = [s for s in data 
         if s.rating and s.rating!="N/A"

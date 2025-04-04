@@ -9,6 +9,7 @@ import Shelters from './pages/Shelters';
 import ShelterInstancePage from './pages/ShelterInstancePage';
 import NewsReports from './pages/NewsReports'
 import NewsReportInstancePage from './pages/NewsReportInstancePage';
+import GeneralSearchPage from './pages/GeneralSearchPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
             <Route path="/" element={<HomePage/>}></Route>
             <Route path="/about" element={<About/>}></Route>
+            <Route path='/search' element={<GeneralSearchPage/>}></Route>
             <Route path='/incidents' element={<Wildfires/>}></Route>
             <Route path='/incidents/:id' element={<WildfireIncidentsPage/>}></Route>
             <Route path='/shelters' element={<Shelters/>}></Route>
