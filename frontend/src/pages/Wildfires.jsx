@@ -24,20 +24,21 @@ function Wildfires() {
     const [location, setLocation] = useState('');
     const [year, setYear] = useState('');
     const [acres_burned, setAcresBurned] = useState('');
+    const [status, setStatus] = useState('');
 
     useEffect(() => {
         const fetchWildfires = async () => {
             try {
                 const queryParams = new URLSearchParams(query.search);
                 const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 10) : 1;
+                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
 
                 setLoading("Loading...");
 
                 const baseURL = `https://api.wildwareness.net/wildfire_incidents`;
                 const url = search_text.trim()
-                    ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}`
-                    : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}`;
+                    ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`
+                    : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`;
 
                 const response = await axios.get(url);
 
@@ -55,7 +56,7 @@ function Wildfires() {
         };
 
         fetchWildfires();
-    }, [search_text, currentPage, itemsPerPage, sortBy, order, location, year, acres_burned]);
+    }, [search_text, currentPage, itemsPerPage, sortBy, order, location, year, acres_burned, status]);
 
     useEffect(() => {
         const fetchLocations = async () => {
@@ -89,6 +90,7 @@ function Wildfires() {
         else if (name === 'location') setLocation(value);
         else if (name === 'year') setYear(value);
         else if (name === 'acres_burned') setAcresBurned(value);
+        else if (name === 'status') setStatus(value);
         handlePageChange(1);
     };
 
@@ -151,7 +153,14 @@ function Wildfires() {
                     </select>
                 </div>
             </div>
-
+            <div className="form-group me-2">
+                    <label>Status:</label>
+                    <select name="status" value={status} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+            </div>
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>

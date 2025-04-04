@@ -65,6 +65,7 @@ def get_all_incidents():
     year = request.args.get("year")
     acres_burned = request.args.get("acres_burned")
     search = request.args.get("search")
+    status = request.args.get("status")
 
     valid_sort_columns = {"name", "county"}
     if sort_by not in valid_sort_columns:
@@ -106,6 +107,9 @@ def get_all_incidents():
             if w.acres_burned and w.acres_burned.replace('.', '', 1).isdigit()
             and float(w.acres_burned) > float(acres_burned)
         ]
+
+    if status:
+        data = [w for w in data if w.status and w.status.lower() == status.lower()]
 
     # Sorting
     reverse = order == "desc"
@@ -240,16 +244,16 @@ def get_all_reports():
     size = request.args.get("size", 2, type=int)
     source = request.args.get("source", None)
     author = request.args.get("author", None)
-    date = request.args.get("date", None)
+    date = request.args.get("published_at", None)
     categories = request.args.get('categories', '') 
-    sortBy = request.args.get("sortBy", "title")  # Default to 'title'
+    sort_by = request.args.get("sort_by", "title")  # Default to 'title'
     order = request.args.get("order", "asc")  # Default to ascending order
     search = request.args.get("search", None)
 
 
     valid_sort_columns = {"title", "published_at", "author", "source"}
-    if sortBy not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sortBy}'"}), 400
+    if sort_by not in valid_sort_columns:
+        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
 
     # Copy the cache to filter/sort
     data = news_cache[:]
@@ -296,20 +300,26 @@ def get_all_reports():
     reverse = order == "desc"
 
     try:
-        if sortBy == "date":
-            # Assuming published_at is a string like '2023-12-01'
+        # if sortBy == "published_at":
+        #     # Handle date sorting separately
+        #     data.sort(
+        #         key=lambda r: datetime.strptime(getattr(r, "published_at", ""), "%Y-%m-%d") if getattr(r, "published_at", None) else datetime.min,
+        #         reverse=reverse
+        #     )
+        # else:
+            # Handle sorting for text fields (title, author, source)
+        if sort_by == "published_at":
             data.sort(
-                key=lambda r: datetime.strptime(getattr(r, "published_at", ""), "%Y-%m-%d"),
+                key=lambda r: datetime.strptime(r.published_at, "%Y-%m-%d") if r.published_at else datetime.min,
                 reverse=reverse
             )
         else:
             data.sort(
-                key=lambda r: (getattr(r, sortBy) or "").lower(),
+                key=lambda r: (getattr(r, sort_by, "") or "").lower(),
                 reverse=reverse
             )
-
     except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sortBy}'"}), 400
+        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
     except ValueError:
         return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
 

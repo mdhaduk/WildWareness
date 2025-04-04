@@ -45,6 +45,8 @@ def addShelters(local_session):
             body = json.load(file)
             for shelter in body:
                 shelter["rating"] = str(shelter["rating"])
+                if("N/A" in shelter["rating"]):
+                    shelter["rating"] = "N/A"
                 shelter["county"] = str(get_county_from_address(str(shelter["address"])))
                 shelterInstance = Shelter(**shelter)
                 ls.add(shelterInstance)
@@ -111,7 +113,10 @@ def addNewsReports(local_session):
             body = json.load(file)
             for report in body:
                 report["published_at"] = report["published_at"][0:10]
-                report["categories"] = ", ".join(report["categories"])
+                if(len(report["categories"]) == 0):
+                    report["categories"] = "general"
+                else:
+                    report["categories"] = ", ".join(report["categories"])
                 filtered_report = {key: report[key] for key in allowed_keys if key in report}
                 reportInstance = NewsReport(**filtered_report)
                 ls.add(reportInstance)
@@ -121,7 +126,10 @@ def addNewsReports(local_session):
 if __name__ == "__main__":
     engine = create_engine(DATABASE_URL, echo=False, future=True)
     local_session = sessionmaker(bind=engine, autoflush=False, future=True)
+    # Drop all tables in the database
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(bind=engine)
+
     addWildfires(local_session)
     addShelters(local_session)
     addNewsReports(local_session)

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import Select from 'react-select';
+import { highlightText } from './GeneralSearchPage';
 
 function NewsReports() {
     const [reports, setReports] = useState([]);
@@ -18,7 +19,7 @@ function NewsReports() {
     const navigate = useNavigate();
 
     // Filters
-    const [sortBy, setSortBy] = useState('title');
+    const [sort_by, setSortBy] = useState('title');
     const [order, setOrder] = useState('asc');
     const [source, setSource] = useState('');
     const [author, setAuthor] = useState('');
@@ -35,11 +36,12 @@ function NewsReports() {
             try {
                 const queryParams = new URLSearchParams(query.search);
                 const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 10) : 1;
+                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
                 setLoading("Loading...");
                 const baseURL = `https://api.wildwareness.net/news`;
                 const categoryValues = categories.map(c => c.value).join(',');
-                const url = `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`;
+                const url = search_text.trim() ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`
+                : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`;
 
                 const response = await axios.get(url);
                 setReports(response.data.reports);
@@ -55,7 +57,7 @@ function NewsReports() {
         };
 
         fetchReports();
-    }, [search_text, currentPage, itemsPerPage, sortBy, order, author, source, categories, date]);
+    }, [search_text, currentPage, itemsPerPage, sort_by, order, author, source, categories, date]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -72,7 +74,7 @@ function NewsReports() {
         if (name === 'source') setSource(value);
         else if (name === 'author') setAuthor(value);
         else if (name === 'date') setDate(value);
-        else if (name === 'sortBy') setSortBy(value);
+        else if (name === 'sort_by') setSortBy(value);
         else if (name === 'order') setOrder(value);
         handlePageChange(1);
     };
@@ -86,6 +88,22 @@ function NewsReports() {
         <div className="container">
             <h2 className="text-center my-4">News Reports</h2>
             <div className="d-flex flex-wrap align-items-center justify-content-center mb-4 gap-3">
+                <div className="form-group me-2">
+                    <label>Sort By:</label>
+                    <select name="sort_by" value={sort_by} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="title">Title</option>
+                        <option value="source">Source</option>
+                        <option value="author">Author</option>
+                        <option value="published_at">Date</option>
+                    </select>
+                </div>
+                <div className="form-group me-2">
+                    <label>Order:</label>
+                    <select name="order" value={order} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
                 <div className="form-group me-2">
                     <label>Source:</label>
                     <input

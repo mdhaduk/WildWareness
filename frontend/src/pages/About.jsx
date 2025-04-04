@@ -170,7 +170,8 @@ function About() {
                         <a href="https://documenter.getpostman.com/view/31322139/2sAYdZvEUy">Click Here</a>
                     </div>
                     <div className="col-12 mt-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <p className="text-center"><strong>API (Test) Endpoint</strong></p>
+                        <p className="text-center"><strong>API (Test) Endpoints</strong></p>
+                        <a href="https://api.wildwareness.net/shelters">https://api.wildwareness.net/shelters</a>
                         <a href="https://api.wildwareness.net/shelters/1">https://api.wildwareness.net/shelters/1</a>
                     </div>
                     <div className="col-12 mt-3">

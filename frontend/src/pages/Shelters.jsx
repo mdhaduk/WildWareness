@@ -29,7 +29,7 @@ function Shelters() {
             try {
                 const queryParams = new URLSearchParams(query.search);
                 const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 10) : 1;
+                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
                 setLoading("Loading...");
                 const baseURL = `https://api.wildwareness.net/shelters`;
                 const url = search_text.trim()

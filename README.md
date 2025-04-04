@@ -14,7 +14,8 @@ https://wildwareness.net/
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
 
 ## **API Endpoint**
-- [https://api.wildwareness.net/](https://api.wildwareness.net/)
+- [https://api.wildwareness.net/shelters](https://api.wildwareness.net/shelters)
+- [https://api.wildwareness.net/shelters/1](https://api.wildwareness.net/shelters/1)
 
 ## Team Members:
 - Milan Dhaduk @mdhaduk
