@@ -72,10 +72,10 @@ Responsibilites: Determine meeting times, assign tasks, ensure progress being ma
 - Pooja Vasanthan - 19 hours
 
 **Actual Time to Completion:**
-- Milan Dhaduk - 
-- Audrey Tan - 
-- Zakaria Sisalem - 
-- Pooja Vasanthan - 
+- Milan Dhaduk - 23 hours
+- Audrey Tan - 13 hours
+- Zakaria Sisalem - 10 hours
+- Pooja Vasanthan - 18 hours
 
 
 Phase 4 leader: Zakaria Sisalem                                                 
@@ -159,4 +159,4 @@ Users can:
 
 ## Comments
 - It's important to note that we referenced last year's HomelessAid in developing 
-our HTML/CSS for Phase I and in the code development of Phase 2.
+our HTML/CSS for Phase I and in the code development of Phase 2 and 3.
