@@ -35,7 +35,7 @@ function Wildfires() {
             try {
                 setLoading("Loading...");
 
-                const baseURL = `https://api.wildwareness.net/wildfire_incidents`;
+                const baseURL = `http://api.wildwareness.net/wildfire_incidents`;
                 const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`;
 
                 const response = await axios.get(url);

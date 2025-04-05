@@ -76,7 +76,7 @@ def get_all_incidents():
 
 # Apply search terms with relevance ranking
     if search:
-        term = search.lower()
+        term = search.lower().strip()
 
         def match_search(wildfire):
             score = 0
@@ -188,7 +188,7 @@ def get_all_shelters():
     data = shelter_cache[:]
     # Apply search terms with relevance ranking
     if search:
-        term = search.lower()
+        term = search.lower().strip()
 
         def match_search(shelter):
             score = 0
@@ -289,7 +289,7 @@ def get_all_reports():
 
     # Apply search terms with relevance ranking
     if search:
-        term = search.lower()
+        term = search.lower().strip()
 
         def match_search(report):
             score = 0
@@ -317,7 +317,7 @@ def get_all_reports():
         data = [r for r in data if source.lower()
         in (r.source or "").lower()]
     if author:
-        data = [r for r in data if author.lower() 
+        data = [r for r in data if author.lower().strip()
         in (r.author or "").lower()]
     if date:
         date_obj = datetime.strptime(date,'%Y-%m-%d').date()
@@ -387,7 +387,7 @@ def search_all_cards():
 
     # Apply search terms
     if text:
-        term = text.lower()
+        term = text.lower().strip()
         print(term)
         def match_search(obj):
             score = 0  # Initialize a relevance score
