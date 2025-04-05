@@ -405,5 +405,271 @@ class acceptance_tests_frontend(unittest.TestCase):
             self.assertTrue(text.is_displayed(), f'{expected[index]}')
             index += 1
 
+    # Check search bar exists and try searching
+    def test_10(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        # Define the links you want to click in the navbar
+        navbar_links = {
+            "Wildfire Incidents": f'{url}incidents/',
+            "Emergency Shelters": f'{url}shelters/',
+            "Community Reports": f'{url}news/',
+        }
+        search_texts = ["livermore", "house", "help"]
+        index = 0
+        for page_name, relative_url in navbar_links.items():
+            # Navigate to the page
+            driver.get(relative_url)
+            # Check for the search bar on the page
+            try:
+                # Wait for the status filter dropdown to be visible
+                search_bar = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[type="search"]'))  # Using the 'name' attribute to locate
+                )
+                assert search_bar.is_displayed()
+                # Clear the input (in case there is any previous text)
+                search_bar.clear()
+
+                # Simulate typing a search term into the search bar
+                search_text = search_texts[index]
+                search_bar.send_keys(search_text)
+
+                # Trigger the search by hitting "Enter"
+                search_bar.send_keys(Keys.RETURN)
+
+                # Wait for results to load (you can adjust the wait time as needed)
+                time.sleep(3)
+
+                # Verify that the results contain the search text (for example, check if a wildfire name contains the search term)
+                # We will look for the wildfire names in the cards and check if "California" is part of the name
+                items = driver.find_elements(By.CLASS_NAME, 'card')
+                assert any(search_text.lower() in item.text.lower() for item in items), f"No results containing {search_text}"
+
+            except Exception as e:
+                assert False, f"Search not found {page_name}"
+            index += 1
+
+    # Check wilfire filters
+    def test_11(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        names = ["sortBy", "order", "location", "year", "acres_burned", "status"]
+        driver.get(f'{url}incidents/')
+        for name in names:
+            # Navigate to the page
+            # Check for the search bar on the page
+            try:
+                # Wait for the status filter dropdown to be visible
+                fire_filter = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.NAME, name))  # Using the 'name' attribute to locate
+                )
+                assert fire_filter.is_displayed()
+            except Exception as e:
+                assert False, f"Filter not found Wildfires Page"
+
+    # Check shelter filters
+    def test_12(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        names = ["sortBy", "order", "county", "zipCode", "phone", "rating"]
+        driver.get(f'{url}shelters/')
+        for name in names:
+            # Navigate to the page
+            # Check for the search bar on the page
+            try:
+                # Wait for the status filter dropdown to be visible
+                fire_filter = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.NAME, name))  # Using the 'name' attribute to locate
+                )
+                assert fire_filter.is_displayed()
+            except Exception as e:
+                assert False, f"Filter not found Shelters Page"
+    
+    # Check news filters
+    def test_13(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        names = ["sort_by", "order", "source", "author", "date"]
+        driver.get(f'{url}news/')
+        for name in names:
+            # Navigate to the page
+            # Check for the search bar on the page
+            try:
+                # Wait for the status filter dropdown to be visible
+                fire_filter = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.NAME, name))  # Using the 'name' attribute to locate
+                )
+                assert fire_filter.is_displayed()
+            except Exception as e:
+                assert False, f"Filter not found News Page"
+    
+    # Check wilfire filter
+    def test_14(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}incidents/')
+        try:
+            # Test filtering by status (Active)
+            status_dropdown = driver.find_element(By.NAME, 'status')
+            status_dropdown.click()
+            time.sleep(2)
+            status_dropdown.find_element(By.XPATH, "//option[@value='Active']").click()
+            time.sleep(2)
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) == 0)
+            status_dropdown = driver.find_element(By.NAME, 'status')
+            status_dropdown.click()
+            time.sleep(2)
+            status_dropdown.find_element(By.XPATH, "//option[@value='Inactive']").click()
+            time.sleep(2)
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+        except Exception as e:
+            assert False, f"Status Filter not found Wildfires Page"
+
+    def test_15(self) -> None:
+        driver = self.driver
+        driver.get(url)
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}shelters/')
+        try:
+            # Step 1: Locate the text input for the filter (e.g., search bar)
+            search_input = driver.find_element(By.NAME, 'zipCode')
+            search_input.clear()
+            # Step 2: Enter a filter text in the search input field
+            search_text = "95973"
+            search_input.send_keys(search_text)  # Enter search text
+            time.sleep(5) 
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+
+        except Exception as e:
+            assert False, f" Filter not working Shelters Page"
+
+    
+    def test_16(self) -> None:
+        driver = self.driver
+        driver.get(url)
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}news/')
+        try:
+            # Step 1: Locate the text input for the filter (e.g., search bar)
+            search_input = driver.find_element(By.NAME, 'author')
+            search_input.clear()
+            # Step 2: Enter a filter text in the search input field
+            search_text = "india"
+            search_input.send_keys(search_text)  # Enter search text
+            time.sleep(2) 
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+
+        except Exception as e:
+            assert False, f" Filter not working News Page"
+    
+    def test_17(self) -> None:
+        driver = self.driver
+        driver.get(url)
+
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}incidents/')
+        try:
+            # Test filtering by status (Active)
+            status_dropdown = driver.find_element(By.NAME, 'acres_burned')
+            status_dropdown.click()
+            time.sleep(2)
+            status_dropdown.find_element(By.XPATH, "//option[@value='1000']").click()
+            time.sleep(2)
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) >0 )
+            status_dropdown = driver.find_element(By.NAME, 'status')
+            status_dropdown.click()
+            time.sleep(2)
+            status_dropdown.find_element(By.XPATH, "//option[@value='32000']").click()
+            time.sleep(2)
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+        except Exception as e:
+            assert False, f"Filter not working Wildfires Page"
+    
+    def test_18(self) -> None:
+        driver = self.driver
+        driver.get(url)
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}shelters/')
+        try:
+            # Step 1: Locate the text input for the filter (e.g., search bar)
+            search_input = driver.find_element(By.NAME, 'phone')
+            search_input.clear()
+            # Step 2: Enter a filter text in the search input field
+            search_text = "510"
+            search_input.send_keys(search_text)  # Enter search text
+            time.sleep(2) 
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+
+        except Exception as e:
+            assert False, f" Filter not working Shelters Page"
+
+    def test_19(self) -> None:
+        driver = self.driver
+        driver.get(url)
+        # Ensure the page is loaded and we are on the correct URL
+        WebDriverWait(driver, 10).until(
+            EC.url_contains("wildwareness.net")  # Ensure you are on the expected URL
+        )
+        driver.get(f'{url}news/')
+        try:
+            # Step 1: Locate the text input for the filter (e.g., search bar)
+            search_input = driver.find_element(By.NAME, 'source')
+            search_input.clear()
+            # Step 2: Enter a filter text in the search input field
+            search_text = "iClarified.com"
+            search_input.send_keys(search_text)  # Enter search text
+            search_input.send_keys(Keys.RETURN)
+            time.sleep(2) 
+            results = driver.find_elements(By.CLASS_NAME, 'card') 
+            assert(len(results) > 0)
+
+        except Exception as e:
+            assert False, f" Filter not working News Page"
+
+
 if __name__ == "__main__":
     unittest.main()
