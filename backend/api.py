@@ -74,52 +74,31 @@ def get_all_incidents():
     # Copy the cache to filter/sort
     data = wildfire_cache[:]
 
-# # Apply search terms with relevance ranking
-#     if search:
-#         term = search.lower()
-
-#         def match_search(wildfire):
-#             score = 0
-#             if term in (wildfire.name or "").lower():
-#                 score += 3  # Title matches are given the highest relevance
-#             if term in (wildfire.location or "").lower():
-#                 score += 2
-#             if term in (wildfire.status or "").lower():
-#                 score += 1
-#             if term in str(wildfire.year or ""):
-#                 score += 1
-#             if term in str(wildfire.acres_burned or ""):
-#                 score += 1
-#             return score
-
-#         # Apply relevance-based ranking
-#         data_with_scores = [(w, match_search(w)) for w in data]
-#         data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include wildfires with score > 0
-#         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-#         # Extract sorted wildfires
-#         data = [d[0] for d in data_with_scores]
-    
-
-       # Apply search terms
+# Apply search terms with relevance ranking
     if search:
         term = search.lower()
 
         def match_search(wildfire):
-            if (
-                term in (wildfire.name or "").lower()
-                or term in (wildfire.county or "").lower()
-                or term in (wildfire.location or "").lower()
-                or term in str(wildfire.year or "")
-                or term in str(wildfire.acres_burned or "")
-                or term in (wildfire.status or "").lower()
-            ):
-                return True
-            return False
+            score = 0
+            if term in (wildfire.name or "").lower():
+                score += 3  # Title matches are given the highest relevance
+            if term in (wildfire.location or "").lower():
+                score += 2
+            if term in (wildfire.status or "").lower():
+                score += 1
+            if term in str(wildfire.year or ""):
+                score += 1
+            if term in str(wildfire.acres_burned or ""):
+                score += 1
+            return score
 
-        data = [w for w in data if match_search(w)]
+        # Apply relevance-based ranking
+        data_with_scores = [(w, match_search(w)) for w in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include wildfires with score > 0
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 
-
+        # Extract sorted wildfires
+        data = [d[0] for d in data_with_scores]
     # Apply filters
     if location:
         data = [w for w in data if location.lower()
@@ -207,48 +186,31 @@ def get_all_shelters():
 
     # Copy the cache to filter/sort
     data = shelter_cache[:]
-    # # Apply search terms with relevance ranking
-    # if search:
-    #     term = search.lower()
-
-    #     def match_search(shelter):
-    #         score = 0
-    #         if term in (shelter.name or "").lower():
-    #             score += 3  # Name matches are given the highest relevance
-    #         if term in (shelter.county or "").lower():
-    #             score += 2
-    #         if term in (shelter.address or "").lower():
-    #             score += 1
-    #         if term in str(shelter.rating or ""):
-    #             score += 1
-    #         if term in str(shelter.phone or "").lower():
-    #             score += 1
-    #         return score
-
-    #     # Apply relevance-based ranking
-    #     data_with_scores = [(s, match_search(s)) for s in data]
-    #     data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include shelters with score > 0
-    #     data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-    #     # Extract sorted shelters
-    #     data = [d[0] for d in data_with_scores]
-    # Apply search terms
+    # Apply search terms with relevance ranking
     if search:
         term = search.lower()
 
         def match_search(shelter):
-            if (
-                term in (shelter.name or "").lower()
-                or term in (shelter.county or "").lower()
-                or term in (shelter.address or "").lower()
-                or term in str(shelter.rating or "")
-                or term in (shelter.phone or "").lower()
-            ):
-                return True
-            return False
+            score = 0
+            if term in (shelter.name or "").lower():
+                score += 3  # Name matches are given the highest relevance
+            if term in (shelter.county or "").lower():
+                score += 2
+            if term in (shelter.address or "").lower():
+                score += 1
+            if term in str(shelter.rating or ""):
+                score += 1
+            if term in str(shelter.phone or "").lower():
+                score += 1
+            return score
 
-        data = [s for s in data if match_search(s)]
+        # Apply relevance-based ranking
+        data_with_scores = [(s, match_search(s)) for s in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include shelters with score > 0
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 
+        # Extract sorted shelters
+        data = [d[0] for d in data_with_scores]
 
     # Apply filters
     if county:
@@ -325,49 +287,31 @@ def get_all_reports():
     # Copy the cache to filter/sort
     data = news_cache[:]
 
-    # # Apply search terms with relevance ranking
-    # if search:
-    #     term = search.lower()
-
-    #     def match_search(report):
-    #         score = 0
-    #         if term in (report.title or "").lower():
-    #             score += 2  # Title matches are given higher relevance
-    #         if term in (report.source or "").lower():
-    #             score += 1
-    #         if term in (report.published_at or "").lower():
-    #             score += 1
-    #         if term in (report.author or "").lower():
-    #             score += 1
-    #         if term in (report.categories or "").lower():
-    #             score += 1
-    #         return score
-
-    #     # Apply relevance-based ranking
-    #     data_with_scores = [(r, match_search(r)) for r in data]
-    #     data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-    #     data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-    #     # Extract sorted reports
-    #     data = [d[0] for d in data_with_scores]
-
-    # Apply search terms
+    # Apply search terms with relevance ranking
     if search:
         term = search.lower()
 
         def match_search(report):
-            if (
-                term in (report.title or "").lower()
-                or term in (report.source or "").lower()
-                or term in (report.published_at or "").lower()
-                or term in (report.author or "").lower()
-                or term in (report.categories or "").lower()
-            ):
-                return True
-            return False
+            score = 0
+            if term in (report.title or "").lower():
+                score += 2  # Title matches are given higher relevance
+            if term in (report.source or "").lower():
+                score += 1
+            if term in (report.published_at or "").lower():
+                score += 1
+            if term in (report.author or "").lower():
+                score += 1
+            if term in (report.categories or "").lower():
+                score += 1
+            return score
 
-        data = [r for r in data if match_search(r)]
+        # Apply relevance-based ranking
+        data_with_scores = [(r, match_search(r)) for r in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 
+        # Extract sorted reports
+        data = [d[0] for d in data_with_scores]
     # Apply filters
     if source:
         data = [r for r in data if source.lower()
@@ -392,14 +336,7 @@ def get_all_reports():
     reverse = order == "desc"
 
     try:
-        # if sortBy == "published_at":
-        #     # Handle date sorting separately
-        #     data.sort(
-        #         key=lambda r: datetime.strptime(getattr(r, "published_at", ""), "%Y-%m-%d") if getattr(r, "published_at", None) else datetime.min,
-        #         reverse=reverse
-        #     )
-        # else:
-            # Handle sorting for text fields (title, author, source)
+        # Handle sorting for text fields (title, author, source)
         if sort_by == "published_at":
             data.sort(
                 key=lambda r: datetime.strptime(r.published_at, "%Y-%m-%d") if r.published_at else datetime.min,
@@ -448,98 +385,60 @@ def search_all_cards():
     # Copy the cache to filter/sort
     data = [*wildfire_cache, *shelter_cache, *news_cache]
 
-    # # Apply search terms
-    # if text:
-    #     term = text.lower()
-
-    #     def match_search(obj):
-    #         score = 0  # Initialize a relevance score
-    #         if isinstance(obj, Wildfire):
-    #             # Increment score based on how much the term matches
-    #             if term in (obj.name or "").lower():
-    #                 score += 2
-    #             if term in (obj.county or "").lower():
-    #                 score += 1
-    #             if term in (obj.location or "").lower():
-    #                 score += 1
-    #             if term in str(obj.year or ""):
-    #                 score += 1
-    #             if term in str(obj.acres_burned or ""):
-    #                 score += 1
-    #             if term in (obj.status or "").lower():
-    #                 score += 1
-
-    #         elif isinstance(obj, NewsReport):
-    #             if term in (obj.title or "").lower():
-    #                 score += 2
-    #             if term in (obj.source or "").lower():
-    #                 score += 1
-    #             if term in (obj.published_at or "").lower():
-    #                 score += 1
-    #             if term in (obj.author or "").lower():
-    #                 score += 1
-    #             if term in (obj.categories or "").lower():
-    #                 score += 1
-
-    #         elif isinstance(obj, Shelter):
-    #             if term in (obj.county or "").lower():
-    #                 score += 2
-    #             if term in (obj.address or "").lower():
-    #                 score += 1
-    #             if term in str(obj.rating or ""):
-    #                 score += 1
-    #             if term in (obj.phone or "").lower():
-    #                 score += 1
-
-    #         return score
-
-        # # Filter and rank results by relevance score
-        # scored_data = []
-        # for card in data:
-        #     score = match_search(card)
-        #     if score > 0:  # Only include items with a non-zero score
-        #         scored_data.append((card, score))
-
-        # # Sort by relevance score (highest first)
-        # scored_data.sort(key=lambda x: x[1], reverse=True)
-
-        # # Extract the objects from the tuple
-        # data = [item[0] for item in scored_data]
     # Apply search terms
     if text:
         term = text.lower()
-
+        print(term)
         def match_search(obj):
+            score = 0  # Initialize a relevance score
             if isinstance(obj, Wildfire):
-                return (
-                    term in (obj.name or "").lower()
-                    or term in (obj.county or "").lower()
-                    or term in (obj.location or "").lower()
-                    or term in str(obj.year or "")
-                    or term in str(obj.acres_burned or "")
-                    or term in (obj.status or "").lower()
-                )
+                # Increment score based on how much the term matches
+                if term in (obj.name or "").lower():
+                    score += 2
+                if term in (obj.county or "").lower():
+                    score += 1
+                if term in (obj.location or "").lower():
+                    score += 1
+                if term in str(obj.year or ""):
+                    score += 1
+                if term in str(obj.acres_burned or ""):
+                    score += 1
+                if term in (obj.status or "").lower():
+                    score += 1
 
             elif isinstance(obj, NewsReport):
-                return (
-                    term in (obj.title or "").lower()
-                    or term in (obj.source or "").lower()
-                    or term in (obj.published_at or "").lower()
-                    or term in (obj.author or "").lower()
-                    or term in (obj.categories or "").lower()
-                )
+                if term in (obj.title or "").lower():
+                    score += 2
+                if term in (obj.source or "").lower():
+                    score += 1
+                if term in (obj.published_at or "").lower():
+                    score += 1
+                if term in (obj.author or "").lower():
+                    score += 1
+                if term in (obj.categories or "").lower():
+                    score += 1
 
             elif isinstance(obj, Shelter):
-                return (
-                    term in (obj.county or "").lower()
-                    or term in (obj.address or "").lower()
-                    or term in str(obj.rating or "")
-                    or term in (obj.phone or "").lower()
-                )
+                if term in (obj.name or "").lower():
+                    score +=2
+                if term in (obj.county or "").lower():
+                    score += 1
+                if term in (obj.address or "").lower():
+                    score += 1
+                if term in str(obj.rating or ""):
+                    score += 1
+                if term in (obj.phone or "").lower():
+                    score += 1
 
-            return False
-        data = [r for r in data if match_search(r)]
-        
+            return score
+
+        # Filter and rank results by relevance score
+        data_with_scores = [(r, match_search(r)) for r in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
+
+        # Extract the objects from the tuple
+        data = [item[0] for item in data_with_scores]
     # Pagination
     total_items = len(data)
     total_pages = (total_items + size - 1) // size

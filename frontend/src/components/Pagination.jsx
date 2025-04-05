@@ -1,88 +1,81 @@
-const Pagination = ({ totalPages, currentPage, onPageChange, totalItems, itemsPerPage }) => {
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+import React from "react";
+import { Pagination } from "react-bootstrap";
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      onPageChange(page);
+const PaginationComponent = ({ totalPages, currentPage, onPageChange }) => {
+  // Check if totalPages is valid
+  if (typeof totalPages !== "number" || totalPages <= 0) {
+    console.error("Invalid totalPages value:", totalPages);
+    return null; // Prevent rendering if totalPages is invalid
+  }
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      onPageChange(pageNumber);
     }
   };
 
-  const renderPageItem = (page) => (
-    <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-      <button className="page-link" onClick={() => handlePageChange(page)}>
-        {page}
-      </button>
-    </li>
-  );
+  // Generate page range to show: 2 before and 2 after currentPage, plus the first and last page
+  let startPage = Math.max(currentPage - 2, 1);
+  let endPage = Math.min(currentPage + 2, totalPages);
 
-  const createPaginationItems = () => {
-    const pages = [];
-    const pageWindow = 1;
+  // Handle the scenario where there are less than 5 pages in total
+  if (totalPages <= 5) {
+    startPage = 1;
+    endPage = totalPages;
+  }
 
-    if (1 === currentPage) {
-      pages.push(renderPageItem(1));
-    } else {
-      pages.push(renderPageItem(1));
-    }
-
-    if (currentPage > 2 + pageWindow) {
-      pages.push(<li key="start-ellipsis" className="page-item disabled"><span className="page-link">...</span></li>);
-    }
-
-    const start = Math.max(2, currentPage - pageWindow);
-    const end = Math.min(totalPages - 1, currentPage + pageWindow);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(renderPageItem(i));
-    }
-
-    if (currentPage < totalPages - (1 + pageWindow)) {
-      pages.push(<li key="end-ellipsis" className="page-item disabled"><span className="page-link">...</span></li>);
-    }
-
-    if (totalPages > 1) {
-      pages.push(renderPageItem(totalPages));
-    }
-
-    return pages;
-  };
-
-  if (totalPages <= 1) return null;
+  // Create the page numbers array
+  const pages = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
 
   return (
-    <div className="container text-center">
-      <div className="row">
-        <div className="d-flex justify-content-center my-4">
-          <nav>
-            <ul className="pagination flex-wrap">
-              {/* Previous Button */}
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
-                  Previous
-                </button>
-              </li>
+    <Pagination className="justify-content-center" size="lg">
+      
+      {/* Previous Page */}
+      <Pagination.Prev
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      />
 
-              {/* Page Items */}
-              {createPaginationItems()}
+      {/* Show "1" for the first page if it's not already in the range */}
+      {startPage > 1 && (
+        <>
+          <Pagination.Item onClick={() => handlePageChange(1)}>1</Pagination.Item>
+          <Pagination.Ellipsis />
+        </>
+      )}
 
-              {/* Next Button */}
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div className="row">
-        <h4 className="page-item">
-          Showing {startItem} - {endItem} of {totalItems}
-        </h4>
-      </div>
-    </div>
+      {/* Display pages in range */}
+      {pages.map((pageNumber) => (
+        <Pagination.Item
+          key={pageNumber}
+          active={pageNumber === currentPage}
+          onClick={() => handlePageChange(pageNumber)}
+        >
+          {pageNumber}
+        </Pagination.Item>
+      ))}
+
+      {/* Show the last page if it's not already in the range */}
+      {endPage < totalPages && (
+        <>
+          <Pagination.Ellipsis />
+          <Pagination.Item onClick={() => handlePageChange(totalPages)}>
+            {totalPages}
+          </Pagination.Item>
+        </>
+      )}
+
+      {/* Next Page */}
+      <Pagination.Next
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      />
+      
+    </Pagination>
   );
 };
 
-export default Pagination;
+export default PaginationComponent;

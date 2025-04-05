@@ -32,41 +32,51 @@ function NewsReports() {
     ].map(cat => ({ value: cat, label: cat }));
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(query.search);
+        const pageParam = parseInt(queryParams.get('page'));
+        const resolvedPage = !isNaN(pageParam) && pageParam > 0 ? pageParam : 1;
+
         const fetchReports = async () => {
             try {
-                const queryParams = new URLSearchParams(query.search);
-                const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
                 setLoading("Loading...");
+
                 const baseURL = `https://api.wildwareness.net/news`;
                 const categoryValues = categories.map(c => c.value).join(',');
-                const url = search_text.trim() ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`
-                : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`;
+                const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`;
 
                 const response = await axios.get(url);
                 setReports(response.data.reports);
+                setTotalPages(response.data.pagination.total_pages);
+                setTotalItems(response.data.pagination.total_items);
+
+                if (resolvedPage !== currentPage) {
+                    setCurrentPage(resolvedPage);
+                }
+
                 if (response.data.pagination.total_items === 0) {
                     setLoading("No Results");
                 }
-                setTotalPages(response.data.pagination.total_pages);
-                setTotalItems(response.data.pagination.total_items);
-                setCurrentPage(response.data.pagination.page);
             } catch (error) {
                 console.error("Error fetching news reports:", error);
             }
         };
 
         fetchReports();
-    }, [search_text, currentPage, itemsPerPage, sort_by, order, author, source, categories, date]);
+    }, [query.search, search_text, itemsPerPage, sort_by, order, author, source, categories, date]);
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-        navigate(`/news?page=${page}`);
+        if (page !== currentPage) {
+            navigate(`/news?page=${page}`);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
     };
 
     const updateSearchInput = (event) => {
         setSearchText(event.target.value);
-        handlePageChange(1);
+        navigate(`/news?page=1`);
     };
 
     const handleFilterChange = (e) => {
@@ -76,17 +86,18 @@ function NewsReports() {
         else if (name === 'date') setDate(value);
         else if (name === 'sort_by') setSortBy(value);
         else if (name === 'order') setOrder(value);
-        handlePageChange(1);
+        navigate(`/news?page=1`);
     };
 
     const handleCategoryChange = (selectedOptions) => {
         setCategories(selectedOptions || []);
-        handlePageChange(1);
+        navigate(`/news?page=1`);
     };
 
     return (
         <div className="container">
             <h2 className="text-center my-4">News Reports</h2>
+
             <div className="d-flex flex-wrap align-items-center justify-content-center mb-4 gap-3">
                 <div className="form-group me-2">
                     <label>Sort By:</label>
@@ -115,7 +126,6 @@ function NewsReports() {
                         placeholder="Enter Source"
                     />
                 </div>
-
                 <div className="form-group me-2">
                     <label>Author: </label>
                     <input
@@ -127,7 +137,6 @@ function NewsReports() {
                         className="form-control form-control-sm"
                     />
                 </div>
-
                 <div className="form-group me-2">
                     <label>Date: </label>
                     <input
@@ -139,7 +148,6 @@ function NewsReports() {
                         className="form-control form-control-sm"
                     />
                 </div>
-
                 <div className="form-group me-2" style={{ minWidth: '250px' }}>
                     <label>Categories:</label>
                     <Select
@@ -191,16 +199,18 @@ function NewsReports() {
                     <p className="text-center">{loading}</p>
                 )}
             </div>
-
+            {/* Result count */}
+            {totalItems > 0 && (
+                <p className="text-muted text-start ms-2 text-center">
+                    Showing report <strong>{((currentPage - 1) * itemsPerPage) + 1} – {Math.min(currentPage * itemsPerPage, totalItems)} </strong> out of <strong>{totalItems}</strong>
+                </p>
+            )}
             {/* Pagination */}
             <div className="d-flex justify-content-center mt-4">
                 <Pagination
                     totalPages={totalPages}
                     currentPage={currentPage}
                     onPageChange={handlePageChange}
-                    totalItems={totalItems}
-                    itemsPerPage={itemsPerPage}
-                    url={'/news'}
                 />
             </div>
         </div>

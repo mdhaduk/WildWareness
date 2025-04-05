@@ -27,28 +27,30 @@ function Wildfires() {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(query.search);
+        const pageParam = parseInt(queryParams.get('page'), 10);
+        const resolvedPage = !isNaN(pageParam) && pageParam > 0 ? pageParam : 1;
+
         const fetchWildfires = async () => {
             try {
-                const queryParams = new URLSearchParams(query.search);
-                const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
-
                 setLoading("Loading...");
 
                 const baseURL = `https://api.wildwareness.net/wildfire_incidents`;
-                const url = search_text.trim()
-                    ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`
-                    : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`;
+                const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`;
 
                 const response = await axios.get(url);
 
                 setWildfires(response.data.incidents);
+                setTotalPages(response.data.pagination.total_pages);
+                setTotalItems(response.data.pagination.total_items);
+
+                if (resolvedPage !== currentPage) {
+                    setCurrentPage(resolvedPage);
+                }
+
                 if (response.data.pagination.total_items === 0) {
                     setLoading("No Results");
                 }
-                setTotalPages(response.data.pagination.total_pages);
-                setTotalItems(response.data.pagination.total_items);
-                setCurrentPage(response.data.pagination.page);
             } catch (error) {
                 console.error("Error fetching wildfire instances:", error);
                 setLoading("Error fetching data.");
@@ -56,31 +58,34 @@ function Wildfires() {
         };
 
         fetchWildfires();
-    }, [search_text, currentPage, itemsPerPage, sortBy, order, location, year, acres_burned, status]);
+    }, [query.search, search_text, itemsPerPage, sortBy, order, location, year, acres_burned, status]);
 
     useEffect(() => {
         const fetchLocations = async () => {
-          try {
-            const res = await axios.get("https://api.wildwareness.net/wildfire_locations");
-            setAvailableLocations(res.data.locations || []);
-          } catch (error) {
-            console.error("Error loading locations:", error);
-          }
+            try {
+                const res = await axios.get("https://api.wildwareness.net/wildfire_locations");
+                setAvailableLocations(res.data.locations || []);
+            } catch (error) {
+                console.error("Error loading locations:", error);
+            }
         };
-      
+
         fetchLocations();
-      }, []);
-      
+    }, []);
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-        navigate(`/incidents?page=${page}`);
+        if (page !== currentPage) {
+            navigate(`/incidents?page=${page}`);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
     };
 
     const updateSearchInput = (event) => {
-        console.log("SEARCH TEXT: " + event.target.value)
         setSearchText(event.target.value);
-        handlePageChange(1);
+        navigate(`/incidents?page=1`);
     };
 
     const handleFilterChange = (e) => {
@@ -91,7 +96,7 @@ function Wildfires() {
         else if (name === 'year') setYear(value);
         else if (name === 'acres_burned') setAcresBurned(value);
         else if (name === 'status') setStatus(value);
-        handlePageChange(1);
+        navigate(`/incidents?page=1`);
     };
 
     return (
@@ -119,13 +124,13 @@ function Wildfires() {
                 <div className="form-group me-2">
                     <label>Location:</label>
                     <select name="location" value={location} onChange={handleFilterChange} className="form-select form-select-sm">
-                    <option value="">All</option>
-                    {availableLocations.map((loc) => (
-                        <option key={loc} value={loc}>{loc}</option>
-                    ))}
+                        <option value="">All</option>
+                        {availableLocations.map((loc) => (
+                            <option key={loc} value={loc}>{loc}</option>
+                        ))}
                     </select>
                 </div>
-        
+
                 <div className="form-group me-2">
                     <label>Year:</label>
                     <input
@@ -152,6 +157,7 @@ function Wildfires() {
                         <option value="64000">{">"}64000</option>
                     </select>
                 </div>
+
                 <div className="form-group me-2">
                     <label>Status:</label>
                     <select name="status" value={status} onChange={handleFilterChange} className="form-select form-select-sm">
@@ -161,6 +167,7 @@ function Wildfires() {
                     </select>
                 </div>
             </div>
+
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
@@ -180,8 +187,14 @@ function Wildfires() {
                 {wildfires.length > 0 ? (
                     wildfires.map((wildfire) => (
                         <div key={wildfire.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={wildfire.url || "default-image.jpg"} alt={wildfire.name} />
+                            <div className="card" style={{ width: '100%' }}>
+                                <img
+                                    className="card-img"
+                                    src={wildfire.url || wildfire.imageUrl || "default-image.jpg"}
+                                    onError={(e) => e.target.src = "default-image.jpg"}
+                                    alt={wildfire.name}
+                                    style={{ height: '200px', objectFit: 'cover' }}
+                                />
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item"><strong>Name:</strong> {highlightText(wildfire.name, search_text)}</li>
                                     <li className="list-group-item"><strong>County:</strong> {highlightText(wildfire.county, search_text)}</li>
@@ -200,16 +213,20 @@ function Wildfires() {
                     <p className='text-center'>{loading}</p>
                 )}
             </div>
+            
 
+            {/* Result count */}
+            {totalItems > 0 && (
+                <p className="text-muted text-start ms-2 text-center">
+                    Showing wildfire <strong>{((currentPage - 1) * itemsPerPage) + 1} – {Math.min(currentPage * itemsPerPage, totalItems)} </strong> out of <strong>{totalItems}</strong>
+                </p>
+            )}
             {/* Pagination */}
-            <div className="d-flex mt-4">
+            <div className="d-flex justify-content-center mt-4">
                 <Pagination 
                     totalPages={totalPages} 
                     currentPage={currentPage} 
                     onPageChange={handlePageChange}  
-                    totalItems={totalItems} 
-                    itemsPerPage={itemsPerPage} 
-                    url={'/incidents'}
                 />
             </div>
         </div>

@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Pagination from '../components/Pagination';
 
 const escapeRegExp = (string) => {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
 export const highlightText = (text, search) => {
     if (!search) return text;
-
-    // Escape special characters in each search word
     const searchWords = search.split(/\s+/).filter(Boolean).map(escapeRegExp);
-    const regex = new RegExp(`(${searchWords.join('|')})`, 'gi'); // Create regex with escaped words
-
+    const regex = new RegExp(`(${searchWords.join('|')})`, 'gi');
     const words = text.split(regex);
     return words.map((part, index) =>
         searchWords.some(word => part.toLowerCase() === word.toLowerCase()) ? (
@@ -32,151 +28,129 @@ const GeneralSearchPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-    const [loading, setLoading] = useState("No results found");
-    const itemsPerPage = 9;
+    const [loading, setLoading] = useState("No results");
 
-    const search = async () => {
-        try {
-            if (!search_input.trim()) { // Guard against empty searches
-                return;
-            }
-            setLoading("Loading...");
-            const response = await axios.get(`http://localhost:3000/search?text=${search_input}&page=${currentPage}`);
-            setResults(response.data.results);
-            setTotalPages(response.data.pagination.total_pages);
-            setTotalItems(response.data.pagination.total_items);
-            setLoading("No results found")
-        } catch (error) {
-            console.error("Error fetching search results:", error);
+    const itemsPerPage = 9;
+    const query = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(query.search);
+        const pageParam = parseInt(queryParams.get('page'), 10);
+        const resolvedPage = !isNaN(pageParam) && pageParam > 0 ? pageParam : 1;
+        
+        if (resolvedPage !== currentPage) {
+            setCurrentPage(resolvedPage);
         }
-    };
+        
+        if (!search_input.trim()){
+            setResults([]);
+            setTotalItems(0);
+            setTotalPages(0);
+            setLoading("No Results");
+            return; 
+        }
+        
+        const search = async () => {
+            try {
+                setLoading("Loading...");
+                const response = await axios.get(`http://localhost:3000/search?text=${search_input}&page=${resolvedPage}&size=${itemsPerPage}`);
+                setResults(response.data.instances);
+                setTotalPages(response.data.pagination.total_pages);
+                setTotalItems(response.data.pagination.total_items);
+    
+                if (response.data.pagination.total_items === 0) {
+                    setLoading("No Results");
+                }
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+                setLoading("Error fetching results.");
+            }
+        };
+    
+        search();
+    }, [search_input, query.search, currentPage]);
 
     const updateSearchInput = (event) => {
         setSearchInput(event.target.value);
+        navigate(`/search?page=1`);
     };
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-        setResults([]);
+        if (page !== currentPage) {
+            navigate(`/search?page=${page}`);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
     };
 
-    useEffect(() => {
-        search();
-    }, [currentPage]);
-
     const determineIdentity = (card) => {
-        if (card.identity === 'wildfire') {
-            return (
-                <div key={card.id} className="col">
-                    <div className="card" style={{ width: '22rem' }}>
-                        <img
-                            src={card.thumbnail_URL}
-                            style={{ height: '200px', objectFit: 'cover' }}
-                            className="card-img-top"
-                            alt={card.name}
-                        />
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item text-truncate">
-                                <strong>Name:</strong> {highlightText(card.name, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>County:</strong> {highlightText(card.county, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Location:</strong> {highlightText(card.location, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Year:</strong> {highlightText(card.year, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Acres Burned:</strong> {highlightText(card.acres_burned, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Status:</strong> {highlightText(card.status, search_input)}
-                            </li>
-                        </ul>
-                        <div className="card-body">
-                            <Link to={`/incidents/${card.id}`} state={{ searchTerm: search_input }} className="card-link">
-                                Read More
-                            </Link>
-                        </div>
+        let identity = '';
+        if ('acres_burned' in card && 'status' in card) {
+            identity = 'wildfire';
+        } else if ('address' in card && 'phone' in card) {
+            identity = 'shelter';
+        } else if ('title' in card && 'published_at' in card) {
+            identity = 'report';
+        } else {
+            console.warn('Unknown card type:', card);
+            return null;
+        }
+
+        const cardImg = (
+            <img
+                src={card.url || card.imageUrl}
+                className="card-img"
+                alt={card.name || card.title}
+            />
+        );
+
+        const baseCard = (body, linkPath) => (
+            <div key={card.id} className="col-md-4 mb-4">
+                <div className="card" style={{ width: '22rem' }}>
+                    {cardImg}
+                    <ul className="list-group list-group-flush">{body}</ul>
+                    <div className="card-body text-center">
+                        <Link to={linkPath} state={{ searchTerm: search_input }} className="card-link">
+                            Read More
+                        </Link>
                     </div>
                 </div>
-            );
+            </div>
+        );
+
+        if (identity === 'wildfire') {
+            return baseCard([
+                <li key="name" className="list-group-item text-truncate"><strong>Name:</strong> {highlightText(card.name, search_input)}</li>,
+                <li key="county" className="list-group-item text-truncate"><strong>County:</strong> {highlightText(card.county, search_input)}</li>,
+                <li key="location" className="list-group-item text-truncate"><strong>Location:</strong> {highlightText(card.location, search_input)}</li>,
+                <li key="year" className="list-group-item text-truncate"><strong>Year:</strong> {highlightText(card.year, search_input)}</li>,
+                <li key="acres" className="list-group-item text-truncate"><strong>Acres Burned:</strong> {highlightText(card.acres_burned, search_input)}</li>,
+                <li key="status" className="list-group-item text-truncate"><strong>Status:</strong> {highlightText(card.status, search_input)}</li>,
+            ], `/incidents/${card.id}`);
         }
-        else if (card.identity === 'shelter') {
-            return (
-                <div key={card.id} className="col">
-                    <div className="card" style={{ width: '22rem' }}>
-                        <img
-                            src={card.thumbnail_URL}
-                            style={{ height: '200px', objectFit: 'cover' }}
-                            className="card-img-top"
-                            alt={card.name}
-                        />
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item text-truncate">
-                                <strong>Name:</strong> {highlightText(card.name, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>County:</strong> {highlightText(card.county, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Address:</strong> {highlightText(card.address, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Phone:</strong> {highlightText(card.phone, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Rating:</strong> {highlightText(card.rating, search_input)}
-                            </li>
-                        </ul>
-                        <div className="card-body">
-                            <Link to={`/shelters/${card.id}`} state={{ searchTerm: search_input }} className="card-link">
-                                Read More
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            );
+
+        if (identity === 'shelter') {
+            return baseCard([
+                <li key="name" className="list-group-item text-truncate"><strong>Name:</strong> {highlightText(card.name, search_input)}</li>,
+                <li key="county" className="list-group-item text-truncate"><strong>County:</strong> {highlightText(card.county, search_input)}</li>,
+                <li key="address" className="list-group-item text-truncate"><strong>Address:</strong> {highlightText(card.address, search_input)}</li>,
+                <li key="phone" className="list-group-item text-truncate"><strong>Phone:</strong> {highlightText(card.phone, search_input)}</li>,
+                <li key="rating" className="list-group-item text-truncate"><strong>Rating:</strong> {highlightText(card.rating, search_input)}</li>,
+            ], `/shelters/${card.id}`);
         }
-        else if (card.identity === 'report') {
-            return (
-                <div key={card.id} className="col">
-                    <div className="card" style={{ width: '22rem' }}>
-                        <img
-                            src={card.thumbnail_URL}
-                            style={{ height: '200px', objectFit: 'cover' }}
-                            className="card-img-top"
-                            alt={card.name}
-                        />
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item text-truncate">
-                                <strong>Title:</strong> {highlightText(card.title, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Source:</strong> {highlightText(card.source, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Date:</strong> {highlightText(card.published_at, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Author:</strong> {highlightText(card.author, search_input)}
-                            </li>
-                            <li className="list-group-item text-truncate">
-                                <strong>Categories:</strong> {highlightText(card.categories, search_input)}
-                            </li>
-                        </ul>
-                        <div className="card-body">
-                            <Link to={`/news/${card.id}`} state={{ searchTerm: search_input }} className="card-link">
-                                Read More
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            );
+
+        if (identity === 'report') {
+            return baseCard([
+                <li key="title" className="list-group-item text-truncate"><strong>Title:</strong> {highlightText(card.title, search_input)}</li>,
+                <li key="source" className="list-group-item text-truncate"><strong>Source:</strong> {highlightText(card.source, search_input)}</li>,
+                <li key="date" className="list-group-item text-truncate"><strong>Date:</strong> {highlightText(card.published_at, search_input)}</li>,
+                <li key="author" className="list-group-item text-truncate"><strong>Author:</strong> {highlightText(card.author, search_input)}</li>,
+                <li key="categories" className="list-group-item text-truncate"><strong>Categories:</strong> {highlightText(card.categories, search_input)}</li>,
+            ], `/news/${card.id}`);
         }
-                      
     };
 
     return (
@@ -194,45 +168,23 @@ const GeneralSearchPage = () => {
                         onChange={updateSearchInput}
                     />
                 </form>
-                <div className="row gy-4 mt-3">
-                {results.length > 0 ? results.map((result) => determineIdentity(result)) : <p>{loading}</p>}
             </div>
-
+            <div className="row gy-4 mt-3">
+                {search_input.trim() && results.length > 0 ? results.map((result) => determineIdentity(result)).filter(Boolean) : <p>{loading}</p>}
             </div>
-            {/* All Cards */}
-            {/* <div className="row">
-                {wildfires.length > 0 ? (
-                    wildfires.map((wildfire) => (
-                        <div key={wildfire.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={wildfire.url || "default-image.jpg"} alt={wildfire.name} />
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {highlightText(wildfire.name, search_text)}</li>
-                                    <li className="list-group-item"><strong>County:</strong> {highlightText(wildfire.county, search_text)}</li>
-                                    <li className="list-group-item"><strong>Location:</strong> {highlightText(wildfire.location, search_text)}</li>
-                                    <li className="list-group-item"><strong>Year:</strong> {highlightText(wildfire.year, search_text)}</li>
-                                    <li className="list-group-item"><strong>Acres Burned:</strong> {highlightText(wildfire.acres_burned, search_text)}</li>
-                                    <li className="list-group-item"><strong>Status:</strong> {highlightText(wildfire.status, search_text)}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p className='text-center'>{loading}</p>
-                )}
-            </div> */}
-            <div className="d-flex justify-content-center mt-4">
-                <Pagination
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
-                    totalItems={totalItems}
-                    itemsPerPage={itemsPerPage}
-                    url={'/search'}
-                />
+            <div>
+                {search_input.trim() && totalItems > 0 && (
+                        <p className="text-muted text-start ms-2 text-center">
+                            Showing <strong>{((currentPage - 1) * itemsPerPage) + 1} – {Math.min(currentPage * itemsPerPage, totalItems)} </strong> out of <strong>{totalItems}</strong>
+                        </p>
+                    ) && 
+                    <div className="d-flex justify-content-center mt-4">
+                    <Pagination
+                        totalPages={totalPages}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                    </div>}
             </div>
         </div>
     );

@@ -27,55 +27,64 @@ function Shelters() {
     const [rating, setRating] = useState('');
 
     useEffect(() => {
-        const fetchshelters = async () => {
+        const queryParams = new URLSearchParams(query.search);
+        const pageParam = parseInt(queryParams.get('page'), 10);
+        const resolvedPage = !isNaN(pageParam) && pageParam > 0 ? pageParam : 1;
+
+        const fetchShelters = async () => {
             try {
-                const queryParams = new URLSearchParams(query.search);
-                const pageParam = queryParams.get('page');
-                const passedPageParam = pageParam ? parseInt(pageParam, 9) : 1;
                 setLoading("Loading...");
                 const baseURL = `https://api.wildwareness.net/shelters`;
-                const url = search_text.trim()
-                ? `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`
-                : `${baseURL}?page=${passedPageParam}&size=${itemsPerPage}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`;
-                const response = await axios.get(url)
+
+                const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`;
+                const response = await axios.get(url);
+
                 setShelters(response.data.shelters);
+                setTotalPages(response.data.pagination.total_pages);
+                setTotalItems(response.data.pagination.total_items);
+
+                if (resolvedPage !== currentPage) {
+                    setCurrentPage(resolvedPage);
+                }
+
                 if (response.data.pagination.total_items === 0) {
                     setLoading("No Results");
                 }
-                setTotalPages(response.data.pagination.total_pages);
-                setTotalItems(response.data.pagination.total_items);
-                setCurrentPage(response.data.pagination.page);
             } catch (error) {
                 console.error("Error fetching shelter instances:", error);
                 setLoading("Error fetching data.");
             }
         };
 
-        fetchshelters();
-    }, [search_text, currentPage, itemsPerPage, sortBy, order, county, zipCode, phone, rating]);
+        fetchShelters();
+    }, [query.search, search_text, itemsPerPage, sortBy, order, county, zipCode, phone, rating]);
 
     useEffect(() => {
         const fetchLocations = async () => {
-          try {
-            const res = await axios.get("https://api.wildwareness.net/shelter_locations");
-            setAvailableLocations(res.data.locations || []);
-          } catch (error) {
-            console.error("Error loading locations:", error);
-          }
+            try {
+                const res = await axios.get("https://api.wildwareness.net/shelter_locations");
+                setAvailableLocations(res.data.locations || []);
+            } catch (error) {
+                console.error("Error loading locations:", error);
+            }
         };
-      
+
         fetchLocations();
-      }, []);
+    }, []);
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-        navigate(`/shelters?page=${page}`);
+        if (page !== currentPage) {
+            navigate(`/shelters?page=${page}`);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
     };
 
     const updateSearchInput = (event) => {
-        console.log("SEARCH TEXT: " + event.target.value)
         setSearchText(event.target.value);
-        handlePageChange(1);
+        navigate(`/shelters?page=1`);
     };
 
     const handleFilterChange = (e) => {
@@ -86,13 +95,12 @@ function Shelters() {
         else if (name === 'zipCode') setZipCode(value);
         else if (name === 'phone') setPhone(value);
         else if (name === 'rating') setRating(value);
-        handlePageChange(1);
+        navigate(`/shelters?page=1`);
     };
 
     return (
         <div className="container">
             <h2 className="text-center my-4">Shelters</h2>
-
 
             {/* Filter and sorting controls */}
             <div className="d-flex flex-wrap align-items-center justify-content-center mb-4">
@@ -115,12 +123,13 @@ function Shelters() {
                 <div className="form-group me-2">
                     <label>County:</label>
                     <select name="county" value={county} onChange={handleFilterChange} className="form-select form-select-sm">
-                    <option value="">All</option>
-                    {availableLocations.map((loc) => (
-                        <option key={loc} value={loc}>{loc}</option>
-                    ))}
+                        <option value="">All</option>
+                        {availableLocations.map((loc) => (
+                            <option key={loc} value={loc}>{loc}</option>
+                        ))}
                     </select>
                 </div>
+
                 <div className="form-group me-2">
                     <label>Zip Code:</label>
                     <input
@@ -132,6 +141,7 @@ function Shelters() {
                         placeholder="Enter Zip Code"
                     />
                 </div>
+
                 <div className="form-group me-2">
                     <label>Phone Area Code:</label>
                     <input
@@ -143,6 +153,7 @@ function Shelters() {
                         placeholder="Enter Area Code"
                     />
                 </div>
+
                 <div className="form-group me-2">
                     <label>Rating:</label>
                     <input
@@ -155,6 +166,7 @@ function Shelters() {
                     />
                 </div>
             </div>
+
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
@@ -169,18 +181,21 @@ function Shelters() {
                 </form>
             </div>
 
+            {/* Shelter Cards */}
             <div className="row">
                 {shelters.length > 0 ? (
                     shelters.map((shelter) => (
                         <div key={shelter.id} className="col-md-4 mb-4">
                             <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={shelter.imageUrl || "default-image.jpg"} alt={shelter.name}/>
+                                <img className="card-img" src={shelter.imageUrl || "default-image.jpg"} alt={shelter.name} />
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item"><strong>Name:</strong> {highlightText(shelter.name, search_text)}</li>
                                     <li className="list-group-item"><strong>County:</strong> {highlightText(shelter.county, search_text)}</li>
                                     <li className="list-group-item"><strong>Address:</strong> {highlightText(shelter.address, search_text)}</li>
                                     <li className="list-group-item"><strong>Phone:</strong> {highlightText(shelter.phone, search_text)}</li>
-                                    <li className="list-group-item"><strong>Website:</strong><a href={shelter.website}> {highlightText(shelter.website, search_text)}</a></li>
+                                    <li className="list-group-item">
+                                        <strong>Website:</strong> <a href={shelter.website} target="_blank" rel="noopener noreferrer">{highlightText(shelter.website, search_text)}</a>
+                                    </li>
                                     <li className="list-group-item"><strong>Rating:</strong> {highlightText(shelter.rating, search_text)}/5</li>
                                 </ul>
                                 <div className="card-body text-center">
@@ -194,6 +209,12 @@ function Shelters() {
                 )}
             </div>
 
+            {/* Result count */}
+            {totalItems > 0 && (
+                <p className="text-muted text-start ms-2 text-center">
+                    Showing shelter <strong>{((currentPage - 1) * itemsPerPage) + 1} – {Math.min(currentPage * itemsPerPage, totalItems)} </strong> out of <strong>{totalItems}</strong>
+                </p>
+            )}
             {/* Pagination */}
             <div className="d-flex justify-content-center mt-4">
                 <Pagination 
