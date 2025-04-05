@@ -85,7 +85,6 @@ const GeneralSearchPage = () => {
             });
         }
     };
-
     const determineIdentity = (card) => {
         let identity = '';
         if ('acres_burned' in card && 'status' in card) {
@@ -101,7 +100,7 @@ const GeneralSearchPage = () => {
 
         const cardImg = (
             <img
-                src={card.url || card.imageUrl}
+                src={card.image_url || card.url || card.imageUrl}
                 className="card-img"
                 alt={card.name || card.title}
             />

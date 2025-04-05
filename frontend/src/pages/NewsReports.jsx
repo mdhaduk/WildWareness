@@ -43,7 +43,6 @@ function NewsReports() {
                 const baseURL = `https://api.wildwareness.net/news`;
                 const categoryValues = categories.map(c => c.value).join(',');
                 const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sort_by}&order=${order}&source=${source}&author=${author}&date=${date}&categories=${categoryValues}`;
-
                 const response = await axios.get(url);
                 setReports(response.data.reports);
                 setTotalPages(response.data.pagination.total_pages);
