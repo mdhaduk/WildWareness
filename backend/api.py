@@ -388,7 +388,6 @@ def search_all_cards():
     # Apply search terms
     if text:
         term = text.lower().strip()
-        print(term)
         def match_search(obj):
             score = 0  # Initialize a relevance score
             if isinstance(obj, Wildfire):
