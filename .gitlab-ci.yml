@@ -55,10 +55,9 @@ test_postman:
     image: 
       name: postman/newman:alpine
       entrypoint: [""]
-    before_script:
-      - cd backend
     script:
-      - newman run WildWareness_API.postman_collection.json
+      - cd backend
+
 
 
 
