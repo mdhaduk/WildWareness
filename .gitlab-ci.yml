@@ -58,7 +58,7 @@ test_postman:
     before_script:
       - cd backend
     script:
-      - newman run wildwareness_api.json
+      - newman run WildWareness_API.postman_collection.json
 
 
 
