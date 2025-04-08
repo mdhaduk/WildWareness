@@ -26,8 +26,8 @@ test_selenium:
   before_script:
     # Install dependencies for Chromium and Chromedriver
     - cd frontend/selenium_tests
-    - apt update
-    - apt upgrade
+    - apt-get update
+    - apt-get upgrade
     - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - apt-get install -y ./google-chrome-stable_current_amd64.deb
     - pip install selenium
