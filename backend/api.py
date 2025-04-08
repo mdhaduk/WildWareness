@@ -1,14 +1,15 @@
 from flask import Flask, jsonify, request
-from sqlalchemy import create_engine, func, or_, and_
+from sqlalchemy import create_engine, func
+from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
 from models import Wildfire, Shelter, NewsReport
 from models import TESTING
-from flask_cors import CORS
+from scripts import ca_fire_gov
+from flask import render_template_string
 from dotenv import load_dotenv
-from datetime import datetime
-from sqlalchemy.orm import joinedload
 import os
-
+import awsgi
+from datetime import datetime
 load_dotenv()
 
 app = Flask(__name__)
@@ -29,137 +30,58 @@ local_session = sessionmaker(bind=engine, autoflush=False, future=True)
 
 DEFAULT_PAGE_SIZE = 10
 
-wildfire_cache = []
-shelter_cache = []
-news_cache = []
+def searchModels(search_text, query, MODEL):
+    phrase_tsquery = func.plainto_tsquery('english', search_text)
+    words_tsquery_input = ' | '.join(search_text.split())
+    words_tsquery = func.to_tsquery('english', words_tsquery_input)
+    conditions = []
+    columns = ['name', 'description', 'city', 'target', 'eligibility', 'counties_served', 'main_services', 'detailed_target', 'detailed_hours', 'operating_hours']
+    for column_name in columns:
+        if not hasattr(MODEL, column_name):
+            continue
+        column = getattr(MODEL, column_name)      
+        phrase_match = func.to_tsvector('english', column).op('@@')(phrase_tsquery)
+        words_match = func.to_tsvector('english', column).op('@@')(words_tsquery)
+        conditions.append(or_(phrase_match, words_match))
 
-def preload_all_data():
-    global wildfire_cache, shelter_cache, news_cache
-    with local_session() as session:
-        wildfire_cache = session.query(Wildfire).options(
-            joinedload(Wildfire.shelters),
-            joinedload(Wildfire.newsreports)
-        ).all()
-        print(f"Preloaded {len(wildfire_cache)} wildfires")
-
-        shelter_cache = session.query(Shelter).options(
-            joinedload(Shelter.wildfires),
-            joinedload(Shelter.newsreports)
-        ).all()
-        print(f"Preloaded {len(shelter_cache)} shelters")
-
-        news_cache = session.query(NewsReport).options(
-            joinedload(NewsReport.wildfires),
-            joinedload(NewsReport.shelters)
-        ).all()
-        print(f"Preloaded {len(news_cache)} news reports")
-preload_all_data() #GET ALL THE DATA
+    # Combine all conditions with OR, so any match on any specified field will be included
+    if conditions:
+        query = query.filter(or_(*conditions))
+    
+    return query
 
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
-    sort_by = request.args.get("sort_by", "county")
-    order = request.args.get("order", "asc")
-    location = request.args.get("location")
-    year = request.args.get("year")
-    acres_burned = request.args.get("acres_burned")
-    search = request.args.get("search")
-    status = request.args.get("status")
-
-    valid_sort_columns = {"name", "county"}
+    sort_by = request.args.get('sort_by', 'city')
+    order = request.args.get('order', 'asc')
+    hours = request.args.get('hours', None)
+    county = request.args.get('county', None)
+    search = request.args.get('search', None)
+    eligibility = request.args.get('eligibility' , None)
+    valid_sort_columns = {'name', 'city'}
     if sort_by not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-
-    # Copy the cache to filter/sort
-    data = wildfire_cache[:]
-
-# Apply search terms with relevance ranking
-    if search:
-        term = search.lower().strip()
-
-        def match_search(wildfire):
-            score = 0
-            if term in (wildfire.name or "").lower():
-                score += 3  # Title matches are given the highest relevance
-            if term in (wildfire.location or "").lower():
-                score += 2
-            if term in (wildfire.status or "").lower():
-                score += 1
-            if term in str(wildfire.year or ""):
-                score += 1
-            if term in str(wildfire.acres_burned or ""):
-                score += 1
-            return score
-
-        # Apply relevance-based ranking
-        data_with_scores = [(w, match_search(w)) for w in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include wildfires with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract sorted wildfires
-        data = [d[0] for d in data_with_scores]
-    # Apply filters
-    if location:
-        data = [w for w in data if location.lower()
-        in (w.location or "").lower()
-        or location.lower() in (w.county or "").lower()]
-    if year:
-        data = [w for w in data if str(w.year or "") == str(year)]
-    if acres_burned:
-        #Checks that number isnt just a string by doing: 12.34 -> 1245 (is this a number?)
-        data = [
-            w for w in data
-            if w.acres_burned and w.acres_burned.replace('.', '', 1).isdigit()
-            and float(w.acres_burned) > float(acres_burned)
-        ]
-
-    if status:
-        data = [w for w in data if w.status and w.status.lower() == status.lower()]
-
-    # Sorting
-    reverse = order == "desc"
-    try:
-        data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
-    except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
-
-    # Pagination
-    total_items = len(data)
-    total_pages = (total_items + size - 1) // size
-    start = (page - 1) * size
-    end = start + size
-    paged_data = data[start:end]
-
-    return jsonify({
-        "incidents": [w.as_instance() for w in paged_data],
-        "pagination": {
-            "page": page,
-            "size": size,
-            "total_pages": total_pages,
-            "total_items": total_items,
-        },
-    })
-
-@app.route("/wildfire_locations", methods=["GET"])
-def get_wildfire_locations():
+        return jsonify({'error': f"Invalid sort column '{sort_by}'"}), 400
     with local_session() as ls:
         try:
-            counties = ls.query(Wildfire.county).distinct().order_by(Wildfire.county).all()
-            county_list = [c[0] for c in counties if c[0]]
-            return jsonify({"locations": county_list})
-        except Exception as e:
-            return jsonify({"Error getting locations": str(e)}), 500
-
-@app.route("/shelter_locations", methods=["GET"])
-def get_shelter_locations():
-    with local_session() as ls:
-        try:
-            counties = ls.query(Shelter.county).distinct().order_by(Shelter.county).all()
-            county_list = [c[0] for c in counties if c[0]]
-            return jsonify({"locations": county_list})
-        except Exception as e:
-            return jsonify({"Error getting locations": str(e)}), 500
+            incidents = ls.query(Wildfire).limit(size).offset((page - 1) * size).all()
+            incident_cards = [incident.as_instance() for incident in incidents]
+            total_incidents = ls.query(Wildfire).count()
+            total_pages = (total_incidents + size - 1) // size
+            return jsonify(
+                {
+                    "incidents": incident_cards,
+                    "pagination": {
+                        "page": page,
+                        "size": size,
+                        "total_pages": total_pages,
+                        "total_items": total_incidents,
+                    },
+                }
+            )
+        except:
+            return jsonify({"error": "issue getting data"}), 500
 
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
@@ -273,101 +195,91 @@ def get_all_reports():
     size = request.args.get("size", 2, type=int)
     source = request.args.get("source", None)
     author = request.args.get("author", None)
-    date = request.args.get("published_at", None)
+    date = request.args.get("date", None)
     categories = request.args.get('categories', '') 
-    sort_by = request.args.get("sort_by", "title")  # Default to 'title'
+    sortBy = request.args.get("sortBy", "title")  # Default to 'title'
     order = request.args.get("order", "asc")  # Default to ascending order
-    search = request.args.get("search", None)
 
-
-    valid_sort_columns = {"title", "published_at", "author", "source"}
-    if sort_by not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-
-    # Copy the cache to filter/sort
-    data = news_cache[:]
-
-    # Apply search terms with relevance ranking
-    if search:
-        term = search.lower().strip()
-
-        def match_search(report):
-            score = 0
-            if term in (report.title or "").lower():
-                score += 2  # Title matches are given higher relevance
-            if term in (report.source or "").lower():
-                score += 1
-            if term in (report.published_at or "").lower():
-                score += 1
-            if term in (report.author or "").lower():
-                score += 1
-            if term in (report.categories or "").lower():
-                score += 1
-            return score
-
-        # Apply relevance-based ranking
-        data_with_scores = [(r, match_search(r)) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract sorted reports
-        data = [d[0] for d in data_with_scores]
-    # Apply filters
+    # Trim whitespace from the source
     if source:
-        data = [r for r in data if source.lower()
-        in (r.source or "").lower()]
+        source = source.strip()
     if author:
-        data = [r for r in data if author.lower().strip()
-        in (r.author or "").lower()]
-    if date:
-        date_obj = datetime.strptime(date,'%Y-%m-%d').date()
-        date_string = date_obj.strftime('%Y-%m-%d')
-        data = [
-            r for r in data
-            if r.published_at == date_string]
-    if categories:
-        category_list = categories.split(",")
-        print(categories.split(","))
-        data = [
-            r for r in data
-            if all(cat in r.categories for cat in category_list)
-        ]
-    # Sorting
-    reverse = order == "desc"
+        author = author.strip()
+    # category_list = categories.split(',')
 
-    try:
-        # Handle sorting for text fields (title, author, source)
-        if sort_by == "published_at":
-            data.sort(
-                key=lambda r: datetime.strptime(r.published_at, "%Y-%m-%d") if r.published_at else datetime.min,
-                reverse=reverse
-            )
+    with local_session() as ls:
+        query = ls.query(NewsReport)
+
+        # Apply source filtering
+        if source:
+            query = query.filter(func.lower(NewsReport.source) == source.lower())
+        
+        if author:
+            query = query.filter(func.lower(NewsReport.author) == author.lower())
+
+        if date:
+            # Ensure the date is in the 'YYYY-MM-DD' format
+            date_obj = datetime.strptime(date, '%Y-%m-%d').date()
+            # Convert the date to a string format that matches the `published_at` field
+            date_string = date_obj.strftime('%Y-%m-%d')
+            # Apply the filter to match the string representation of the date
+            query = query.filter(NewsReport.published_at == date_string)
+
+        if categories:
+            category_list = categories.split(',')  # Split categories into a list
+            # Apply OR condition (LIKE operator for each selected category)
+            for category in category_list:
+                query = query.filter(NewsReport.categories.like(f"%{category}%"))
+
+        # # Sorting logic
+        # If sorting by date, convert to date and apply sorting
+        if sortBy == "date":
+            if order == "asc":
+                query = query.order_by(func.to_date(NewsReport.published_at, 'YYYY-MM-DD').asc())
+            else:
+                query = query.order_by(func.to_date(NewsReport.published_at, 'YYYY-MM-DD').desc())
+
         else:
-            data.sort(
-                key=lambda r: (getattr(r, sort_by, "") or "").lower(),
-                reverse=reverse
+            if order == "asc":
+                query = query.order_by(getattr(NewsReport, sortBy))
+            else:
+                query = query.order_by(getattr(NewsReport, sortBy).desc())
+
+        # if sort_by == "date":
+        #     if order == "desc":
+        #         # Sort by date, assuming it's in the correct format (YYYY-MM-DD)
+        #         query = query.order_by(func.trim(NewsReport.published_at).desc())  # Trim whitespace before sorting
+        #     else:
+        #         query = query.order_by(func.trim(NewsReport.published_at).asc())  # Trim whitespace before sorting
+        # elif sort_by == "title":
+        #     if order == "asc":
+        #         # Sort by title, applying trim to remove whitespace from the beginning and end
+        #         query = query.order_by(func.trim(NewsReport.title).lower().asc())  # Trim whitespace and sort lexicographically
+        #     else:
+        #         query = query.order_by(func.trim(NewsReport.title).lower().desc())  # Trim whitespace and sort in reverse order
+
+
+
+        try:
+            reports = query.limit(size).offset((page - 1) * size).all()  # use query instead of directly querying
+            report_cards = [report.as_instance() for report in reports]
+            total_reports = query.count()  # Using filtered query for counting
+            total_pages = (total_reports + size - 1) // size
+
+            return jsonify(
+                {
+                    "incidents": report_cards,
+                    "pagination": {
+                        "page": page,
+                        "size": size,
+                        "total_pages": total_pages,
+                        "total_items": total_reports,
+                    },
+                }
             )
-    except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
-    except ValueError:
-        return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
-    # Pagination
-    total_items = len(data)
-    total_pages = (total_items + size - 1) // size
-    start = (page - 1) * size
-    end = start + size
-    paged_data = data[start:end]
-
-    return jsonify({
-        "reports": [r.as_instance() for r in paged_data],
-        "pagination": {
-            "page": page,
-            "size": size,
-            "total_pages": total_pages,
-            "total_items": total_items,
-        },
-    })
 
 @app.route("/news/<int:id>", methods=["GET"])
 def get_single_report(id):

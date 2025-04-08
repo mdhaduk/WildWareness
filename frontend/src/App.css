@@ -58,7 +58,7 @@ p {
     -webkit-line-clamp: 2; /* Limit the title to 2 lines */
     -webkit-box-orient: vertical; /* Vertical stacking for the lines */
     white-space: normal; /* Allow text to wrap */
-}
+  }
 /* Popup style */
 .popup {
     display: none;
@@ -77,20 +77,19 @@ p {
     opacity: 0;
     transition: opacity 0.3s ease;
     visibility: hidden;
-    
-}
+  }
+  
   /* Show the popup when hovering over the card */
 .card:hover .popup {
     display: block;
     opacity: 1; /* Fade in the popup */
     visibility: visible; /* Ensure the popup is shown */
-}
+  }
 .card:hover .card-title {
     -webkit-line-clamp: unset; /* Remove line clamp to show full title */
     white-space: normal;
     overflow: visible;
-}
-
+  }
 .card-img {
     width: 100%;
     height: 250px;

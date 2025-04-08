@@ -81,7 +81,7 @@ const WildfireIncidentsPage = () => {
           <li className="list-group-item text-wrap"><strong>Location:</strong> {wildfire.location}</li>
           <li className="list-group-item text-wrap"><strong>Year:</strong> {wildfire.year}</li>
           <li className="list-group-item text-wrap"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
-          <li className="list-group-item text-wrap"><strong>Status:</strong> {wildfire.status}</li>
+          <li className="list-group-item"><strong>Status:</strong> {wildfire.status}</li>
         </ul>
       </div>
       <div className="row">

@@ -34,6 +34,10 @@ def addWildfires(local_session):
                 wildfire["longitude"] = str(wildfire["longitude"])
                 wildfire["status"] = "Active" if wildfire["active"] else "Inactive"
                 filtered_wildfire = {key: wildfire[key] for key in allowed_keys if key in wildfire}
+                # if(wildfire["active"].lower() == "false"):
+                #     filtered_wildfire["status"] = "Inactive"
+                # else:
+                #     filtered_wildfire["status"] = "Active"
                 wildfireInstance = Wildfire(**filtered_wildfire)
                 ls.add(wildfireInstance)
             ls.commit()
@@ -69,12 +73,12 @@ def link(local_session):
         # Create a dictionary mapping counties to wildfires
         shelters_dict = defaultdict(list)
         for shelter in shelters:
-            county = get_county_from_address(str(shelter.address)).replace(" County", "").lower().strip()
+            county = shelter.county.replace(" County", "").lower().strip()
             shelters_dict[county].append(shelter)
 
         # Link shelters to wildfires based on county
         for shelter in shelters:
-            shelter_county = get_county_from_address(str(shelter.address))
+            shelter_county = shelter.county
             if not shelter_county:
                 continue
             shelter_county = shelter_county.replace(" County", "").lower().strip()
@@ -113,10 +117,9 @@ def addNewsReports(local_session):
             body = json.load(file)
             for report in body:
                 report["published_at"] = report["published_at"][0:10]
+                report["categories"] = ", ".join(report["categories"])
                 if(len(report["categories"]) == 0):
-                    report["categories"] = "general"
-                else:
-                    report["categories"] = ", ".join(report["categories"])
+                    report["categories"].append("general")
                 filtered_report = {key: report[key] for key in allowed_keys if key in report}
                 reportInstance = NewsReport(**filtered_report)
                 ls.add(reportInstance)

@@ -196,12 +196,12 @@ function Wildfires() {
                                     style={{ height: '200px', objectFit: 'cover' }}
                                 />
                                 <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {highlightText(wildfire.name, search_text)}</li>
-                                    <li className="list-group-item"><strong>County:</strong> {highlightText(wildfire.county, search_text)}</li>
-                                    <li className="list-group-item"><strong>Location:</strong> {highlightText(wildfire.location, search_text)}</li>
-                                    <li className="list-group-item"><strong>Year:</strong> {highlightText(wildfire.year, search_text)}</li>
-                                    <li className="list-group-item"><strong>Acres Burned:</strong> {highlightText(wildfire.acres_burned, search_text)}</li>
-                                    <li className="list-group-item"><strong>Status:</strong> {highlightText(wildfire.status, search_text)}</li>
+                                    <li className="list-group-item"><strong>Name:</strong> {wildfire.name}</li>
+                                    <li className="list-group-item"><strong>County:</strong> {wildfire.county}</li>
+                                    <li className="list-group-item"><strong>Location:</strong> {wildfire.location}</li>
+                                    <li className="list-group-item"><strong>Year:</strong> {wildfire.year}</li>
+                                    <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
+                                    <li className="list-group-item"><strong>Status:</strong> {wildfire.status}</li>
                                 </ul>
                                 <div className="card-body text-center">
                                     <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>

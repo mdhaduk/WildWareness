@@ -41,6 +41,7 @@ class Wildfire(Base):
     location = Column(Text, nullable=False)
     year = Column(Text, nullable=False)
     acres_burned = Column(Text, nullable=False)
+    status = Column(Text, nullable=False)
     url = Column(Text, nullable=False)
     latitude = Column(Text, nullable=False)
     longitude = Column(Text, nullable=False)
@@ -64,6 +65,7 @@ class Wildfire(Base):
             "location": self.location,
             "year": self.year,
             "acres_burned": self.acres_burned,
+            "status": self.status,
             "url": self.url,
             "latitude": self.latitude,
             "longitude": self.longitude,
@@ -90,13 +92,13 @@ class Shelter(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Text, nullable=False)
     address = Column(Text, nullable=False)
+    county = Column(Text, nullable=False)
     phone = Column(Text, nullable=False)
     website = Column(Text, nullable=False)
     rating = Column(Text, nullable=False)
     reviews = Column(JSON, nullable=False, default=list)
     imageUrl = Column(Text, nullable=False)
     description = Column(Text, nullable=False)
-    county = Column(Text, nullable=False)
 
     wildfires = relationship(
         "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"
@@ -112,6 +114,7 @@ class Shelter(Base):
             "name": self.name,
             "county": self.county,
             "address": self.address,
+            "county": self.county,
             "phone": self.phone,
             "website": self.website,
             "rating": self.rating,
