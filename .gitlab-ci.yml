@@ -8,16 +8,16 @@ build:
     - 'test -f frontend/index.html'
     - echo "Phase 1 CI"
 
-# test:
-#   stage: test
-#   image: node:20
-#   before_script:
-#     - cd frontend
-#     # The .npmrc file will handle the legacy-peer-deps automatically
-#     - npm install
-#   script:
-#     - npm run test:ci-simple
-#     - echo "Test verification complete"
+test:
+  stage: test
+  image: node:20
+  before_script:
+    - cd frontend
+    # The .npmrc file will handle the legacy-peer-deps automatically
+    - npm install
+  script:
+    - npm run test:ci-simple
+    - echo "Test verification complete"
 
 
 test_selenium:
@@ -40,23 +40,23 @@ test_selenium:
     - python -m unittest selenium_testing.py
 
 
-# test_backend:
-#   stage: test
-#   image: python:3.9
-#   before_script:
-#     - pip install requests
-#     - cd backend/tests
-#   script:
-#     - python test_api.py
+test_backend:
+  stage: test
+  image: python:3.9
+  before_script:
+    - pip install requests
+    - cd backend/tests
+  script:
+    - python test_api.py
 
 
-# test_postman:
-#     stage: test
-#     image: 
-#       name: postman/newman:alpine
-#       entrypoint: [""]
-#     script:
-#       - cd backend
+test_postman:
+    stage: test
+    image: 
+      name: postman/newman:alpine
+      entrypoint: [""]
+    script:
+      - cd backend
 
 
 
