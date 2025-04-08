@@ -25,9 +25,9 @@ test_selenium:
   image: python:3.9
   before_script:
     # Install dependencies for Google Chrome
-    - apt-get update
-    - apt-get install -y wget curl unzip
-    - apt-get install -y google-chrome-stable  # Installs the Chrome browser
+    # - apt-get update
+    # - apt-get install -y wget curl unzip
+    # - apt-get install -y google-chrome-stable  # Installs the Chrome browser
     # Install Python dependencies
     - pip install --upgrade pip
     - pip install -r frontend/selenium_tests/requirements.txt
