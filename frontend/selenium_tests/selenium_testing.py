@@ -26,8 +26,8 @@ class acceptance_tests_frontend(unittest.TestCase):
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")  # Set proper window size
 
-        # Use WebDriver Manager to automatically handle the installation of ChromeDriver
-        service = Service(ChromeDriverManager().install())
+        # Install the correct version of ChromeDriver to match Chromium version 135
+        service = Service(ChromeDriverManager(version="135.0.0").install())  # Specify the correct driver version
         
         # Initialize the WebDriver with the Service and Chrome options
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
