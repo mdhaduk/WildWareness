@@ -24,11 +24,12 @@ test_selenium:
   stage: test
   image: python:3.9
   before_script:
-    # Install dependencies for Chromium and ChromeDriver
+    # Install dependencies for Chromium and Chromedriver
     - apt-get update
     - apt-get install -y wget curl unzip
     - apt-get install -y chromium chromium-driver  # Installing Chromium and Chromedriver
-    - google-chrome-stable --version  # Verify installation of Chrome or Chromium
+    - chromium --version  # Verify Chromium installation
+    - chromedriver --version  # Verify Chromedriver installation
     # Install Python dependencies for Selenium
     - pip install --upgrade pip
     - pip install -r frontend/selenium_tests/requirements.txt
