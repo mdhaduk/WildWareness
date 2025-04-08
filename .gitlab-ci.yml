@@ -30,6 +30,7 @@ test_selenium:
     - apt-get upgrade
     - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - apt-get install -y ./google-chrome-stable_current_amd64.deb
+    - pip install --upgrade pip
     - pip install selenium
     - pip install webdriver-manager
     # Install Python dependencies for Selenium
