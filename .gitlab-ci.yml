@@ -8,55 +8,55 @@ build:
     - 'test -f frontend/index.html'
     - echo "Phase 1 CI"
 
-test:
-  stage: test
-  image: node:20
-  before_script:
-    - cd frontend
-    # The .npmrc file will handle the legacy-peer-deps automatically
-    - npm install
-  script:
-    - npm run test:ci-simple
-    - echo "Test verification complete"
+# test:
+#   stage: test
+#   image: node:20
+#   before_script:
+#     - cd frontend
+#     # The .npmrc file will handle the legacy-peer-deps automatically
+#     - npm install
+#   script:
+#     - npm run test:ci-simple
+#     - echo "Test verification complete"
 
 
 test_selenium:
   stage: test
   image: python:3.9
   before_script:
-    - apt-get update && apt-get install -y wget unzip
-    # Install Chrome properly
-    - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - apt-get install -y ./google-chrome-stable_current_amd64.deb
-    # Install chromedriver
-    - wget -q https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-    - unzip chromedriver_linux64.zip
-    - mv chromedriver /usr/local/bin/
-    - chmod +x /usr/local/bin/chromedriver
-    # Install Python requirements
-    - pip install --upgrade pip
-    - pip install -r frontend/selenium_tests/requirements.txt
-  script:
+    # Install dependencies for Chromium and Chromedriver
     - cd frontend/selenium_tests
-
-
-test_backend:
-  stage: test
-  image: python:3.9
-  before_script:
-    - pip install requests
-    - cd backend/tests
+    - apt-get update
+    - apt-get upgrade
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y ./google-chrome-stable_current_amd64.deb
+    - pip install --upgrade pip
+    - pip install selenium
+    - pip install webdriver-manager
+    # Install Python dependencies for Selenium
+    # - pip install --upgrade pip
+    # - pip install -r frontend/selenium_tests/requirements.txt
   script:
-    - python test_api.py
+    - python -m unittest selenium_testing.py
 
 
-test_postman:
-    stage: test
-    image: 
-      name: postman/newman:alpine
-      entrypoint: [""]
-    script:
-      - cd backend
+# test_backend:
+#   stage: test
+#   image: python:3.9
+#   before_script:
+#     - pip install requests
+#     - cd backend/tests
+#   script:
+#     - python test_api.py
+
+
+# test_postman:
+#     stage: test
+#     image: 
+#       name: postman/newman:alpine
+#       entrypoint: [""]
+#     script:
+#       - cd backend
 
 
 

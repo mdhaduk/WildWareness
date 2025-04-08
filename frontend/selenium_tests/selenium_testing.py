@@ -4,28 +4,32 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.common.exceptions import ElementClickInterceptedException
+# from selenium.common.exceptions import TimeoutException
+# from selenium.webdriver.common.action_chains import ActionChains
 
 
 url = "https://wildwareness.net/"
 class acceptance_tests_frontend(unittest.TestCase):
 
     def setUp(self):
-        # Enhanced setup for CI environment
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")  # Required for running in Docker
-        chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")  # Set proper window size
         
-        # Initialize the WebDriver
-        self.driver = webdriver.Chrome(options=chrome_options)
+        # Use WebDriver Manager to automatically handle the installation of ChromeDriver
+        service = Service(ChromeDriverManager().install())  # Install the correct version automatically
+
+        # Initialize the WebDriver with the Service and Chrome options
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
         self.driver.get(url)
 
     def tearDown(self):
