@@ -25,16 +25,17 @@ test_selenium:
   image: python:3.9
   before_script:
     # Install dependencies for Chromium and Chromedriver
-    - apt-get update
-    - apt-get install -y wget curl unzip
-    - apt-get install -y chromium chromium-driver  # Installing Chromium and Chromedriver
-    - chromium --version  # Verify Chromium installation
-    - chromedriver --version  # Verify Chromedriver installation
-    # Install Python dependencies for Selenium
-    - pip install --upgrade pip
-    - pip install -r frontend/selenium_tests/requirements.txt
-  script:
     - cd frontend/selenium_tests
+    - apt update
+    - apt upgrade
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt-get install -y ./google-chrome-stable_current_amd64.deb
+    - pip install selenium
+    - pip install webdriver-manager
+    # Install Python dependencies for Selenium
+    # - pip install --upgrade pip
+    # - pip install -r frontend/selenium_tests/requirements.txt
+  script:
     - python -m unittest selenium_testing.py
 
 
