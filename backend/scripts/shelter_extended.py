@@ -2,7 +2,6 @@ import requests
 import time
 import os
 import json
-import random
 from dotenv import load_dotenv
 
 # Load API Key from .env file
@@ -26,7 +25,6 @@ COUNTIES = {
 # Generate queries based on county names
 QUERIES = [f"homeless shelters in {county} County, CA" for county in COUNTIES]
 
-# Function to fetch places using the Text Search API
 def fetch_places(query, api_key, page_token=None):
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
     params = {"query": query, "key": api_key}
@@ -36,7 +34,6 @@ def fetch_places(query, api_key, page_token=None):
     response = requests.get(url, params=params)
     return response.json()
 
-# Fetch all results with pagination for a single query
 def fetch_all_places_for_query(query, api_key):
     all_results = []
     page_token = None
@@ -47,17 +44,16 @@ def fetch_all_places_for_query(query, api_key):
             all_results.extend(data.get("results", []))
             page_token = data.get("next_page_token")
 
-            if not page_token or len(all_results) >= 10:  # Limit per county to 10 shelters
+            if not page_token or len(all_results) >= 10:
                 break
 
-            time.sleep(2)  # Wait before requesting next page
+            time.sleep(5)
         else:
             print(f"Error fetching data for query '{query}':", data.get("status"))
             break
 
     return all_results
 
-# Fetch all results for multiple queries
 def fetch_all_places(queries, api_key):
     all_results = []
 
@@ -66,52 +62,36 @@ def fetch_all_places(queries, api_key):
         results = fetch_all_places_for_query(query, api_key)
         all_results.extend(results[:5])
 
-        if len(all_results) >= 300:  # Stop at 300 shelters total
+        if len(all_results) >= 300:
             break
 
     return all_results[:300]
 
-# Function to fetch additional place details (phone, website, etc.)
 def fetch_place_details(place_id, api_key):
     url = "https://maps.googleapis.com/maps/api/place/details/json"
     params = {"place_id": place_id, "key": api_key}
     response = requests.get(url, params=params)
     return response.json()
 
-# Fetch image for a shelter
-def get_shelter_image(shelter_name, shelter_address):
-    place_id = get_place_id(shelter_name, shelter_address)
-    if place_id:
-        photo_reference = get_photo_reference(place_id)
-        if photo_reference:
-            return get_photo_url(photo_reference)
+def get_shelter_image(place_id):
+    photo_reference = get_photo_reference(place_id)
+    if photo_reference:
+        return get_photo_url(photo_reference)
     return None
 
-# Fetch place_id for a shelter
-def get_place_id(shelter_name, shelter_address):
-    base_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
-    params = {"input": f"{shelter_name}, {shelter_address}", "inputtype": "textquery", "fields": "place_id", "key": API_KEY}
-
-    response = requests.get(base_url, params=params).json()
-    if "candidates" in response and response["candidates"]:
-        return response["candidates"][0]["place_id"]
-    return None
-
-# Fetch photo reference from Place Details API
 def get_photo_reference(place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json"
     params = {"place_id": place_id, "fields": "photos", "key": API_KEY}
 
     response = requests.get(url, params=params).json()
-    if "result" in response and "photos" in response["result"]:
-        return response["result"]["photos"][0]["photo_reference"]
+    photos = response.get("result", {}).get("photos", [])
+    if photos:
+        return photos[0].get("photo_reference")
     return None
 
-# Construct full photo URL
 def get_photo_url(photo_reference):
     return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference={photo_reference}&key={API_KEY}"
 
-# Main function to collect and save data
 def main():
     places_data = []
     places = fetch_all_places(QUERIES, API_KEY)
@@ -122,7 +102,7 @@ def main():
         address = place.get("formatted_address", "N/A")
 
         details = fetch_place_details(place_id, API_KEY)
-        imageUrl = get_shelter_image(name, address)
+        imageUrl = get_shelter_image(place_id)
 
         if details.get("status") == "OK" and imageUrl:
             details_result = details.get("result", {})
@@ -141,15 +121,13 @@ def main():
                 "imageUrl": imageUrl,
             })
         else:
-            print(f"Error fetching details for {name}: {details.get('status')}")
+            print(f"Error fetching details or image for {name}: {details.get('status')}")
 
-    # Save results to a JSON file
     with open("shelters.json", "w", encoding="utf-8") as json_file:
         json.dump(places_data, json_file, indent=4, ensure_ascii=False)
 
     return places_data
 
-# Run script
 if __name__ == "__main__":
     shelter_data = main()
     print(f"\nData saved to 'shelters.json'. Total shelters fetched: {len(shelter_data)}")

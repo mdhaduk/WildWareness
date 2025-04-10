@@ -143,7 +143,7 @@ const GeneralSearchPage = () => {
 
         if (identity === 'report') {
             return baseCard([
-                <li key="title" className="list-group-item text-truncate"><strong>Title:</strong> <span className='card-title'>{highlightText(report.title, search_text)}</span></li>,
+                <li key="title" className="list-group-item text-truncate"><strong>Title:</strong> {highlightText(report.title, search_text)}</li>,
                 <li key="source" className="list-group-item text-truncate"><strong>Source:</strong> {highlightText(card.source, search_input)}</li>,
                 <li key="date" className="list-group-item text-truncate"><strong>Date:</strong> {highlightText(card.published_at, search_input)}</li>,
                 <li key="author" className="list-group-item text-truncate"><strong>Author:</strong> {highlightText(card.author, search_input)}</li>,
