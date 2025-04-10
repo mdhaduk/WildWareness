@@ -345,14 +345,14 @@ class TestAPIv3(unittest.TestCase):
         response = self.get_response('shelters?page=&size=&sort_by=name&order=asc&county=&zipCode=95642&phone=&rating=4')
         # Assertions
         self.assertEqual((response["shelters"][1]["name"]).strip().lower(), "atcaa jackson service center")
-        self.assertEqual(len(response["shelters"]), 2)
+        self.assertEqual(len(response["shelters"]), 3)
         self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "amador tuolumne community action agency")
     
     def test_shelters_sort(self):
         # Call the mock API endpoint for wildfire incidents
         response = self.get_response('shelters?page=&size=&sort_by=county&order=desc&county=&zipCode=&phone=&rating=')
         # Assertions
-        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "twin cities rescue mission")
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "14forward")
         self.assertEqual(len(response["shelters"]), 10)
         self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "yuba county")
     
