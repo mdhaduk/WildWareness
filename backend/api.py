@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from sqlalchemy.orm import joinedload
 import os
+from itertools import permutations
 
 load_dotenv()
 
@@ -287,31 +288,6 @@ def get_all_reports():
     # Copy the cache to filter/sort
     data = news_cache[:]
 
-    # Apply search terms with relevance ranking
-    if search:
-        term = search.lower().strip()
-
-        def match_search(report):
-            score = 0
-            if term in (report.title or "").lower():
-                score += 2  # Title matches are given higher relevance
-            if term in (report.source or "").lower():
-                score += 1
-            if term in (report.published_at or "").lower():
-                score += 1
-            if term in (report.author or "").lower():
-                score += 1
-            if term in (report.categories or "").lower():
-                score += 1
-            return score
-
-        # Apply relevance-based ranking
-        data_with_scores = [(r, match_search(r)) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract sorted reports
-        data = [d[0] for d in data_with_scores]
     # Apply filters
     if source:
         data = [r for r in data if source.lower()
@@ -347,11 +323,100 @@ def get_all_reports():
                 key=lambda r: (getattr(r, sort_by, "") or "").lower(),
                 reverse=reverse
             )
+    
     except AttributeError:
         return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
     except ValueError:
         return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
 
+        # Apply search terms with relevance ranking
+    if search:
+        term = search.lower().strip()
+
+
+        # def exact_match(report):
+        #     score = 0
+        #     if term in (report.title or "").lower():
+        #         score += 2 
+        #     if term in (report.source or "").lower():
+        #         score += 2
+        #     if term in (report.published_at or "").lower():
+        #         score += 2
+        #     if term in (report.author or "").lower():
+        #         score += 2
+        #     if term in (report.categories or "").lower():
+        #         score += 2
+        #     return score
+
+        # Apply relevance-based ranking
+        # data_with_scores = []
+        # for report in data:
+        #     score = exact_match(report)
+        #     if(score == 0):
+        #         words = s.split()
+        #         perm_list = [' '.join(p) for p in permutations(words)]
+
+        def exact_match(report):
+            check_one = term in (report.title or "").lower()
+            check_two = term in (report.source or "").lower()
+            check_three = term in (report.author or "").lower()
+            check_four = term in (report.published_at or "").lower()
+            check_five = term in (report.categories or "").lower()
+            return check_one or check_two or check_three or check_four or check_five
+        
+        def multi_match(report, mixed_order):
+            # check_one = all(word in (report.title or "").lower() for word in mixed_order)
+            # check_two = all(word in (report.source or "").lower() for word in mixed_order)
+            # check_three = all(word in (report.published_at or "").lower() for word in mixed_order)
+            # check_four = all(word in (report.author or "").lower() for word in mixed_order)
+            # check_five = all(word in (report.categories or "").lower() for word in mixed_order)
+            # return check_one or check_two or check_three or check_four or check_five
+            check_one = any(word in (report.title or "").lower() for word in mixed_order)
+            check_two = any(word in (report.source or "").lower() for word in mixed_order)
+            check_three = any(word in (report.published_at or "").lower() for word in mixed_order)
+            check_four = any(word in (report.author or "").lower() for word in mixed_order)
+            check_five = any(word in (report.categories or "").lower() for word in mixed_order)
+            return check_one or check_two or check_three or check_four or check_five
+        
+        def single_match(report, term_words):
+            check_one = any(word in (report.title or "").lower() for word in term_words)
+            check_two = any(word in (report.source or "").lower() for word in term_words)
+            check_three = any(word in (report.published_at or "").lower() for word in term_words)
+            check_four = any(word in (report.author or "").lower() for word in term_words)
+            check_five = any(word in (report.categories or "").lower() for word in term_words)
+            return check_one or check_two or check_three or check_four or check_five
+        
+        def score_report(report):
+            
+            # # Normalize and tokenize
+            # input_words = input_phrase_lower.split()
+            # word_pattern = r'\b' + re.escape(input_phrase_lower) + r'\b'
+
+            # 1. Exact phrase match
+            if exact_match(report):
+                return 3
+
+            # 2. All words present (not necessarily as phrase) in any order but still phrase
+            term_words = term.split()
+            mixed_order = [' '.join(p) for p in permutations(term_words)]
+            if multi_match(report, mixed_order):
+                return 2
+
+            
+            # 3. Any one word present
+            if single_match(report, term_words):
+                return 1
+
+            # 4. No match
+            return 0
+
+
+        data_with_scores = [(r, score_report(r)) for r in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
+
+        # Extract sorted reports
+        data = [d[0] for d in data_with_scores]
     # Pagination
     total_items = len(data)
     total_pages = (total_items + size - 1) // size
