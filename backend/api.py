@@ -270,10 +270,10 @@ def get_single_shelter(id):
 @app.route("/news", methods=["GET"])
 def get_all_reports():
     page = request.args.get("page", 1, type=int)
-    size = request.args.get("size", 2, type=int)
+    size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     source = request.args.get("source", None)
     author = request.args.get("author", None)
-    date = request.args.get("published_at", None)
+    date = request.args.get("date", None)
     categories = request.args.get('categories', '') 
     sort_by = request.args.get("sort_by", "title")  # Default to 'title'
     order = request.args.get("order", "asc")  # Default to ascending order
@@ -379,7 +379,7 @@ def get_single_report(id):
 @app.route("/search", methods=["GET"])
 def search_all_cards():
     page = request.args.get("page", 1, type=int)
-    size = request.args.get("size", 2, type=int)
+    size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     text = request.args.get("text", None)
 
     # Copy the cache to filter/sort
