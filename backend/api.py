@@ -448,7 +448,10 @@ def search_all_cards():
     text = request.args.get("text", None)
 
     # Copy the cache to filter/sort
-    data = [*wildfire_cache, *shelter_cache, *news_cache]
+    global data
+    data = []
+    if(text):
+        data = [*wildfire_cache, *shelter_cache, *news_cache]
 
     # Apply search terms
     if text:
@@ -523,4 +526,4 @@ def search_all_cards():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=3000, debug=True)
