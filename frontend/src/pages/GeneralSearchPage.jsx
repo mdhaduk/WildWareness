@@ -29,6 +29,7 @@ const GeneralSearchPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState("No results");
+    const [isSearching, setisSearching] = useState(false);
 
     const itemsPerPage = 9;
     const query = useLocation();
@@ -51,6 +52,7 @@ const GeneralSearchPage = () => {
             return; 
         }
         
+        setisSearching(true);
         const search = async () => {
             try {
                 setLoading("Loading...");
@@ -58,7 +60,7 @@ const GeneralSearchPage = () => {
                 setResults(response.data.instances);
                 setTotalPages(response.data.pagination.total_pages);
                 setTotalItems(response.data.pagination.total_items);
-    
+                setisSearching(false);
                 if (response.data.pagination.total_items === 0) {
                     setLoading("No Results");
                 }
@@ -67,9 +69,13 @@ const GeneralSearchPage = () => {
                 setLoading("Error fetching results.");
             }
         };
-    
-        search();
-    }, [search_input, query.search, currentPage]);
+        const timer = setTimeout(() => {
+            search();
+        }, 300);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [search_input, query.search, currentPage, itemsPerPage]);
 
     const updateSearchInput = (event) => {
         setSearchInput(event.target.value);
@@ -169,7 +175,13 @@ const GeneralSearchPage = () => {
                 </form>
             </div>
             <div className="row gy-4 mt-3">
-                {search_input.trim() && results.length > 0 ? results.map((result) => determineIdentity(result)).filter(Boolean) : <p>{loading}</p>}
+                {isSearching ? (
+                    <p>Loading...</p>
+                ) : search_input.trim() && results && results.length > 0 ? (
+                    results.map((result) => determineIdentity(result)).filter(Boolean)
+                ) : (
+                    <p>{loading}</p>
+                )}
             </div>
             <div>
                 {search_input.trim() && totalItems > 0 && (
