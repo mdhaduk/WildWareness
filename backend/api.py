@@ -332,30 +332,7 @@ def get_all_reports():
         # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-
-
-        # def exact_match(report):
-        #     score = 0
-        #     if term in (report.title or "").lower():
-        #         score += 2 
-        #     if term in (report.source or "").lower():
-        #         score += 2
-        #     if term in (report.published_at or "").lower():
-        #         score += 2
-        #     if term in (report.author or "").lower():
-        #         score += 2
-        #     if term in (report.categories or "").lower():
-        #         score += 2
-        #     return score
-
-        # Apply relevance-based ranking
-        # data_with_scores = []
-        # for report in data:
-        #     score = exact_match(report)
-        #     if(score == 0):
-        #         words = s.split()
-        #         perm_list = [' '.join(p) for p in permutations(words)]
-
+        term_words = term.split()
         def exact_match(report):
             check_one = term in (report.title or "").lower()
             check_two = term in (report.source or "").lower()
@@ -364,21 +341,15 @@ def get_all_reports():
             check_five = term in (report.categories or "").lower()
             return check_one or check_two or check_three or check_four or check_five
         
-        def multi_match(report, mixed_order):
-            # check_one = all(word in (report.title or "").lower() for word in mixed_order)
-            # check_two = all(word in (report.source or "").lower() for word in mixed_order)
-            # check_three = all(word in (report.published_at or "").lower() for word in mixed_order)
-            # check_four = all(word in (report.author or "").lower() for word in mixed_order)
-            # check_five = all(word in (report.categories or "").lower() for word in mixed_order)
-            # return check_one or check_two or check_three or check_four or check_five
-            check_one = any(word in (report.title or "").lower() for word in mixed_order)
-            check_two = any(word in (report.source or "").lower() for word in mixed_order)
-            check_three = any(word in (report.published_at or "").lower() for word in mixed_order)
-            check_four = any(word in (report.author or "").lower() for word in mixed_order)
-            check_five = any(word in (report.categories or "").lower() for word in mixed_order)
+        def multi_match(report):
+            check_one = all(word in (report.title or "").lower() for word in term_words)
+            check_two = all(word in (report.title or "").lower() for word in term_words)
+            check_three = all(word in (report.published_at or "").lower() for word in term_words)
+            check_four = all(word in (report.author or "").lower() for word in term_words)
+            check_five = all(word in (report.categories or "").lower() for word in term_words)
             return check_one or check_two or check_three or check_four or check_five
         
-        def single_match(report, term_words):
+        def single_match(report):
             check_one = any(word in (report.title or "").lower() for word in term_words)
             check_two = any(word in (report.source or "").lower() for word in term_words)
             check_three = any(word in (report.published_at or "").lower() for word in term_words)
@@ -397,14 +368,12 @@ def get_all_reports():
                 return 3
 
             # 2. All words present (not necessarily as phrase) in any order but still phrase
-            term_words = term.split()
-            mixed_order = [' '.join(p) for p in permutations(term_words)]
-            if multi_match(report, mixed_order):
+            elif multi_match(report):
                 return 2
 
             
             # 3. Any one word present
-            if single_match(report, term_words):
+            elif single_match(report):
                 return 1
 
             # 4. No match
