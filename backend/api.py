@@ -9,6 +9,7 @@ from datetime import datetime
 from sqlalchemy.orm import joinedload
 import os
 from itertools import permutations
+from scripts.helper_scripts import score_model
 
 load_dotenv()
 
@@ -78,28 +79,13 @@ def get_all_incidents():
 # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-
-        def match_search(wildfire):
-            score = 0
-            if term in (wildfire.name or "").lower():
-                score += 3  # Title matches are given the highest relevance
-            if term in (wildfire.location or "").lower():
-                score += 2
-            if term in (wildfire.status or "").lower():
-                score += 1
-            if term in str(wildfire.year or ""):
-                score += 1
-            if term in str(wildfire.acres_burned or ""):
-                score += 1
-            return score
-
-        # Apply relevance-based ranking
-        data_with_scores = [(w, match_search(w)) for w in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include wildfires with score > 0
+        data_with_scores = [(r, score_model(model=r, term=term, attributes=["name", "location", "status", "year", "acres_burned"])) for r in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 
-        # Extract sorted wildfires
+        # Extract sorted reports
         data = [d[0] for d in data_with_scores]
+
     # Apply filters
     if location:
         data = [w for w in data if location.lower()
@@ -190,27 +176,11 @@ def get_all_shelters():
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-
-        def match_search(shelter):
-            score = 0
-            if term in (shelter.name or "").lower():
-                score += 3  # Name matches are given the highest relevance
-            if term in (shelter.county or "").lower():
-                score += 2
-            if term in (shelter.address or "").lower():
-                score += 1
-            if term in str(shelter.rating or ""):
-                score += 1
-            if term in str(shelter.phone or "").lower():
-                score += 1
-            return score
-
-        # Apply relevance-based ranking
-        data_with_scores = [(s, match_search(s)) for s in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include shelters with score > 0
+        data_with_scores = [(r, score_model(r, term, ["name","county","address", "rating", "phone"])) for r in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 
-        # Extract sorted shelters
+        # Extract sorted reports
         data = [d[0] for d in data_with_scores]
 
     # Apply filters
@@ -332,55 +302,7 @@ def get_all_reports():
         # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-        term_words = term.split()
-        def exact_match(report):
-            check_one = term in (report.title or "").lower()
-            check_two = term in (report.source or "").lower()
-            check_three = term in (report.author or "").lower()
-            check_four = term in (report.published_at or "").lower()
-            check_five = term in (report.categories or "").lower()
-            return check_one or check_two or check_three or check_four or check_five
-        
-        def multi_match(report):
-            check_one = all(word in (report.title or "").lower() for word in term_words)
-            check_two = all(word in (report.title or "").lower() for word in term_words)
-            check_three = all(word in (report.published_at or "").lower() for word in term_words)
-            check_four = all(word in (report.author or "").lower() for word in term_words)
-            check_five = all(word in (report.categories or "").lower() for word in term_words)
-            return check_one or check_two or check_three or check_four or check_five
-        
-        def single_match(report):
-            check_one = any(word in (report.title or "").lower() for word in term_words)
-            check_two = any(word in (report.source or "").lower() for word in term_words)
-            check_three = any(word in (report.published_at or "").lower() for word in term_words)
-            check_four = any(word in (report.author or "").lower() for word in term_words)
-            check_five = any(word in (report.categories or "").lower() for word in term_words)
-            return check_one or check_two or check_three or check_four or check_five
-        
-        def score_report(report):
-            
-            # # Normalize and tokenize
-            # input_words = input_phrase_lower.split()
-            # word_pattern = r'\b' + re.escape(input_phrase_lower) + r'\b'
-
-            # 1. Exact phrase match
-            if exact_match(report):
-                return 3
-
-            # 2. All words present (not necessarily as phrase) in any order but still phrase
-            elif multi_match(report):
-                return 2
-
-            
-            # 3. Any one word present
-            elif single_match(report):
-                return 1
-
-            # 4. No match
-            return 0
-
-
-        data_with_scores = [(r, score_report(r)) for r in data]
+        data_with_scores = [(r, score_model(model=r, term=term, attributes=["title", "source", "author", "published_at", "categories"])) for r in data]
         data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 

@@ -35,7 +35,7 @@ function Wildfires() {
             try {
                 setLoading("Loading...");
 
-                const baseURL = `https://api.wildwareness.net/wildfire_incidents`;
+                const baseURL = `http://localhost:3000/wildfire_incidents`;
                 const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&location=${location}&year=${year}&acres_burned=${acres_burned}&status=${status}`;
 
                 const response = await axios.get(url);
@@ -63,7 +63,7 @@ function Wildfires() {
     useEffect(() => {
         const fetchLocations = async () => {
             try {
-                const res = await axios.get("https://api.wildwareness.net/wildfire_locations");
+                const res = await axios.get("http://localhost:3000/wildfire_locations");
                 setAvailableLocations(res.data.locations || []);
             } catch (error) {
                 console.error("Error loading locations:", error);
