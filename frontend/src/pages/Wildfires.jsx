@@ -19,8 +19,8 @@ function Wildfires() {
     const navigate = useNavigate();
 
     // Filters and sorting state
-    const [sortBy, setSortBy] = useState('county');
-    const [order, setOrder] = useState('asc');
+    const [sortBy, setSortBy] = useState('');
+    const [order, setOrder] = useState('');
     const [location, setLocation] = useState('');
     const [year, setYear] = useState('');
     const [acres_burned, setAcresBurned] = useState('');
@@ -108,6 +108,7 @@ function Wildfires() {
                 <div className="form-group me-2">
                     <label>Sort By:</label>
                     <select name="sortBy" value={sortBy} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">Select</option>
                         <option value="name">Name</option>
                         <option value="county">County</option>
                     </select>
@@ -116,6 +117,7 @@ function Wildfires() {
                 <div className="form-group me-2">
                     <label>Order:</label>
                     <select name="order" value={order} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">Select</option>
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>
                     </select>

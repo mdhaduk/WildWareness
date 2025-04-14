@@ -61,28 +61,28 @@ preload_all_data() #GET ALL THE DATA
 def get_all_incidents():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
-    sort_by = request.args.get("sort_by", "county")
-    order = request.args.get("order", "asc")
+    sort_by = request.args.get("sort_by", "")
+    order = request.args.get("order", "")
     location = request.args.get("location")
     year = request.args.get("year")
     acres_burned = request.args.get("acres_burned")
     search = request.args.get("search")
     status = request.args.get("status")
 
-    valid_sort_columns = {"name", "county"}
-    if sort_by not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
+    # if sort_by:
+    #     valid_sort_columns = {"name", "county"}
+    #     if sort_by not in valid_sort_columns:
+    #         return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
 
     # Copy the cache to filter/sort
     data = wildfire_cache[:]
 
-# Apply search terms with relevance ranking
+    # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(model=r, term=term, attributes=["name", "location", "status", "year", "acres_burned"])) for r in data]
+        data_with_scores = [(r, score_model(r, term, ["name", "county", "location", "status", "year", "acres_burned"])) for r in data]
         data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
         # Extract sorted reports
         data = [d[0] for d in data_with_scores]
 
@@ -104,12 +104,16 @@ def get_all_incidents():
     if status:
         data = [w for w in data if w.status and w.status.lower() == status.lower()]
 
+    if sort_by:
+        valid_sort_columns = {"name", "county"}
+        if sort_by not in valid_sort_columns:
+            return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
     # Sorting
-    reverse = order == "desc"
-    try:
-        data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
-    except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+        reverse = order == "desc"
+        try:
+            data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
+        except AttributeError:
+            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
 
     # Pagination
     total_items = len(data)
@@ -118,6 +122,7 @@ def get_all_incidents():
     end = start + size
     paged_data = data[start:end]
 
+    
     return jsonify({
         "incidents": [w.as_instance() for w in paged_data],
         "pagination": {
@@ -176,7 +181,7 @@ def get_all_shelters():
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(r, term, ["name","county","address", "rating", "phone"])) for r in data]
+        data_with_scores = [(r, score_model(r, term, ["name", "county","address", "rating", "website", "phone"])) for r in data]
         data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
         data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
 

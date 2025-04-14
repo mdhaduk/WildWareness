@@ -34,7 +34,7 @@ function Shelters() {
         const fetchShelters = async () => {
             try {
                 setLoading("Loading...");
-                const baseURL = `https://api.wildwareness.net/shelters`;
+                const baseURL = `http://localhost:3000/shelters`;
 
                 const url = `${baseURL}?page=${resolvedPage}&size=${itemsPerPage}&search=${search_text}&sort_by=${sortBy}&order=${order}&county=${county}&zipCode=${zipCode}&phone=${phone}&rating=${rating}`;
                 const response = await axios.get(url);
