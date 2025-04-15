@@ -76,7 +76,8 @@ def get_all_incidents():
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(r, term, ["name", "county", "location", "status", "year", "acres_burned"])) for r in data]
+        data_with_scores = [(r, score_model(r, term, ["name", "county", "location", "status",
+                             "year", "acres_burned", "latitude", "longitude", "description"])) for r in data]
         # Only include reports with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
@@ -176,7 +177,8 @@ def get_all_shelters():
     data = shelter_cache[:]
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(r, term, ["name", "county", "address", "rating", "website", "phone"])) for r in data]
+        data_with_scores = [(r, score_model(r, term, [
+                             "name", "county", "address", "rating", "website", "phone", "description"])) for r in data]
         # Only include reports with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
@@ -253,7 +255,8 @@ def get_all_reports():
 
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(model=r, term=term, attributes=["title", "source", "author", "published_at", "categories"])) for r in data]
+        data_with_scores = [(r, score_model(model=r, term=term, attributes=[
+                             "title", "source", "author", "published_at", "categories", "language", "description", "keywords"])) for r in data]
         # Only include reports with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
@@ -339,6 +342,7 @@ def search_all_cards():
     if text:
         term = text.lower().strip()
         data_with_scores = []
+
         def match_search(obj):
             if isinstance(obj, Wildfire):
                 return score_model(obj, term, ["name", "county", "location", "status", "year", "acres_burned"])
