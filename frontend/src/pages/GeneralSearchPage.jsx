@@ -56,7 +56,7 @@ const GeneralSearchPage = () => {
         const search = async () => {
             try {
                 setLoading("Loading...");
-                const response = await axios.get(`https://api.wildwareness.net/search?text=${search_input}&page=${resolvedPage}&size=${itemsPerPage}`);
+                const response = await axios.get(`http://localhost:3000/search?text=${search_input}&page=${resolvedPage}&size=${itemsPerPage}`);
                 setResults(response.data.instances);
                 setTotalPages(response.data.pagination.total_pages);
                 setTotalItems(response.data.pagination.total_items);

@@ -35,6 +35,7 @@ wildfire_cache = []
 shelter_cache = []
 news_cache = []
 
+
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
     with local_session() as session:
@@ -55,7 +56,10 @@ def preload_all_data():
             joinedload(NewsReport.shelters)
         ).all()
         print(f"Preloaded {len(news_cache)} news reports")
-preload_all_data() #GET ALL THE DATA
+
+
+preload_all_data()  # GET ALL THE DATA
+
 
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
@@ -66,46 +70,29 @@ def get_all_incidents():
     location = request.args.get("location")
     year = request.args.get("year")
     acres_burned = request.args.get("acres_burned")
-    search = request.args.get("search")
+    search = request.args.get("search", None)
     status = request.args.get("status")
-
-    # if sort_by:
-    #     valid_sort_columns = {"name", "county"}
-    #     if sort_by not in valid_sort_columns:
-    #         return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-
-    # Copy the cache to filter/sort
     data = wildfire_cache[:]
-
-    if sort_by and order:
-        valid_sort_columns = {"name", "county"}
-        if sort_by not in valid_sort_columns:
-            return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-    # Sorting
-        reverse = order == "desc"
-        try:
-            data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
-        except AttributeError:
-            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
-
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
         data_with_scores = [(r, score_model(r, term, ["name", "county", "location", "status", "year", "acres_burned"])) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
+        # Only include reports with score > 0
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]
+        # Sort by relevance score
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)
         # Extract sorted reports
         data = [d[0] for d in data_with_scores]
 
     # Apply filters
     if location:
         data = [w for w in data if location.lower()
-        in (w.location or "").lower()
-        or location.lower() in (w.county or "").lower()]
+                in (w.location or "").lower()
+                or location.lower() in (w.county or "").lower()]
     if year:
         data = [w for w in data if str(w.year or "") == str(year)]
     if acres_burned:
-        #Checks that number isnt just a string by doing: 12.34 -> 1245 (is this a number?)
+        # Checks that number isnt just a string by doing: 12.34 -> 1245 (is this a number?)
         data = [
             w for w in data
             if w.acres_burned and w.acres_burned.replace('.', '', 1).isdigit()
@@ -113,18 +100,16 @@ def get_all_incidents():
         ]
 
     if status:
-        data = [w for w in data if w.status and w.status.lower() == status.lower()]
+        data = [w for w in data if w.status and w.status.lower() ==
+                status.lower()]
 
-    # if sort_by and order:
-    #     valid_sort_columns = {"name", "county"}
-    #     if sort_by not in valid_sort_columns:
-    #         return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-    # # Sorting
-    #     reverse = order == "desc"
-    #     try:
-    #         data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
-    #     except AttributeError:
-    #         return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+    if sort_by:
+        reverse = order == "desc"
+        try:
+            data.sort(key=lambda w: (getattr(w, sort_by)
+                      or "").lower(), reverse=reverse)
+        except AttributeError:
+            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
 
     # Pagination
     total_items = len(data)
@@ -133,7 +118,6 @@ def get_all_incidents():
     end = start + size
     paged_data = data[start:end]
 
-    
     return jsonify({
         "incidents": [w.as_instance() for w in paged_data],
         "pagination": {
@@ -144,25 +128,30 @@ def get_all_incidents():
         },
     })
 
+
 @app.route("/wildfire_locations", methods=["GET"])
 def get_wildfire_locations():
     with local_session() as ls:
         try:
-            counties = ls.query(Wildfire.county).distinct().order_by(Wildfire.county).all()
+            counties = ls.query(Wildfire.county).distinct().order_by(
+                Wildfire.county).all()
             county_list = [c[0] for c in counties if c[0]]
             return jsonify({"locations": county_list})
         except Exception as e:
             return jsonify({"Error getting locations": str(e)}), 500
 
+
 @app.route("/shelter_locations", methods=["GET"])
 def get_shelter_locations():
     with local_session() as ls:
         try:
-            counties = ls.query(Shelter.county).distinct().order_by(Shelter.county).all()
+            counties = ls.query(Shelter.county).distinct().order_by(
+                Shelter.county).all()
             county_list = [c[0] for c in counties if c[0]]
             return jsonify({"locations": county_list})
         except Exception as e:
             return jsonify({"Error getting locations": str(e)}), 500
+
 
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
@@ -171,64 +160,56 @@ def get_single_incident(id):
             return jsonify(w.as_instance())
     return jsonify({"error": "incident not found"}), 404
 
+
 @app.route("/shelters", methods=["GET"])
 def get_all_shelters():
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
-    sort_by = request.args.get("sort_by", "county")
-    order = request.args.get("order", "asc")
+    sort_by = request.args.get("sort_by", "")
+    order = request.args.get("order", "")
     county = request.args.get("county")
     zipCode = request.args.get("zipCode")
     phone = request.args.get("phone")
     rating = request.args.get("rating")
     search = request.args.get("search")
 
-    valid_sort_columns = {"name", "county"}
-    if sort_by not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-
-    # Copy the cache to filter/sort
     data = shelter_cache[:]
-    # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
-        data_with_scores = [(r, score_model(r, term, ["name", "county","address", "rating", "website", "phone"])) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract sorted reports
+        data_with_scores = [(r, score_model(r, term, ["name", "county", "address", "rating", "website", "phone"])) for r in data]
+        # Only include reports with score > 0
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]
+        # Sort by relevance score
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)
         data = [d[0] for d in data_with_scores]
 
     # Apply filters
     if county:
         data = [s for s in data if county.lower() in (s.address or "").lower()
-        or county.lower() in (s.county or "").lower()]
+                or county.lower() in (s.county or "").lower()]
     if zipCode:
         zipCode = str(zipCode)
         data = [s for s in data if zipCode.strip() in (s.address or "").lower()]
 
     if phone:
-        # Clean the input phone by removing all non-numeric characters
         cleaned_phone = ''.join(filter(str.isdigit, str(phone)))
-
-        # Get the first three digits of the cleaned phone number
         first_three_phone = cleaned_phone[:3]
-
-        # Filter the data based on the first three digits of the phone number in the dataset
-        data = [s for s in data if first_three_phone in ''.join(filter(str.isdigit, s.phone or ""))[:3]]
+        data = [s for s in data if first_three_phone in ''.join(
+            filter(str.isdigit, s.phone or ""))[:3]]
 
     if rating:
-        data = [s for s in data 
-        if s.rating and s.rating!="N/A"
-        and float(s.rating.split('/')[0] or 0) >= float(rating)
-        and float(s.rating.split('/')[0] or 0) < float(rating) + 1]
+        data = [s for s in data
+                if s.rating and s.rating != "N/A"
+                and float(s.rating.split('/')[0] or 0) >= float(rating)
+                and float(s.rating.split('/')[0] or 0) < float(rating) + 1]
 
-    # Sorting
-    reverse = order == "desc"
-    try:
-        data.sort(key=lambda s: (getattr(s, sort_by) or "").lower(), reverse=reverse)
-    except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+    if sort_by:
+        reverse = order == "desc"
+        try:
+            data.sort(key=lambda s: (getattr(s, sort_by)
+                      or "").lower(), reverse=reverse)
+        except AttributeError:
+            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
 
     # Pagination
     total_items = len(data)
@@ -247,12 +228,14 @@ def get_all_shelters():
         },
     })
 
+
 @app.route("/shelters/<int:id>", methods=["GET"])
 def get_single_shelter(id):
     for s in shelter_cache:
         if s.id == id:
             return jsonify(s.as_instance())
     return jsonify({"error": "shelter not found"}), 404
+
 
 @app.route("/news", methods=["GET"])
 def get_all_reports():
@@ -261,28 +244,33 @@ def get_all_reports():
     source = request.args.get("source", None)
     author = request.args.get("author", None)
     date = request.args.get("date", None)
-    categories = request.args.get('categories', '') 
-    sort_by = request.args.get("sort_by", "title")  # Default to 'title'
-    order = request.args.get("order", "asc")  # Default to ascending order
+    categories = request.args.get('categories', '')
+    sort_by = request.args.get("sort_by", "")  # Default to 'title'
+    order = request.args.get("order", "")  # Default to ascending order
     search = request.args.get("search", None)
-
-
-    valid_sort_columns = {"title", "published_at", "author", "source"}
-    if sort_by not in valid_sort_columns:
-        return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-
     # Copy the cache to filter/sort
     data = news_cache[:]
+
+    if search:
+        term = search.lower().strip()
+        data_with_scores = [(r, score_model(model=r, term=term, attributes=["title", "source", "author", "published_at", "categories"])) for r in data]
+        # Only include reports with score > 0
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]
+        # Sort by relevance score
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)
+
+        # Extract sorted reports
+        data = [d[0] for d in data_with_scores]
 
     # Apply filters
     if source:
         data = [r for r in data if source.lower()
-        in (r.source or "").lower()]
+                in (r.source or "").lower()]
     if author:
         data = [r for r in data if author.lower().strip()
-        in (r.author or "").lower()]
+                in (r.author or "").lower()]
     if date:
-        date_obj = datetime.strptime(date,'%Y-%m-%d').date()
+        date_obj = datetime.strptime(date, '%Y-%m-%d').date()
         date_string = date_obj.strftime('%Y-%m-%d')
         data = [
             r for r in data
@@ -294,14 +282,13 @@ def get_all_reports():
             r for r in data
             if all(cat in r.categories for cat in category_list)
         ]
-    # Sorting
-    reverse = order == "desc"
-
-    try:
+    if sort_by:
+        reverse = order == "desc"
         # Handle sorting for text fields (title, author, source)
         if sort_by == "published_at":
             data.sort(
-                key=lambda r: datetime.strptime(r.published_at, "%Y-%m-%d") if r.published_at else datetime.min,
+                key=lambda r: datetime.strptime(
+                    r.published_at, "%Y-%m-%d") if r.published_at else datetime.min,
                 reverse=reverse
             )
         else:
@@ -309,21 +296,7 @@ def get_all_reports():
                 key=lambda r: (getattr(r, sort_by, "") or "").lower(),
                 reverse=reverse
             )
-    
-    except AttributeError:
-        return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
-    except ValueError:
-        return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
 
-        # Apply search terms with relevance ranking
-    if search:
-        term = search.lower().strip()
-        data_with_scores = [(r, score_model(model=r, term=term, attributes=["title", "source", "author", "published_at", "categories"])) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract sorted reports
-        data = [d[0] for d in data_with_scores]
     # Pagination
     total_items = len(data)
     total_pages = (total_items + size - 1) // size
@@ -341,12 +314,14 @@ def get_all_reports():
         },
     })
 
+
 @app.route("/news/<int:id>", methods=["GET"])
 def get_single_report(id):
     for r in news_cache:
         if r.id == id:
             return jsonify(r.as_instance())
     return jsonify({"error": "incident not found"}), 404
+
 
 @app.route("/search", methods=["GET"])
 def search_all_cards():
@@ -357,62 +332,26 @@ def search_all_cards():
     # Copy the cache to filter/sort
     global data
     data = []
-    if(text):
+    if text:
         data = [*wildfire_cache, *shelter_cache, *news_cache]
 
     # Apply search terms
     if text:
         term = text.lower().strip()
+        data_with_scores = []
         def match_search(obj):
-            score = 0  # Initialize a relevance score
             if isinstance(obj, Wildfire):
-                # Increment score based on how much the term matches
-                if term in (obj.name or "").lower():
-                    score += 2
-                if term in (obj.county or "").lower():
-                    score += 1
-                if term in (obj.location or "").lower():
-                    score += 1
-                if term in str(obj.year or ""):
-                    score += 1
-                if term in str(obj.acres_burned or ""):
-                    score += 1
-                if term in (obj.status or "").lower():
-                    score += 1
-
+                return score_model(obj, term, ["name", "county", "location", "status", "year", "acres_burned"])
             elif isinstance(obj, NewsReport):
-                if term in (obj.title or "").lower():
-                    score += 2
-                if term in (obj.source or "").lower():
-                    score += 1
-                if term in (obj.published_at or "").lower():
-                    score += 1
-                if term in (obj.author or "").lower():
-                    score += 1
-                if term in (obj.categories or "").lower():
-                    score += 1
-
+                return score_model(model=obj, term=term, attributes=["title", "source", "author", "published_at", "categories"])
             elif isinstance(obj, Shelter):
-                if term in (obj.name or "").lower():
-                    score +=2
-                if term in (obj.county or "").lower():
-                    score += 1
-                if term in (obj.address or "").lower():
-                    score += 1
-                if term in str(obj.rating or ""):
-                    score += 1
-                if term in (obj.phone or "").lower():
-                    score += 1
-
-            return score
-
-        # Filter and rank results by relevance score
-        data_with_scores = [(r, match_search(r)) for r in data]
-        data_with_scores = [d for d in data_with_scores if d[1] > 0]  # Only include reports with score > 0
-        data_with_scores.sort(key=lambda x: x[1], reverse=True)  # Sort by relevance score
-
-        # Extract the objects from the tuple
+                return score_model(obj, term, ["name", "county", "address", "rating", "website", "phone"])
+        # Only include reports with score > 0
+        data_with_scores = [(obj, match_search(obj)) for obj in data]
+        data_with_scores = [d for d in data_with_scores if d[1] > 0]
+        data_with_scores.sort(key=lambda x: x[1], reverse=True)
         data = [item[0] for item in data_with_scores]
+
     # Pagination
     total_items = len(data)
     total_pages = (total_items + size - 1) // size
@@ -429,7 +368,6 @@ def search_all_cards():
             "total_items": total_items,
         },
     })
-
 
 
 if __name__ == '__main__':

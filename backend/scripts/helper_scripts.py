@@ -25,6 +25,12 @@ def score_model(model, term, attributes):
     term_words = term.split()
     def exact_match(report):
         for attribute in attributes:
+            if (term is (getattr(report, attribute, "") or "").lower()):
+                return True
+        return False
+
+    def exact_match_in_word(report):
+        for attribute in attributes:
             if (term in (getattr(report, attribute, "") or "").lower()):
                 return True
         return False
@@ -42,15 +48,19 @@ def score_model(model, term, attributes):
         return False
 
     def score_report(report):
-        # 1. Exact phrase match
+
+        # 1. Exact phrase match (same)
         if exact_match(report):
+            return 4
+        # 2. Exact phrase match (within word)
+        elif exact_match_in_word(report):
             return 3
-        # 2. All words present (not necessarily as phrase) in any order but still phrase
+        # 3. All words present (not necessarily as phrase) in any order but still phrase
         elif multi_match(report):
             return 2
-        # 3. Any one word present
+        # 4. Any one word present
         elif single_match(report):
             return 1
-        # 4. No match
+        # 5. No match
         return 0
     return score_report(model)

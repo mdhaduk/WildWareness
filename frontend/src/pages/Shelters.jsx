@@ -19,8 +19,8 @@ function Shelters() {
     const navigate = useNavigate();
 
     // Filters and sorting state
-    const [sortBy, setSortBy] = useState('county');
-    const [order, setOrder] = useState('asc');
+    const [sortBy, setSortBy] = useState('');
+    const [order, setOrder] = useState('');
     const [county, setCounty] = useState('');
     const [zipCode, setZipCode] = useState('');
     const [phone, setPhone] = useState('');
@@ -107,6 +107,7 @@ function Shelters() {
                 <div className="form-group me-2">
                     <label>Sort By:</label>
                     <select name="sortBy" value={sortBy} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">Select</option>
                         <option value="name">Name</option>
                         <option value="county">County</option>
                     </select>

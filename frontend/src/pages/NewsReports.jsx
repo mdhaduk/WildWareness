@@ -19,8 +19,8 @@ function NewsReports() {
     const navigate = useNavigate();
 
     // Filters
-    const [sort_by, setSortBy] = useState('title');
-    const [order, setOrder] = useState('asc');
+    const [sort_by, setSortBy] = useState('');
+    const [order, setOrder] = useState('');
     const [source, setSource] = useState('');
     const [author, setAuthor] = useState('');
     const [date, setDate] = useState('');
@@ -101,6 +101,7 @@ function NewsReports() {
                 <div className="form-group me-2">
                     <label>Sort By:</label>
                     <select name="sort_by" value={sort_by} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">Select</option>
                         <option value="title">Title</option>
                         <option value="source">Source</option>
                         <option value="author">Author</option>
@@ -110,6 +111,7 @@ function NewsReports() {
                 <div className="form-group me-2">
                     <label>Order:</label>
                     <select name="order" value={order} onChange={handleFilterChange} className="form-select form-select-sm">
+                        <option value="">Select</option>
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>
                     </select>
