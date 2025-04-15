@@ -77,6 +77,17 @@ def get_all_incidents():
     # Copy the cache to filter/sort
     data = wildfire_cache[:]
 
+    if sort_by and order:
+        valid_sort_columns = {"name", "county"}
+        if sort_by not in valid_sort_columns:
+            return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
+    # Sorting
+        reverse = order == "desc"
+        try:
+            data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
+        except AttributeError:
+            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
@@ -104,16 +115,16 @@ def get_all_incidents():
     if status:
         data = [w for w in data if w.status and w.status.lower() == status.lower()]
 
-    if sort_by:
-        valid_sort_columns = {"name", "county"}
-        if sort_by not in valid_sort_columns:
-            return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
-    # Sorting
-        reverse = order == "desc"
-        try:
-            data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
-        except AttributeError:
-            return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
+    # if sort_by and order:
+    #     valid_sort_columns = {"name", "county"}
+    #     if sort_by not in valid_sort_columns:
+    #         return jsonify({"error": f"Invalid sort column '{sort_by}'"}), 400
+    # # Sorting
+    #     reverse = order == "desc"
+    #     try:
+    #         data.sort(key=lambda w: (getattr(w, sort_by) or "").lower(), reverse=reverse)
+    #     except AttributeError:
+    #         return jsonify({"error": f"Invalid sort field '{sort_by}'"}), 400
 
     # Pagination
     total_items = len(data)
