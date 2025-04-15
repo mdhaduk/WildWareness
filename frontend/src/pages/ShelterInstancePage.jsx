@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import Map from '../components/Map';
+import WildfireCard from '../components/WildfireCard';
+import ReportCard from '../components/ReportCard';
+
 
 const ShelterInstancePage = () => {
   const navigate = useNavigate();
@@ -109,21 +112,13 @@ const ShelterInstancePage = () => {
         <h5 className=''><strong>Nearby Wildfires:</strong></h5>
                 {shelter.wildfires.length > 0 ? (
                     shelter.wildfires.map((wildfire) => (
-                        <div key={wildfire.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={wildfire.url} alt={wildfire.name}/>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {wildfire.name}</li>
-                                    <li className="list-group-item"><strong>County:</strong> {wildfire.county}</li>
-                                    <li className="list-group-item"><strong>Location:</strong> {wildfire.location}</li>
-                                    <li className="list-group-item"><strong>Year:</strong> {wildfire.year}</li>
-                                    <li className="list-group-item"><strong>Acres Burned:</strong> {wildfire.acres_burned}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                      <WildfireCard
+                        key={wildfire.id}
+                        wildfire={wildfire}
+                        // Optional: pass these only if you want highlighting
+                        // search_text={search_text}
+                        // highlightText={highlightText}
+                      />
                     ))
                 ) : (
                     <p className="text-center">Loading...</p>
@@ -133,22 +128,14 @@ const ShelterInstancePage = () => {
         <div className="row">
         <h5 className=''><strong>Nearby News Reports:</strong></h5>
                 {shelter.newsreports.length > 0 ? (
-                    shelter.newsreports.map((newsreport) => (
-                        <div key={newsreport.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={newsreport.image_url} alt={newsreport.title}/>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Title:</strong> {newsreport.title}</li>
-                                    <li className="list-group-item"><strong>Source:</strong> {newsreport.source}</li>
-                                    <li className="list-group-item"><strong>Date:</strong> {newsreport.date}</li>
-                                    <li className="list-group-item"><strong>Author:</strong> {newsreport.author}</li>
-                                    <li className="list-group-item"><strong>Categories:</strong> {newsreport.categories}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/news/${newsreport.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                    shelter.newsreports.map((report) => (
+                      <ReportCard
+                        key={report.id}
+                        report={report}
+                        // Optional: pass these only if you want highlighting
+                        // search_text={search_text}
+                        // highlightText={highlightText}
+                      />
                     ))
                 ) : (
                     <p className="text-center">Loading...</p>

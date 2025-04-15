@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
+import WildfireCard from '../components/WildfireCard';
+import ShelterCard from '../components/ShelterCard';
+import ReportCard from '../components/ReportCard';
 
 const escapeRegExp = (string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -104,63 +107,62 @@ const GeneralSearchPage = () => {
             return null;
         }
 
-        const cardImg = (
-            <img
-                src={card.image_url || card.url || card.imageUrl}
-                className="card-img"
-                alt={card.name || card.title}
-            />
-        );
+        // const cardImg = (
+        //     <img
+        //         src={card.image_url || card.url || card.imageUrl}
+        //         className="card-img"
+        //         alt={card.name || card.title}
+        //     />
+        // );
 
-        const baseCard = (body, linkPath) => (
-            <div key={card.id} className="col-md-4 mb-4">
-                <div className="card" style={{ width: '22rem' }}>
-                    {cardImg}
-                    <ul className="list-group list-group-flush">{body}</ul>
-                    <div className="card-body text-center">
-                        <Link to={linkPath} state={{ searchTerm: search_input }} className="card-link">
-                            Read More
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        );
+        // const baseCard = (body, linkPath) => (
+        //     <div key={card.id} className="col-md-4 mb-4">
+        //         <div className="card" style={{ width: '22rem' }}>
+        //             {cardImg}
+        //             <ul className="list-group list-group-flush">{body}</ul>
+        //             <div className="card-body text-center">
+        //                 <Link to={linkPath} state={{ searchTerm: search_input }} className="card-link">
+        //                     Read More
+        //                 </Link>
+        //             </div>
+        //         </div>
+        //     </div>
+        // );
 
         if (identity === 'wildfire') {
-            return baseCard([
-                <li key="name" className="list-group-item text-truncate"><strong>Name:</strong> {highlightText(card.name, search_input)}</li>,
-                <li key="county" className="list-group-item text-truncate"><strong>County:</strong> {highlightText(card.county, search_input)}</li>,
-                <li key="location" className="list-group-item text-truncate"><strong>Location:</strong> {highlightText(card.location, search_input)}</li>,
-                <li key="year" className="list-group-item text-truncate"><strong>Year:</strong> {highlightText(card.year, search_input)}</li>,
-                <li key="acres" className="list-group-item text-truncate"><strong>Acres Burned:</strong> {highlightText(card.acres_burned, search_input)}</li>,
-                <li key="status" className="list-group-item text-truncate"><strong>Status:</strong> {highlightText(card.status, search_input)}</li>,
-            ], `/incidents/${card.id}`);
+            return (
+                <WildfireCard
+                  wildfire={card}
+                  highlightText={highlightText}
+                  search_text={search_input}
+                />
+              )
         }
 
         if (identity === 'shelter') {
-            return baseCard([
-                <li key="name" className="list-group-item text-truncate"><strong>Name:</strong> {highlightText(card.name, search_input)}</li>,
-                <li key="county" className="list-group-item text-truncate"><strong>County:</strong> {highlightText(card.county, search_input)}</li>,
-                <li key="address" className="list-group-item text-truncate"><strong>Address:</strong> {highlightText(card.address, search_input)}</li>,
-                <li key="phone" className="list-group-item text-truncate"><strong>Phone:</strong> {highlightText(card.phone, search_input)}</li>,
-                <li key="rating" className="list-group-item text-truncate"><strong>Rating:</strong> {highlightText(card.rating, search_input)}</li>,
-            ], `/shelters/${card.id}`);
+            return (
+                <ShelterCard
+                    shelter={card}
+                    highlightText={highlightText}
+                    search_text={search_input}
+                />
+            )
         }
 
         if (identity === 'report') {
-            return baseCard([
-                <li key="title" className="list-group-item text-truncate"><strong>Title:</strong> <span className='card-title'>{highlightText(card.title, search_input)}</span></li>,
-                <li key="source" className="list-group-item text-truncate"><strong>Source:</strong> {highlightText(card.source, search_input)}</li>,
-                <li key="date" className="list-group-item text-truncate"><strong>Date:</strong> {highlightText(card.published_at, search_input)}</li>,
-                <li key="author" className="list-group-item text-truncate"><strong>Author:</strong> {highlightText(card.author, search_input)}</li>,
-                <li key="categories" className="list-group-item text-truncate"><strong>Categories:</strong> {highlightText(card.categories, search_input)}</li>,
-            ], `/news/${card.id}`);
+            return (
+                <ReportCard
+                    report={card}
+                    highlightText={highlightText}
+                    search_text={search_input}
+                />
+            )
         }
     };
 
     return (
-        <div className="container text-center">
-            <h1>Search</h1>
+        <div className="container">
+            <h1 className="text-center">Search</h1>
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
@@ -176,16 +178,20 @@ const GeneralSearchPage = () => {
             </div>
             <div className="row gy-4 mt-3">
                 {isSearching ? (
-                    <p>Loading...</p>
+                    <div className="text-center mt-4">
+                        <p className="text-muted">{loading}</p>
+                    </div>
                 ) : search_input.trim() && results && results.length > 0 ? (
                     results.map((result) => determineIdentity(result)).filter(Boolean)
                 ) : (
-                    <p>{loading}</p>
+                    <div className="text-center mt-4">
+                        <p className="text-muted">{loading}</p>
+                    </div>
                 )}
             </div>
             <div>
                 {search_input.trim() && totalItems > 0 && (
-                        <p className="text-muted text-start ms-2 text-center">
+                        <p className="text-muted text-start ms-2">
                             Showing <strong>{((currentPage - 1) * itemsPerPage) + 1} – {Math.min(currentPage * itemsPerPage, totalItems)} </strong> out of <strong>{totalItems}</strong>
                         </p>
                     ) && 

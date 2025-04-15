@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import { highlightText } from './GeneralSearchPage';
+import WildfireCard from '../components/WildfireCard';
 
 function Wildfires() {
     const [wildfires, setWildfires] = useState([]);
@@ -188,28 +189,12 @@ function Wildfires() {
             <div className="row">
                 {wildfires.length > 0 ? (
                     wildfires.map((wildfire) => (
-                        <div key={wildfire.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '100%' }}>
-                                <img
-                                    className="card-img"
-                                    src={wildfire.url || wildfire.imageUrl || "default-image.jpg"}
-                                    onError={(e) => e.target.src = "default-image.jpg"}
-                                    alt={wildfire.name}
-                                    style={{ height: '200px', objectFit: 'cover' }}
-                                />
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {highlightText(wildfire.name, search_text)}</li>
-                                    <li className="list-group-item"><strong>County:</strong> {highlightText(wildfire.county, search_text)}</li>
-                                    <li className="list-group-item"><strong>Location:</strong> {highlightText(wildfire.location, search_text)}</li>
-                                    <li className="list-group-item"><strong>Year:</strong> {highlightText(wildfire.year, search_text)}</li>
-                                    <li className="list-group-item"><strong>Acres Burned:</strong> {highlightText(wildfire.acres_burned, search_text)}</li>
-                                    <li className="list-group-item"><strong>Status:</strong> {highlightText(wildfire.status, search_text)}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/incidents/${wildfire.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                    <WildfireCard
+                        key={wildfire.id}
+                        wildfire={wildfire}
+                        search_text={search_text}
+                        highlightText={highlightText}
+                    />
                     ))
                 ) : (
                     <p className='text-center'>{loading}</p>

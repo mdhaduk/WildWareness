@@ -2,6 +2,8 @@ import { useState, useEffect} from 'react';
 import { useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import Map from '../components/Map';
+import ShelterCard from '../components/ShelterCard';
+import ReportCard from '../components/ReportCard';
 
 const WildfireIncidentsPage = () => {
   const navigate = useNavigate();
@@ -88,21 +90,10 @@ const WildfireIncidentsPage = () => {
         <h5 className=''><strong>Nearby Shelters:</strong></h5>
                 {wildfire.shelters.length > 0 ? (
                     wildfire.shelters.map((shelter) => (
-                        <div key={shelter.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={shelter.imageUrl} alt={shelter.name}/>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {shelter.name}</li>
-                                    <li className="list-group-item"><strong>Address:</strong> {shelter.address}</li>
-                                    <li className="list-group-item"><strong>Phone:</strong> {shelter.phone}</li>
-                                    <li className="list-group-item"><strong>Website:</strong> {shelter.website}</li>
-                                    <li className="list-group-item"><strong>Rating:</strong> {shelter.rating}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/shelters/${shelter.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                      <ShelterCard
+                        key={shelter.id}
+                        shelter={shelter}
+                      />
                     ))
                 ) : (
                     <p className="text-center">Loading...</p>
@@ -112,22 +103,14 @@ const WildfireIncidentsPage = () => {
         <div className="row">
         <h5 className=''><strong>Nearby News Reports:</strong></h5>
                 {wildfire.newsreports.length > 0 ? (
-                    wildfire.newsreports.map((newsreport) => ( 
-                        <div key={newsreport.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={newsreport.image_url} alt={newsreport.title}/>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Title:</strong> {newsreport.title}</li>
-                                    <li className="list-group-item"><strong>Source:</strong> {newsreport.source}</li>
-                                    <li className="list-group-item"><strong>Date:</strong> {newsreport.date}</li>
-                                    <li className="list-group-item"><strong>Author:</strong> {newsreport.author}</li>
-                                    <li className="list-group-item"><strong>Categories:</strong> {newsreport.categories}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/news/${newsreport.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                    wildfire.newsreports.map((report) => ( 
+                      <ReportCard
+                        key={report.id}
+                        report={report}
+                        // Optional: pass these only if you want highlighting
+                        // search_text={search_text}
+                        // highlightText={highlightText}
+                      />
                     ))
                 ) : (
                     <p className="text-center">Loading...</p>

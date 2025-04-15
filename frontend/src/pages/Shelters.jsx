@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import { highlightText } from './GeneralSearchPage';
+import ShelterCard from '../components/ShelterCard';
 
 function Shelters() {
     const [shelters, setShelters] = useState([]);
@@ -186,29 +187,18 @@ function Shelters() {
             <div className="row">
                 {shelters.length > 0 ? (
                     shelters.map((shelter) => (
-                        <div key={shelter.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={shelter.imageUrl || "default-image.jpg"} alt={shelter.name} />
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Name:</strong> {highlightText(shelter.name, search_text)}</li>
-                                    <li className="list-group-item"><strong>County:</strong> {highlightText(shelter.county, search_text)}</li>
-                                    <li className="list-group-item"><strong>Address:</strong> {highlightText(shelter.address, search_text)}</li>
-                                    <li className="list-group-item"><strong>Phone:</strong> {highlightText(shelter.phone, search_text)}</li>
-                                    <li className="list-group-item">
-                                        <strong>Website:</strong> <a href={shelter.website} target="_blank" rel="noopener noreferrer">{highlightText(shelter.website, search_text)}</a>
-                                    </li>
-                                    <li className="list-group-item"><strong>Rating:</strong> {highlightText(shelter.rating, search_text)}/5</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/shelters/${shelter.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                    <ShelterCard
+                        key={shelter.id}
+                        shelter={shelter}
+                        search_text={search_text}
+                        highlightText={highlightText}
+                    />
                     ))
                 ) : (
-                    <p className="text-center">{loading}</p>
+                    <p className='text-center'>{loading}</p>
                 )}
             </div>
+            
 
             {/* Result count */}
             {totalItems > 0 && (

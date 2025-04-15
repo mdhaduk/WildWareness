@@ -256,7 +256,7 @@ def get_all_reports():
     if search:
         term = search.lower().strip()
         data_with_scores = [(r, score_model(model=r, term=term, attributes=[
-                             "title", "source", "author", "published_at", "categories", "language", "description", "keywords"])) for r in data]
+                             "title", "source", "author", "published_at", "categories", "language", "description"])) for r in data]
         # Only include reports with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score

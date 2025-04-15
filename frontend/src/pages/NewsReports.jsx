@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import Select from 'react-select';
 import { highlightText } from './GeneralSearchPage';
+import ReportCard from '../components/ReportCard';
 
 function NewsReports() {
     const [reports, setReports] = useState([]);
@@ -180,21 +181,12 @@ function NewsReports() {
             <div className="row">
                 {reports.length > 0 ? (
                     reports.map((report) => (
-                        <div key={report.id} className="col-md-4 mb-4">
-                            <div className="card" style={{ width: '22rem' }}>
-                                <img className="card-img" src={report.image_url} alt={report.title} />
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"><strong>Title:</strong> <span className='card-title'>{highlightText(report.title, search_text)}</span></li>
-                                    <li className="list-group-item"><strong>Source:</strong> {highlightText(report.source, search_text)}</li>
-                                    <li className="list-group-item"><strong>Date:</strong> {highlightText(report.published_at, search_text)}</li>
-                                    <li className="list-group-item"><strong>Author:</strong> {highlightText(report.author, search_text)}</li>
-                                    <li className="list-group-item"><strong>Categories:</strong> {highlightText(report.categories, search_text)}</li>
-                                </ul>
-                                <div className="card-body text-center">
-                                    <Link to={`/news/${report.id}`} className="btn btn-primary">Read More</Link>
-                                </div>
-                            </div>
-                        </div>
+                        <ReportCard
+                        key={report.id}
+                        report={report}
+                        search_text={search_text}
+                        highlightText={highlightText}
+                    />
                     ))
                 ) : (
                     <p className="text-center">{loading}</p>
