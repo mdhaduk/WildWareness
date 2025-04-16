@@ -8,7 +8,7 @@ import WildfireCard from '../components/WildfireCard';
 
 function Wildfires() {
     const [wildfires, setWildfires] = useState([]);
-    const [totalPages, setTotalPages] = useState();
+    const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState();
     const [search_text, setSearchText] = useState('');
@@ -190,7 +190,6 @@ function Wildfires() {
                 {wildfires.length > 0 ? (
                     wildfires.map((wildfire) => (
                     <WildfireCard
-                        key={wildfire.id}
                         wildfire={wildfire}
                         search_text={search_text}
                         highlightText={highlightText}

@@ -8,7 +8,7 @@ import ShelterCard from '../components/ShelterCard';
 
 function Shelters() {
     const [shelters, setShelters] = useState([]);
-    const [totalPages, setTotalPages] = useState();
+    const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState();
     const [search_text, setSearchText] = useState('');
@@ -188,7 +188,6 @@ function Shelters() {
                 {shelters.length > 0 ? (
                     shelters.map((shelter) => (
                     <ShelterCard
-                        key={shelter.id}
                         shelter={shelter}
                         search_text={search_text}
                         highlightText={highlightText}

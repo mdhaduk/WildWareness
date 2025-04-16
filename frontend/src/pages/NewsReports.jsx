@@ -182,7 +182,6 @@ function NewsReports() {
                 {reports.length > 0 ? (
                     reports.map((report) => (
                         <ReportCard
-                        key={report.id}
                         report={report}
                         search_text={search_text}
                         highlightText={highlightText}

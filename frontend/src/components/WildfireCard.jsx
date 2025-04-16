@@ -13,14 +13,12 @@ const WildfireCard = ({ wildfire, search_text = '', highlightText = (text) => te
     url, // Image link for wildfire instance
   } = wildfire;
 
-  const imageSrc = url || "default-image.jpg";
-
   return (
     <div key={id} className="col-md-4 mb-4">
       <div className="card" style={{ width: '100%' }}>
         <img
           className="card-img"
-          src={imageSrc}
+          src={url}
           onError={(e) => { e.target.src = "default-image.jpg"; }}
           alt={name}
           style={{ height: '200px', objectFit: 'cover' }}

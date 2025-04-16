@@ -107,28 +107,6 @@ const GeneralSearchPage = () => {
             return null;
         }
 
-        // const cardImg = (
-        //     <img
-        //         src={card.image_url || card.url || card.imageUrl}
-        //         className="card-img"
-        //         alt={card.name || card.title}
-        //     />
-        // );
-
-        // const baseCard = (body, linkPath) => (
-        //     <div key={card.id} className="col-md-4 mb-4">
-        //         <div className="card" style={{ width: '22rem' }}>
-        //             {cardImg}
-        //             <ul className="list-group list-group-flush">{body}</ul>
-        //             <div className="card-body text-center">
-        //                 <Link to={linkPath} state={{ searchTerm: search_input }} className="card-link">
-        //                     Read More
-        //                 </Link>
-        //             </div>
-        //         </div>
-        //     </div>
-        // );
-
         if (identity === 'wildfire') {
             return (
                 <WildfireCard
@@ -179,7 +157,7 @@ const GeneralSearchPage = () => {
             <div className="row gy-4 mt-3">
                 {isSearching ? (
                     <div className="text-center mt-4">
-                        <p className="text-muted">{loading}</p>
+                        <p className="text-muted">Loading...</p>
                     </div>
                 ) : search_input.trim() && results && results.length > 0 ? (
                     results.map((result) => determineIdentity(result)).filter(Boolean)

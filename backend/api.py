@@ -345,11 +345,14 @@ def search_all_cards():
 
         def match_search(obj):
             if isinstance(obj, Wildfire):
-                return score_model(obj, term, ["name", "county", "location", "status", "year", "acres_burned"])
+                return score_model(obj, term, ["name", "county", "location", "status",
+                                               "year", "acres_burned", "latitude", "longitude", "description"])
             elif isinstance(obj, NewsReport):
-                return score_model(model=obj, term=term, attributes=["title", "source", "author", "published_at", "categories"])
+                return score_model(model=obj, term=term, attributes=[
+                    "title", "source", "author", "published_at", "categories", "language", "description"])
             elif isinstance(obj, Shelter):
-                return score_model(obj, term, ["name", "county", "address", "rating", "website", "phone"])
+                return score_model(obj, term, [
+                    "name", "county", "address", "rating", "website", "phone", "description"])
         # Only include reports with score > 0
         data_with_scores = [(obj, match_search(obj)) for obj in data]
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
