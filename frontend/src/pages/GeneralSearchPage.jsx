@@ -94,53 +94,75 @@ const GeneralSearchPage = () => {
             });
         }
     };
-    const determineIdentity = (card) => {
-        let identity = '';
-        if ('acres_burned' in card && 'status' in card) {
-            identity = 'wildfire';
-        } else if ('address' in card && 'phone' in card) {
-            identity = 'shelter';
-        } else if ('title' in card && 'published_at' in card) {
-            identity = 'report';
-        } else {
-            console.warn('Unknown card type:', card);
-            return null;
-        }
+    const categorizeResults = () => {
+        const categorized = {
+            wildfire: [],
+            shelter: [],
+            report: [],
+        };
+    
+        results.forEach(result => {
+            if ('acres_burned' in result && 'status' in result) {
+                categorized.wildfire.push(result);
+            } else if ('address' in result && 'phone' in result) {
+                categorized.shelter.push(result);
+            } else if ('title' in result && 'published_at' in result) {
+                categorized.report.push(result);
+            }});
 
-        if (identity === 'wildfire') {
-            return (
-                <WildfireCard
-                  wildfire={card}
-                  highlightText={highlightText}
-                  search_text={search_input}
-                />
-              )
-        }
+            return categorized;
+        };
 
-        if (identity === 'shelter') {
-            return (
-                <ShelterCard
-                    shelter={card}
-                    highlightText={highlightText}
-                    search_text={search_input}
-                />
-            )
-        }
+        const categorized = categorizeResults();
 
-        if (identity === 'report') {
-            return (
-                <ReportCard
-                    report={card}
-                    highlightText={highlightText}
-                    search_text={search_input}
-                />
-            )
-        }
-    };
+
+    // const determineIdentity = (card) => {
+    //     let identity = '';
+    //     if ('acres_burned' in card && 'status' in card) {
+    //         identity = 'wildfire';
+    //     } else if ('address' in card && 'phone' in card) {
+    //         identity = 'shelter';
+    //     } else if ('title' in card && 'published_at' in card) {
+    //         identity = 'report';
+    //     } else {
+    //         console.warn('Unknown card type:', card);
+    //         return null;
+    //     }
+
+    //     if (identity === 'wildfire') {
+    //         return (
+    //             <WildfireCard
+    //               wildfire={card}
+    //               highlightText={highlightText}
+    //               search_text={search_input}
+    //             />
+    //           )
+    //     }
+
+    //     if (identity === 'shelter') {
+    //         return (
+    //             <ShelterCard
+    //                 shelter={card}
+    //                 highlightText={highlightText}
+    //                 search_text={search_input}
+    //             />
+    //         )
+    //     }
+
+    //     if (identity === 'report') {
+    //         return (
+    //             <ReportCard
+    //                 report={card}
+    //                 highlightText={highlightText}
+    //                 search_text={search_input}
+    //             />
+    //         )
+    //     }
+    // };
 
     return (
         <div className="container">
-            <h1 className="text-center">Search</h1>
+            <h1 className="text-center my-4">Search</h1>
             {/* Search Bar */}
             <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
@@ -160,7 +182,55 @@ const GeneralSearchPage = () => {
                         <p className="text-muted">Loading...</p>
                     </div>
                 ) : search_input.trim() && results && results.length > 0 ? (
-                    results.map((result) => determineIdentity(result)).filter(Boolean)
+                    <>
+                    {categorized.wildfire.length > 0 && (
+                        <div className="mb-5">
+                            <h3 className="mb-3 border-bottom pb-2" style={{ color: '#c62828' }}><strong>Wildfire Incidents</strong></h3>
+                            <div className="row gy-4">
+                                {categorized.wildfire.map((wildfire) => (
+                                    <WildfireCard
+                                        key={wildfire.id}
+                                        wildfire={wildfire}
+                                        highlightText={highlightText}
+                                        search_text={search_input}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {categorized.shelter.length > 0 && (
+                        <div className="mb-5">
+                            <h3 className="text-success mb-3 border-bottom pb-2"><strong>Emergency Shelters</strong></h3>
+                            <div className="row gy-4">
+                                {categorized.shelter.map((shelter) => (
+                                    <ShelterCard
+                                        key={shelter.id}
+                                        shelter={shelter}
+                                        highlightText={highlightText}
+                                        search_text={search_input}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {categorized.report.length > 0 && (
+                        <div className="mb-5">
+                            <h3 className="mb-3 border-bottom pb-2" style={{ color: '#003366' }}><strong>Community Reports</strong></h3>
+                            <div className="row gy-4">
+                                {categorized.report.map((report) => (
+                                    <ReportCard
+                                        key={report.id}
+                                        report={report}
+                                        highlightText={highlightText}
+                                        search_text={search_input}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </>
                 ) : (
                     <div className="text-center mt-4">
                         <p className="text-muted">{loading}</p>

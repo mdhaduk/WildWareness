@@ -94,6 +94,18 @@ function NewsReports() {
         navigate(`/news?page=1`);
     };
 
+    // Clear all filters
+    const clearAllFilters = () => {
+        setSortBy('');
+        setOrder('');
+        setSource('');
+        setAuthor('');
+        setDate('');
+        setCategories([]);
+        setSearchText('');
+        navigate(`/news?page=1`);
+    };
+
     return (
         <div className="container">
             <h2 className="text-center my-4">News Reports</h2>
@@ -164,8 +176,25 @@ function NewsReports() {
                     />
                 </div>
             </div>
-
-            <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
+            {/* Search Bar and Clear All Filters Button */}
+            <div className="d-flex justify-content-center mb-4">
+                <div className="container text-center" style={{ width: '50%', height: '50px', margin: '0 auto' }}>
+                    <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+                        <input
+                            className="form-control form-control me-2"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                            value={search_text}
+                            onChange={updateSearchInput}
+                        />
+                        <button className="btn btn-primary ms-2" style={{ width: '20%', margin: '0 auto' }} onClick={clearAllFilters}>
+                            Clear All
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {/* <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
                 <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
                     <input
                         className="form-control me-2"
@@ -176,7 +205,7 @@ function NewsReports() {
                         onChange={updateSearchInput}
                     />
                 </form>
-            </div>
+            </div> */}
 
             <div className="row">
                 {reports.length > 0 ? (
