@@ -75,7 +75,7 @@ const NewsReportInstancePage = () => {
 
       <div className="container-fluid my-4">
         <h5><strong>Description:</strong></h5>
-        <p>{report.text_summary || "No description available."}</p>
+        <p>{report.text_summary === "No summary, use description" ? report.description : report.text_summary}</p>
       </div>
 
       <Map address={report.locations[0]} fireName={report.title} />

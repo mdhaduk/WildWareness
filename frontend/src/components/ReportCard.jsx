@@ -20,7 +20,7 @@ const ReportCard = ({ report, search_text = '', highlightText = (text) => text }
         <img
           className="card-img"
           src={imageSrc}
-          onError={(e) => { e.target.src = "default-image.jpg"; }}
+          onError={(e) => { e.target.src = "https://s.hdnux.com/photos/0/0/0/10802857/0/900x0.jpg"; }}
           alt={title}
           style={{ objectFit: 'cover' }}
         />

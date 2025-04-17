@@ -53,7 +53,6 @@ const ShelterInstancePage = () => {
     }
 
   const visibleReviews = showAll ? shelter.reviews : shelter.reviews?.slice(0, 2);
-
   return (
     <div className="container mt-5">
       <h3><strong>{shelter.name}</strong></h3>

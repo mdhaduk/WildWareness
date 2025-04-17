@@ -115,51 +115,6 @@ const GeneralSearchPage = () => {
 
         const categorized = categorizeResults();
 
-
-    // const determineIdentity = (card) => {
-    //     let identity = '';
-    //     if ('acres_burned' in card && 'status' in card) {
-    //         identity = 'wildfire';
-    //     } else if ('address' in card && 'phone' in card) {
-    //         identity = 'shelter';
-    //     } else if ('title' in card && 'published_at' in card) {
-    //         identity = 'report';
-    //     } else {
-    //         console.warn('Unknown card type:', card);
-    //         return null;
-    //     }
-
-    //     if (identity === 'wildfire') {
-    //         return (
-    //             <WildfireCard
-    //               wildfire={card}
-    //               highlightText={highlightText}
-    //               search_text={search_input}
-    //             />
-    //           )
-    //     }
-
-    //     if (identity === 'shelter') {
-    //         return (
-    //             <ShelterCard
-    //                 shelter={card}
-    //                 highlightText={highlightText}
-    //                 search_text={search_input}
-    //             />
-    //         )
-    //     }
-
-    //     if (identity === 'report') {
-    //         return (
-    //             <ReportCard
-    //                 report={card}
-    //                 highlightText={highlightText}
-    //                 search_text={search_input}
-    //             />
-    //         )
-    //     }
-    // };
-
     return (
         <div className="container">
             <h1 className="text-center my-4">Search</h1>

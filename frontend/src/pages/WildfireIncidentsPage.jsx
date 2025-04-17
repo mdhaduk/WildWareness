@@ -59,11 +59,11 @@ const WildfireIncidentsPage = () => {
       <div className="row my-4 justify-content-center">
         <div className="col-md-8 text-center mb-4">
           <img
-            src={wildfire.url || '/default-placeholder.jpg'}
+            src={wildfire.url}
             alt={wildfire.name}
             className="img-fluid"
             style={{ height: '300px', width: '600px', objectFit: 'cover' }}
-            onError={(e) => { e.target.src = '/default-placeholder.jpg'; }}
+            onError={(e) => e.target.src = "https://i0.wp.com/calmatters.org/wp-content/uploads/2025/01/010725_Pacific-Palisades-Fire_GETTY_CM_WIDE_01.jpg?fit=2000%2C1125&ssl=1"}
           />
         </div>
       </div>

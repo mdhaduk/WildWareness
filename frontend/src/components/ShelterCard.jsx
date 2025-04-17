@@ -19,7 +19,7 @@ const ShelterCard = ({ shelter, search_text = '', highlightText = (text) => text
         <img
           className="card-img"
           src={imageUrl}
-          onError={(e) => { e.target.src = "default-image.jpg"; }}
+          onError={(e) => e.target.src = "https://i0.wp.com/calmatters.org/wp-content/uploads/2023/09/090623_Chico_Homeless_FG_CM_18.jpg?fit=2000%2C1333&ssl=1"}
           alt={name}
           style={{ height: '200px', objectFit: 'cover' }}
         />

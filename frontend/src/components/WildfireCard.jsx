@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
 const WildfireCard = ({ wildfire, search_text = '', highlightText = (text) => text }) => {
@@ -19,7 +19,7 @@ const WildfireCard = ({ wildfire, search_text = '', highlightText = (text) => te
         <img
           className="card-img"
           src={url}
-          onError={(e) => { e.target.src = "default-image.jpg"; }}
+          onError={(e) => e.target.src = "https://i0.wp.com/calmatters.org/wp-content/uploads/2025/01/010725_Pacific-Palisades-Fire_GETTY_CM_WIDE_01.jpg?fit=2000%2C1125&ssl=1"}
           alt={name}
           style={{ height: '200px', objectFit: 'cover' }}
         />
