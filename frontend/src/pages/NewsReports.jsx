@@ -178,34 +178,24 @@ function NewsReports() {
             </div>
             {/* Search Bar and Clear All Filters Button */}
             <div className="d-flex justify-content-center mb-4">
-                <div className="container text-center" style={{ width: '50%', height: '50px', margin: '0 auto' }}>
-                    <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-                        <input
-                            className="form-control form-control me-2"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                            value={search_text}
-                            onChange={updateSearchInput}
-                        />
-                        <button className="btn btn-primary ms-2" style={{ width: '20%', margin: '0 auto' }} onClick={clearAllFilters}>
-                            Clear All
-                        </button>
-                    </form>
-                </div>
-            </div>
-            {/* <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
-                <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+                <div className="w-100 px-3" style={{ maxWidth: '700px' }}>
+                    <form className="d-flex flex-column flex-sm-row" role="search" onSubmit={(e) => e.preventDefault()}>
                     <input
-                        className="form-control me-2"
+                        className="form-control me-sm-2 mb-2 mb-sm-0"
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                         value={search_text}
                         onChange={updateSearchInput}
                     />
-                </form>
-            </div> */}
+                    <button className="btn btn-primary" style={{minWidth: '100px'}}
+                        onClick={clearAllFilters}
+                    >
+                        Clear All
+                    </button>
+                    </form>
+                </div>
+            </div>
 
             <div className="row">
                 {reports.length > 0 ? (

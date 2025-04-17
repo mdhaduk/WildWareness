@@ -100,6 +100,17 @@ function Wildfires() {
         navigate(`/incidents?page=1`);
     };
 
+    const clearAllFilters = () => {
+        setSortBy('');
+        setOrder('');
+        setLocation('');
+        setYear('');
+        setAcresBurned('');
+        setStatus('');
+        setSearchText('');
+        navigate(`/incidents?page=1`);
+    };
+
     return (
         <div className="container">
             <h2 className="text-center my-4">Wildfire Incidents</h2>
@@ -171,18 +182,25 @@ function Wildfires() {
                 </div>
             </div>
 
-            {/* Search Bar */}
-            <div className="container text-center" style={{ width: '50%', margin: '0 auto', marginBottom: '20px' }}>
-                <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+            {/* Search Bar and Clear All Filters Button */}
+            <div className="d-flex justify-content-center mb-4">
+                <div className="w-100 px-3" style={{ maxWidth: '700px' }}>
+                    <form className="d-flex flex-column flex-sm-row" role="search" onSubmit={(e) => e.preventDefault()}>
                     <input
-                        className="form-control me-2"
+                        className="form-control me-sm-2 mb-2 mb-sm-0"
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                         value={search_text}
                         onChange={updateSearchInput}
                     />
-                </form>
+                    <button className="btn btn-primary" style={{minWidth: '100px'}}
+                        onClick={clearAllFilters}
+                    >
+                        Clear All
+                    </button>
+                    </form>
+                </div>
             </div>
 
             {/* Wildfire Cards */}
