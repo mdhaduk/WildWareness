@@ -424,7 +424,7 @@ class acceptance_tests_frontend(unittest.TestCase):
             "Emergency Shelters": f'{url}shelters/',
             "Community Reports": f'{url}news/',
         }
-        search_texts = ["livermore", "house", "help"]
+        search_texts = ["livermore", "house", "rate"]
         index = 0
         for page_name, relative_url in navbar_links.items():
             # Navigate to the page
