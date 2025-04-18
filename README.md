@@ -8,7 +8,7 @@
 https://wildwareness.net/
 
 ## **Git SHA**
-- 
+- 936e1e579fee248e162ac3524d03171a5cb00de9
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
@@ -125,6 +125,7 @@ Users can:
 - Location
 - Year
 - Acres Burned
+- Status
 
 **Estimated Instances:** 310  
 **Connections:** Linked to Emergency Shelters and Community Reports  
@@ -136,6 +137,7 @@ Users can:
 ### 2. Emergency Shelters
 **Attributes:**
 - Name
+- County
 - Address
 - Phone
 - Website
