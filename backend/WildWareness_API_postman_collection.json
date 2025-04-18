@@ -1339,10 +1339,10 @@
 									"// Check query result",
 									"pm.test(\"Check query result\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    first = jsonData.shelters[0]",
+									"    first = jsonData.shelters[1]",
 									"    pm.expect((first.name).trim().toLowerCase()).to.eql(\"yreka community resource center\");",
-									"    second = jsonData.shelters[1]",
-									"    pm.expect((second.name).trim().toLowerCase()).to.eql(\"youth navigation center of stanislaus county\");",
+									"    second = jsonData.shelters[0]",
+									"    pm.expect((second.name).trim().toLowerCase()).to.eql(\"zahn emergency housing\");",
 									"});",
 									""
 								],
@@ -1525,11 +1525,13 @@
 									"// Check query result",
 									"pm.test(\"Check query result\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.shelters.length).to.eql(2);",
+									"    pm.expect(jsonData.shelters.length).to.eql(3);",
 									"    first = jsonData.shelters[0]",
-									"    pm.expect((first.name).trim().toLowerCase()).to.eql(\"women of worth-vintage wow\");",
+									"    pm.expect((first.name).trim().toLowerCase()).to.eql(\"yreka community resource center\");",
 									"    second = jsonData.shelters[1]",
-									"    pm.expect((second.name).trim().toLowerCase()).to.eql(\"hospitality house\");",
+									"    pm.expect((second.name).trim().toLowerCase()).to.eql(\"rescue ranch adoption center\");",
+									"    third = jsonData.shelters[2]",
+									"    pm.expect((third.name).trim().toLowerCase()).to.eql(\"choices yreka\");",
 									"});",
 									""
 								],
@@ -1542,7 +1544,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://api.wildwareness.net/shelters?page&size=&search&sortBy=name&order=desc&county&zipCode=95945&phone&rating",
+							"raw": "https://api.wildwareness.net/shelters?page&size=&search&sortBy=name&order=desc&county&zipCode=96097&phone&rating",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -1585,7 +1587,7 @@
 								},
 								{
 									"key": "zipCode",
-									"value": "95945",
+									"value": "96097",
 									"description": "zipCode of shelter"
 								},
 								{
@@ -1712,9 +1714,9 @@
 									"// Check query result",
 									"pm.test(\"Check query result\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.shelters.length).to.eql(6);",
+									"    pm.expect(jsonData.shelters.length).to.eql(4);",
 									"    first = jsonData.shelters[0]",
-									"    pm.expect((first.name).trim().toLowerCase()).to.eql(\"st. vincent's cardinal manning center\");",
+									"    pm.expect((first.name).trim().toLowerCase()).to.eql(\"union rescue mission\");",
 									"    second = jsonData.shelters[1]",
 									"    pm.expect((second.name).trim().toLowerCase()).to.eql(\"the midnight mission\");",
 									"});",
@@ -1900,11 +1902,13 @@
 									"// Check query result",
 									"pm.test(\"Check query result\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.shelters.length).to.eql(8);",
+									"    pm.expect(jsonData.shelters.length).to.eql(3);",
 									"    first = jsonData.shelters[0]",
-									"    pm.expect((first.name).trim().toLowerCase().includes(\"our\")).to.be.true;",
+									"    pm.expect((first.name).trim().toLowerCase().includes(\"cross\")).to.be.true;",
 									"    second = jsonData.shelters[1]",
-									"    pm.expect((second.name).trim().toLowerCase().includes(\"our\")).to.be.true;",
+									"    pm.expect((second.name).trim().toLowerCase().includes(\"cross\")).to.be.true;",
+									"    third = jsonData.shelters[2]",
+									"    pm.expect((third.address).trim().toLowerCase().includes(\"cross\")).to.be.true;",
 									"});",
 									"",
 									""
@@ -1918,7 +1922,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://api.wildwareness.net/shelters?page&size=&search=our&sortBy=county&order=desc&county=&zipCode&phone=&rating=4",
+							"raw": "https://api.wildwareness.net/shelters?page&size=&search=cross&sortBy=county&order=desc&county=&zipCode&phone=&rating=4",
 							"protocol": "https",
 							"host": [
 								"api",
@@ -1941,7 +1945,7 @@
 								},
 								{
 									"key": "search",
-									"value": "our",
+									"value": "cross",
 									"description": "input text for search bar on shelters model page"
 								},
 								{
@@ -2963,7 +2967,7 @@
 									"// Check query result",
 									"pm.test(\"Check query result\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.reports.length).to.eql(3);",
+									"    pm.expect(jsonData.reports.length).to.eql(6);",
 									"    first = jsonData.reports[0]",
 									"    pm.expect((first.source).trim().toLowerCase().includes(\"journ\")).to.be.true;",
 									"    second = jsonData.reports[1]",
