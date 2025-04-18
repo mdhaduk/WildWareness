@@ -1,7 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import { highlightText } from './GeneralSearchPage';
 import ShelterCard from '../components/ShelterCard';

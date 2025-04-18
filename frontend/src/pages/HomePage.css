@@ -1,0 +1,96 @@
+.hero-section {
+    background-image: url('https://img.freepik.com/free-photo/burning-forest-global-warming-wildfire-photography_53876-104834.jpg?t=st=1744934373~exp=1744937973~hmac=9003d5f320b129fc722d2c138517ffa7748f65c888567d9ccd629a40a896427c&w=2000');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero-content {
+    padding: 2rem 3rem;
+    border-radius: 10px;
+  }
+
+  .hero-content p{
+    font-size: x-large;
+    color:azure
+  }
+  
+  .mission-section {
+    background-color: #fff; 
+    color: #333;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-primary {
+    background-color: #ff6f3c;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e4571c;
+  }
+  .mission-text h1 {
+    font-size: 2.75rem;
+  }
+  
+  .mission-text p {
+    font-size: 2rem;
+  }
+  
+  .mission-text ul {
+    font-size: 1.75rem;
+  }
+  .mission-links a {
+    margin: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: black;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+  }
+  
+  
+  .custom-carousel {
+    max-width: 850px;
+    max-height: 600px;
+    margin-top: 25px;
+  }
+  .custom-carousel img {
+    border-radius: 1rem;
+  }
+  .fill-hover {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: white;
+    transition: color 0.4s ease;
+  }
+  
+  .fill-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: white;
+    z-index: 0;
+    transition: width 0.4s ease;
+  }
+  
+  .fill-hover:hover::before {
+    width: 100%;
+  }
+  
+  .fill-hover:hover {
+    color: black; /* Change text color for contrast */
+  }
+  
+  .fill-hover span {
+    position: relative;
+    z-index: 1;
+  }
+  

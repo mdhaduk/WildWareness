@@ -16,11 +16,6 @@ p {
     width: 100%;
     z-index: 1000;
 }
-.hero-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-}
 .carousel-caption {
     background: rgba(0, 0, 0, 0.6);
     padding: 10px;
@@ -119,3 +114,6 @@ p {
     transform: translateY(-5px);
 }
 
+.nav-item{
+    font-size: 1.75rem;
+}

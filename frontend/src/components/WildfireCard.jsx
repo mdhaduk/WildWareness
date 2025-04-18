@@ -1,4 +1,3 @@
-import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
 const WildfireCard = ({ wildfire, search_text = '', highlightText = (text) => text }) => {
