@@ -144,7 +144,6 @@ const GeneralSearchPage = () => {
                             <div className="row gy-4">
                                 {categorized.wildfire.map((wildfire) => (
                                     <WildfireCard
-                                        key={wildfire.id}
                                         wildfire={wildfire}
                                         highlightText={highlightText}
                                         search_text={search_input}
@@ -160,7 +159,6 @@ const GeneralSearchPage = () => {
                             <div className="row gy-4">
                                 {categorized.shelter.map((shelter) => (
                                     <ShelterCard
-                                        key={shelter.id}
                                         shelter={shelter}
                                         highlightText={highlightText}
                                         search_text={search_input}
@@ -176,7 +174,6 @@ const GeneralSearchPage = () => {
                             <div className="row gy-4">
                                 {categorized.report.map((report) => (
                                     <ReportCard
-                                        key={report.id}
                                         report={report}
                                         highlightText={highlightText}
                                         search_text={search_input}

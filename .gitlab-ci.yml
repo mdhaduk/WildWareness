@@ -8,7 +8,7 @@ build:
     - 'test -f frontend/index.html'
     - echo "Phase 1 CI"
 
-test:
+test_frontend:
   stage: test
   image: node:20
   before_script:

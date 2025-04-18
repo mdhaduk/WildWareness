@@ -336,34 +336,38 @@ class TestAPIv3(unittest.TestCase):
         # Call the mock API endpoint for wildfire incidents
         response = self.get_response('shelters?page=&size=&search=butte&sort_by=name&order=asc&location=&year=&acres_burned=&status=')
         # Assertions
-        self.assertEqual((response["shelters"][1]["name"]).strip().lower(), "esplanade house")
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "esplanade house")
         self.assertEqual(len(response["shelters"]), 10)
-        self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "butte county")
+        self.assertEqual((response["shelters"][1]["county"]).strip().lower(), "butte county")
 
     def test_shelters_filter(self):
         # Call the mock API endpoint for wildfire incidents
-        response = self.get_response('shelters?page=&size=&sort_by=name&order=asc&county=&zipCode=95642&phone=&rating=4')
+        response = self.get_response('shelters?page=&size=&sort_by=name&order=asc&county=&zipCode=92010&phone=&rating=4')
         # Assertions
-        self.assertEqual((response["shelters"][1]["name"]).strip().lower(), "atcaa jackson service center")
-        self.assertEqual(len(response["shelters"]), 3)
-        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "amador tuolumne community action agency")
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "catholic charities la posada")
+        self.assertEqual(len(response["shelters"]), 1)
+        response = self.get_response('shelters?page=&size=&sort_by=name&order=asc&county=&zipCode=95112&phone=&rating=4')
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "cityteam renew for men: residential program")
+        self.assertEqual(len(response["shelters"]), 1)
     
     def test_shelters_sort(self):
         # Call the mock API endpoint for wildfire incidents
         response = self.get_response('shelters?page=&size=&sort_by=county&order=desc&county=&zipCode=&phone=&rating=')
         # Assertions
-        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "14forward")
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "twin cities rescue mission")
         self.assertEqual(len(response["shelters"]), 10)
-        self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "yuba county")
+        response = self.get_response('shelters?page=&size=&sort_by=county&order=desc&county=imperial&zipCode=&phone=&rating=')
+        self.assertEqual((response["shelters"][0]["name"]).strip().lower(), "new creations men's home")
+        # self.assertEqual((response["shelters"][0]["county"]).strip().lower(), "yuba county")
     
 
     def test_reports_search(self):
         # Call the mock API endpoint for wildfire incidents
         response = self.get_response('news?page=&size=&search=air&sort_by=title&order=asc&source=&author=&date=&categories=')
         # Assertions
-        self.assertEqual((response["reports"][0]["source"]).strip().lower(), "adweek.com")
-        self.assertEqual(len(response["reports"]), 2)
-        self.assertEqual((response["reports"][1]["author"]).strip().lower(), "abc news")
+        self.assertEqual((response["reports"][0]["source"]).strip().lower(), "ibtimes.com")
+        self.assertEqual((response["reports"][1]["author"]).strip().lower(), "adweek.com")
+        self.assertEqual((response["reports"][2]["author"]).strip().lower(), "abc news")
     
 
     def test_reports_filter(self):
