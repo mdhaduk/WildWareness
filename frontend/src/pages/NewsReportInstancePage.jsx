@@ -64,11 +64,11 @@ const NewsReportInstancePage = () => {
       <div className="row my-4 justify-content-center">
         <div className="col-md-8 text-center mb-4">
           <img
-            src={report.image_url || '/default-placeholder.jpg'}
+            src={report.image_url}
             alt={report.title}
             className="img-fluid"
             style={{ height: '300px', width: '600px', objectFit: 'cover' }}
-            onError={(e) => { e.target.src = '/default-placeholder.jpg'; }}
+            onError={(e) => { e.target.src = 'https://s.hdnux.com/photos/0/0/0/10802857/0/900x0.jpg'; }}
           />
         </div>
       </div>

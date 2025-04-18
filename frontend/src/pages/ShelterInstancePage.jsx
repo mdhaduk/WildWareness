@@ -64,11 +64,11 @@ const ShelterInstancePage = () => {
       <div className="row my-4 justify-content-center">
         <div className="col-md-8 text-center mb-4">
           <img
-            src={shelter.imageUrl || '/default-placeholder.jpg'}
+            src={shelter.imageUrl}
             alt={shelter.name}
             className="img-fluid"
             style={{ height: '300px', width: '600px', objectFit: 'cover' }}
-            onError={(e) => { e.target.src = '/default-placeholder.jpg'; }}
+            onError={(e) => { e.target.src = 'https://i0.wp.com/calmatters.org/wp-content/uploads/2023/09/090623_Chico_Homeless_FG_CM_18.jpg?fit=2000%2C1333&ssl=1'; }}
           />
         </div>
       </div>
