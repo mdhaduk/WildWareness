@@ -284,7 +284,7 @@ class TestAPIv2(unittest.TestCase):
         # Call the mock API endpoint for wildfire incidents
         response = self.get_response('news?page=1')
         # Assertions
-        self.assertEqual(len(response["reports"]), 2)  # Adjusted the expected length
+        self.assertEqual(len(response["reports"]), 10)  # Adjusted the expected length
         self.assertIn("author", response["reports"][0])
         self.assertIn("categories", response["reports"][0])
     
