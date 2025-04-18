@@ -1,5 +1,5 @@
 .hero-section {
-    background-image: url('https://img.freepik.com/free-photo/burning-forest-global-warming-wildfire-photography_53876-104834.jpg?t=st=1744934373~exp=1744937973~hmac=9003d5f320b129fc722d2c138517ffa7748f65c888567d9ccd629a40a896427c&w=2000');
+    background-image: url('../assets/hero-img.png');
     background-size: cover;
     background-position: center;
     height: 100vh;
