@@ -105,9 +105,8 @@ def link(local_session):
 
 
 def addNewsReports(local_session):
-    allowed_keys = {"title", "description", "keywords", "snippet", "url", "image_url", "language", "published_at", "source", 
-                    "categories", "author", "locations", "geo_locations", "map_urls", "reading_time", "socials", 
-                    "text_summary", "related_articles", "hashtag_links", "images", "videos", "county"}
+    allowed_keys = {"title", "description", "url", "image_url", "published_at", "source", 
+                    "categories", "author", "locations", "reading_time","text_summary", "county"}
     with local_session() as ls:
         with open("news_reports_data.json", "r") as file:
             body = json.load(file)

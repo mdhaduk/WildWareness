@@ -139,27 +139,15 @@ class NewsReport(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(Text, nullable=False)
     description = Column(Text, nullable=True)
-    keywords = Column(JSON, nullable=False)  # Store list of keywords as a JSON array
-    snippet = Column(Text, nullable=True)
     url = Column(Text, nullable=True)
     image_url = Column(Text, nullable=False)
-    language = Column(Text, nullable=True)
     published_at = Column(Text, nullable=True)
     source = Column(Text, nullable=True)
     categories = Column(Text, nullable=False)  # Store list of categories as a JSON array
-    relevance_score = Column(Float, nullable=True)
-    search_query = Column(Text, nullable=True)
     author = Column(Text, nullable=True)
     locations = Column(JSON, nullable=False)  # Store list of locations as a JSON array
-    geo_locations = Column(JSON, nullable=False)  # Store list of geo-location objects as JSON
-    map_urls = Column(JSON, nullable=False)  # Store list of map URLs as JSON
     reading_time = Column(Integer, nullable=False)
-    socials = Column(JSON, nullable=False)  # Store list of social URLs as JSON
     text_summary = Column(Text, nullable=False)
-    related_articles = Column(JSON, nullable=False)  # Store list of related articles as JSON
-    hashtag_links = Column(JSON, nullable=False)  # Store list of hashtag links as JSON
-    images = Column(JSON, nullable=False)  # Store list of images as JSON
-    videos = Column(JSON, nullable=False)  # Store list of videos as JSON
     county = Column(JSON, nullable=False)
 
     wildfires = relationship(
@@ -175,27 +163,15 @@ class NewsReport(Base):
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "keywords": self.keywords,
-            "snippet": self.snippet,
             "url": self.url,
             "image_url": self.image_url,
-            "language": self.language,
             "published_at": self.published_at,
             "source": self.source,
             "categories": self.categories,
-            "relevance_score": self.relevance_score,
-            "search_query": self.search_query,
             "author": self.author,
             "locations": self.locations,
-            "geo_locations": self.geo_locations,
-            "map_urls": self.map_urls,
             "reading_time": self.reading_time,
-            "socials": self.socials,
             "text_summary": self.text_summary,
-            "related_articles": self.related_articles,
-            "hashtag_links": self.hashtag_links,
-            "images": self.images,
-            "videos": self.videos,
             "county": self.county,
             "wildfires": [
                 {"id": wildfire.id, "name": wildfire.name, "county": wildfire.county,
