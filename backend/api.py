@@ -39,23 +39,30 @@ news_cache = []
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
     with local_session() as session:
-        wildfire_cache = session.query(Wildfire).options(
+        # Wildfire cache without duplicates by name
+        wildfires = session.query(Wildfire).options(
             joinedload(Wildfire.shelters),
             joinedload(Wildfire.newsreports)
         ).all()
-        print(f"Preloaded {len(wildfire_cache)} wildfires")
+        wildfire_cache = list({wf.name: wf for wf in wildfires}.values())
+        print(f"Preloaded {len(wildfire_cache)} unique wildfires")
 
-        shelter_cache = session.query(Shelter).options(
+        # Shelter cache without duplicates by name
+        shelters = session.query(Shelter).options(
             joinedload(Shelter.wildfires),
             joinedload(Shelter.newsreports)
         ).all()
-        print(f"Preloaded {len(shelter_cache)} shelters")
+        shelter_cache = list({sh.name: sh for sh in shelters}.values())
+        print(f"Preloaded {len(shelter_cache)} unique shelters")
 
-        news_cache = session.query(NewsReport).options(
+        # NewsReport cache without duplicates by name
+        news_reports = session.query(NewsReport).options(
             joinedload(NewsReport.wildfires),
             joinedload(NewsReport.shelters)
         ).all()
-        print(f"Preloaded {len(news_cache)} news reports")
+        news_cache = list({nr.title: nr for nr in news_reports}.values())
+        print(f"Preloaded {len(news_cache)} unique news reports")
+
 
 
 preload_all_data()  # GET ALL THE DATA
