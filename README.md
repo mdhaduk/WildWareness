@@ -8,7 +8,7 @@
 https://wildwareness.net/
 
 ## **Git SHA**
-- 936e1e579fee248e162ac3524d03171a5cb00de9
+- 
 
 ## **API Documentation**
 - [API Design - Postman](https://documenter.getpostman.com/view/31322139/2sAYdZvEUy)
@@ -144,7 +144,7 @@ Users can:
 - Rating
 
 
-**Estimated Instances:** 207  
+**Estimated Instances:** 170  
 **Connections:** Linked to Wildfire Incidents and Community Reports  
 **Media Types:**
 - Images of shelter
@@ -162,7 +162,7 @@ Users can:
 **Estimated Instances:** 115  
 **Connections:** Linked to Wildfire Incidents and Emergency Shelters
 **Media Types:**
-- Images of Relevant to Articles
+- Images
 - Interactive Maps
 - Text and Links
 

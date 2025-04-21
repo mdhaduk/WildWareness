@@ -1,14 +1,14 @@
-from sqlalchemy import Integer, String, Float, Column, JSON, Text, ForeignKey, Table
+from sqlalchemy import Integer, Column, JSON, Text, ForeignKey, Table
 from sqlalchemy.orm import DeclarativeBase, relationship
-import json
-from scripts.helper_scripts import get_county_from_address
 
-
+# Testing
 TESTING = False
 
 class Base(DeclarativeBase):
     pass
 
+# For connections between instances of different models
+# Association table for relationship between Wildfires and Shelters
 Wildfire_Shelter = Table(
     "wildfires_shelters",
     Base.metadata,
@@ -16,6 +16,7 @@ Wildfire_Shelter = Table(
     Column("shelters_id", Integer, ForeignKey("shelters.id", ondelete="CASCADE"), primary_key=True),
 )
 
+# Association table between Wildfires and Reports
 Wildfire_NewsReport = Table(
     "wildfires_newsreports",
     Base.metadata,
@@ -23,6 +24,7 @@ Wildfire_NewsReport = Table(
     Column("news_id", Integer, ForeignKey("news.id", ondelete="CASCADE"), primary_key=True),
 )
 
+# Association table between Shelters and Reports
 Shelter_NewsReport = Table(
     "shelters_newsreports",
     Base.metadata,
@@ -31,10 +33,10 @@ Shelter_NewsReport = Table(
 )
 
 
-
+# Model for wildfires
 class Wildfire(Base):
     __tablename__ = "wildfires"
-    # card
+    # Columns representing attributes of a wildfire
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Text, nullable=False)
     county = Column(Text, nullable=False)
@@ -47,15 +49,15 @@ class Wildfire(Base):
     description = Column(Text, nullable=False)
     status = Column(Text, nullable=False)
 
-
+    # Get relationships with shelter and reports models
     shelters = relationship(
         "Shelter", secondary=Wildfire_Shelter, back_populates="wildfires"
     )
-
     newsreports = relationship(
         "NewsReport", secondary=Wildfire_NewsReport, back_populates="wildfires"
     )
 
+    # Build and return dictionary for a wildfire entry
     def as_instance(self):
         instance = {
             "id": self.id,
@@ -84,9 +86,11 @@ class Wildfire(Base):
         }
         return instance
 
+
+# Model for shelters
 class Shelter(Base):
     __tablename__ = "shelters"
-
+    # Columns representing attributes of a shelter
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Text, nullable=False)
     address = Column(Text, nullable=False)
@@ -98,14 +102,15 @@ class Shelter(Base):
     description = Column(Text, nullable=False)
     county = Column(Text, nullable=False)
 
+    # Get relationships with wildfire and reports models
     wildfires = relationship(
         "Wildfire", secondary=Wildfire_Shelter, back_populates="shelters"
     )
-
     newsreports = relationship(
         "NewsReport", secondary=Shelter_NewsReport, back_populates="shelters"
     )
 
+    # Build and return dictionary for a shelter entry
     def as_instance(self):
         instance = {
             "id": self.id,
@@ -133,9 +138,10 @@ class Shelter(Base):
         return instance
 
 
+# Model for news reports
 class NewsReport(Base):
     __tablename__ = "news"
-    # card
+    # Columns representing attributes of a news report
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(Text, nullable=False)
     description = Column(Text, nullable=True)
@@ -150,14 +156,15 @@ class NewsReport(Base):
     text_summary = Column(Text, nullable=False)
     county = Column(JSON, nullable=False)
 
+    # Get relationships with wildfire and shelters models
     wildfires = relationship(
         "Wildfire", secondary=Wildfire_NewsReport, back_populates="newsreports"
     )
-
     shelters = relationship(
         "Shelter", secondary=Shelter_NewsReport, back_populates="newsreports"
     )
 
+     # Build and return dictionary for a news reports entry
     def as_instance(self):
         instance = {
             "id": self.id,

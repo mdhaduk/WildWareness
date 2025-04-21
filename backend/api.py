@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from sqlalchemy import create_engine, func, or_, and_
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Wildfire, Shelter, NewsReport
 from models import TESTING
@@ -8,15 +8,17 @@ from dotenv import load_dotenv
 from datetime import datetime
 from sqlalchemy.orm import joinedload
 import os
-from itertools import permutations
 from scripts.helper_scripts import score_model
 
+# Load environment variables
 load_dotenv()
 
+# Initialize Flask app and CORS
 app = Flask(__name__)
 app.json.sort_keys = False
 CORS(app)
 
+# Define database URL
 DATABASE_URL = ""
 if TESTING:
     DATABASE_URL = "sqlite:///test.db"
@@ -26,6 +28,7 @@ else:
     database_name = "wildfiredb"
     DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@wildwarenessdb.czwce00s2t3z.us-east-2.rds.amazonaws.com/{database_name}"
 
+# Initialize database engine and session factory
 engine = create_engine(DATABASE_URL, echo=False, future=True)
 local_session = sessionmaker(bind=engine, autoflush=False, future=True)
 
@@ -35,7 +38,7 @@ wildfire_cache = []
 shelter_cache = []
 news_cache = []
 
-
+# Load all data into memory on startup for fast querying
 def preload_all_data():
     global wildfire_cache, shelter_cache, news_cache
     with local_session() as session:
@@ -61,8 +64,13 @@ def preload_all_data():
 preload_all_data()  # GET ALL THE DATA
 
 
+
+#------------------- Wildfire Endpoints -------------------
+
+# Get all wildfire incidents with optional filtering, sorting, and pagination
 @app.route("/wildfire_incidents", methods=["GET"])
 def get_all_incidents():
+    # Get parameter values
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     sort_by = request.args.get("sort_by", "")
@@ -72,17 +80,19 @@ def get_all_incidents():
     acres_burned = request.args.get("acres_burned")
     search = request.args.get("search", None)
     status = request.args.get("status")
+
     data = wildfire_cache[:]
+
     # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
         data_with_scores = [(r, score_model(r, term, ["name", "county", "location", "status",
                              "year", "acres_burned", "latitude", "longitude", "description"])) for r in data]
-        # Only include reports with score > 0
+        # Only include incidents with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
         data_with_scores.sort(key=lambda x: x[1], reverse=True)
-        # Extract sorted reports
+        # Extract sorted incidents
         data = [d[0] for d in data_with_scores]
 
     # Apply filters
@@ -99,11 +109,11 @@ def get_all_incidents():
             if w.acres_burned and w.acres_burned.replace('.', '', 1).isdigit()
             and float(w.acres_burned) > float(acres_burned)
         ]
-
     if status:
         data = [w for w in data if w.status and w.status.lower() ==
                 status.lower()]
 
+    # Apply sorting by ascending or descending
     if sort_by:
         reverse = order == "desc"
         try:
@@ -130,6 +140,7 @@ def get_all_incidents():
     })
 
 
+# Get all distinct wildfire locations (counties)
 @app.route("/wildfire_locations", methods=["GET"])
 def get_wildfire_locations():
     with local_session() as ls:
@@ -142,18 +153,7 @@ def get_wildfire_locations():
             return jsonify({"Error getting locations": str(e)}), 500
 
 
-@app.route("/shelter_locations", methods=["GET"])
-def get_shelter_locations():
-    with local_session() as ls:
-        try:
-            counties = ls.query(Shelter.county).distinct().order_by(
-                Shelter.county).all()
-            county_list = [c[0] for c in counties if c[0]]
-            return jsonify({"locations": county_list})
-        except Exception as e:
-            return jsonify({"Error getting locations": str(e)}), 500
-
-
+# Get a single wildfire by ID
 @app.route("/wildfire_incidents/<int:id>", methods=["GET"])
 def get_single_incident(id):
     for w in wildfire_cache:
@@ -162,8 +162,13 @@ def get_single_incident(id):
     return jsonify({"error": "incident not found"}), 404
 
 
+
+# ------------------- Shelter Endpoints -------------------
+
+# Get all shelters with optional filtering, sorting, and pagination
 @app.route("/shelters", methods=["GET"])
 def get_all_shelters():
+    # Get parameter values
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     sort_by = request.args.get("sort_by", "")
@@ -175,14 +180,17 @@ def get_all_shelters():
     search = request.args.get("search")
 
     data = shelter_cache[:]
+
+    # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
         data_with_scores = [(r, score_model(r, term, [
                              "name", "county", "address", "rating", "website", "phone", "description"])) for r in data]
-        # Only include reports with score > 0
+        # Only include shelters with score > 0
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
         data_with_scores.sort(key=lambda x: x[1], reverse=True)
+        # Extract sorted shelters
         data = [d[0] for d in data_with_scores]
 
     # Apply filters
@@ -192,19 +200,18 @@ def get_all_shelters():
     if zipCode:
         zipCode = str(zipCode)
         data = [s for s in data if zipCode.strip() in (s.address or "").lower()]
-
     if phone:
         cleaned_phone = ''.join(filter(str.isdigit, str(phone)))
         first_three_phone = cleaned_phone[:3]
         data = [s for s in data if first_three_phone in ''.join(
             filter(str.isdigit, s.phone or ""))[:3]]
-
     if rating:
         data = [s for s in data
                 if s.rating and s.rating != "N/A"
                 and float(s.rating.split('/')[0] or 0) >= float(rating)
                 and float(s.rating.split('/')[0] or 0) < float(rating) + 1]
 
+    # Apply sorting by ascending or descending
     if sort_by:
         reverse = order == "desc"
         try:
@@ -230,7 +237,19 @@ def get_all_shelters():
         },
     })
 
-
+# Get all shelter locations (counties)
+@app.route("/shelter_locations", methods=["GET"])
+def get_shelter_locations():
+    with local_session() as ls:
+        try:
+            counties = ls.query(Shelter.county).distinct().order_by(
+                Shelter.county).all()
+            county_list = [c[0] for c in counties if c[0]]
+            return jsonify({"locations": county_list})
+        except Exception as e:
+            return jsonify({"Error getting locations": str(e)}), 500
+        
+# Get a single shelter by ID
 @app.route("/shelters/<int:id>", methods=["GET"])
 def get_single_shelter(id):
     for s in shelter_cache:
@@ -239,20 +258,27 @@ def get_single_shelter(id):
     return jsonify({"error": "shelter not found"}), 404
 
 
+
+# ------------------- News Report Endpoints -------------------
+
+# Get all news reports with optional filtering, sorting, and pagination
 @app.route("/news", methods=["GET"])
 def get_all_reports():
+    # Get parameter values
     page = request.args.get("page", 1, type=int)
     size = request.args.get("size", DEFAULT_PAGE_SIZE, type=int)
     source = request.args.get("source", None)
     author = request.args.get("author", None)
     date = request.args.get("date", None)
     categories = request.args.get('categories', '')
-    sort_by = request.args.get("sort_by", "")  # Default to 'title'
-    order = request.args.get("order", "")  # Default to ascending order
+    sort_by = request.args.get("sort_by", "")
+    order = request.args.get("order", "")
     search = request.args.get("search", None)
+
     # Copy the cache to filter/sort
     data = news_cache[:]
 
+    # Apply search terms with relevance ranking
     if search:
         term = search.lower().strip()
         data_with_scores = [(r, score_model(model=r, term=term, attributes=[
@@ -261,7 +287,6 @@ def get_all_reports():
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         # Sort by relevance score
         data_with_scores.sort(key=lambda x: x[1], reverse=True)
-
         # Extract sorted reports
         data = [d[0] for d in data_with_scores]
 
@@ -285,9 +310,11 @@ def get_all_reports():
             r for r in data
             if all(cat in r.categories for cat in category_list)
         ]
+
+    # Apply sorting by ascending or descending
     if sort_by:
         reverse = order == "desc"
-        # Handle sorting for text fields (title, author, source)
+        # Sorting by date by converting pubilshed-at string to date
         if sort_by == "published_at":
             data.sort(
                 key=lambda r: datetime.strptime(
@@ -295,6 +322,7 @@ def get_all_reports():
                 reverse=reverse
             )
         else:
+            # Handle sorting for text fields (title, author, source)
             data.sort(
                 key=lambda r: (getattr(r, sort_by, "") or "").lower(),
                 reverse=reverse
@@ -317,7 +345,7 @@ def get_all_reports():
         },
     })
 
-
+# Get a single report by ID
 @app.route("/news/<int:id>", methods=["GET"])
 def get_single_report(id):
     for r in news_cache:
@@ -325,6 +353,9 @@ def get_single_report(id):
             return jsonify(r.as_instance())
     return jsonify({"error": "incident not found"}), 404
 
+
+
+# ------------------- General Search Across All Models -------------------
 
 @app.route("/search", methods=["GET"])
 def search_all_cards():
@@ -343,6 +374,7 @@ def search_all_cards():
         term = text.lower().strip()
         data_with_scores = []
 
+        # Find match by checking all models
         def match_search(obj):
             if isinstance(obj, Wildfire):
                 return score_model(obj, term, ["name", "county", "location", "status",
@@ -353,7 +385,8 @@ def search_all_cards():
             elif isinstance(obj, Shelter):
                 return score_model(obj, term, [
                     "name", "county", "address", "rating", "website", "phone", "description"])
-        # Only include reports with score > 0
+            
+        # Only include instances with score > 0
         data_with_scores = [(obj, match_search(obj)) for obj in data]
         data_with_scores = [d for d in data_with_scores if d[1] > 0]
         data_with_scores.sort(key=lambda x: x[1], reverse=True)
@@ -377,5 +410,6 @@ def search_all_cards():
     })
 
 
+# Run server
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000, debug=True)
