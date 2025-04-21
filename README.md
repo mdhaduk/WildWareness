@@ -174,3 +174,4 @@ Users can:
 ## Comments
 - It's important to note that we referenced last year's HomelessAid in developing 
 our HTML/CSS for Phase I and in the code development of Phase 2 and 3.
+<!-- trigger contribution graph -->
