@@ -91,7 +91,6 @@ const WildfireIncidentsPage = () => {
                 {wildfire.shelters.length > 0 ? (
                     wildfire.shelters.map((shelter) => (
                       <ShelterCard
-                        key={shelter.id}
                         shelter={shelter}
                       />
                     ))

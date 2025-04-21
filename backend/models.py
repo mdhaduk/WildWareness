@@ -72,12 +72,13 @@ class Wildfire(Base):
             "shelters": [
                 {"id": shelter.id, "name": shelter.name, "address": shelter.address,
                     "phone": shelter.phone, "website": shelter.website, "rating": shelter.rating,
-                    "imageUrl": shelter.imageUrl}
+                    "imageUrl": shelter.imageUrl, "county":shelter.county}
                 for shelter in self.shelters
             ],
             "newsreports": [
                 {"id": news.id, "title": news.title, "source": news.source, "date": news.published_at,
-                    "author": news.author, "categories": news.categories, "image_url": news.image_url,}
+                    "author": news.author, "categories": news.categories, "image_url": news.image_url,
+                    "published_at": news.published_at}
                 for news in self.newsreports
             ],
 
@@ -121,12 +122,13 @@ class Shelter(Base):
             "wildfires": [
                 {"id": wildfire.id, "name": wildfire.name, "county": wildfire.county,
                     "location": wildfire.location, "year": wildfire.year, "acres_burned": wildfire.acres_burned,
-                    "url": wildfire.url}
+                    "url": wildfire.url, "status": wildfire.status}
                 for wildfire in self.wildfires
             ],
             "newsreports": [
                 {"id": news.id, "title": news.title, "source": news.source, "date": news.published_at,
-                    "author": news.author, "categories": news.categories, "image_url": news.image_url,}
+                    "author": news.author, "categories": news.categories, "image_url": news.image_url,
+                    "published_at": news.published_at}
                 for news in self.newsreports
             ],
         }
@@ -200,13 +202,13 @@ class NewsReport(Base):
             "wildfires": [
                 {"id": wildfire.id, "name": wildfire.name, "county": wildfire.county,
                     "location": wildfire.location, "year": wildfire.year, "acres_burned": wildfire.acres_burned,
-                    "url": wildfire.url}
+                    "url": wildfire.url, "status": wildfire.status}
                 for wildfire in self.wildfires
             ],
             "shelters": [
                 {"id": shelter.id, "name": shelter.name, "address": shelter.address,
                     "phone": shelter.phone, "website": shelter.website, "rating": shelter.rating,
-                    "imageUrl": shelter.imageUrl}
+                    "imageUrl": shelter.imageUrl, "county":shelter.county}
                 for shelter in self.shelters
             ],
         }
